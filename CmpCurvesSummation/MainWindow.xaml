@@ -4,6 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CmpCurvesSummation"
+        xmlns:views="clr-namespace:CmpScanModule.Views;assembly=CmpScanModule"
+        xmlns:views1="clr-namespace:IntegratedScanModule.Views;assembly=IntegratedScanModule"
+        xmlns:views2="clr-namespace:LayersInfoModule.Views;assembly=LayersInfoModule"
+        xmlns:views3="clr-namespace:ToolbarModule.Views;assembly=ToolbarModule"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
@@ -18,9 +22,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ScrollBar Grid.Column="1"  Grid.Row="1"/>
-        <local:ToolBarCtrl Grid.ColumnSpan="4"></local:ToolBarCtrl>
-        <local:CmpScanCtrl Grid.Row="1"></local:CmpScanCtrl>
-        <local:IntegratedScanCtrl Grid.Row="1" Grid.Column="2"></local:IntegratedScanCtrl>
-        <local:LayersInfoCtrl Grid.Row="1" Grid.Column="3"></local:LayersInfoCtrl>
+        <views:CmpScanCtrl Grid.Row="1"></views:CmpScanCtrl>
+        <views1:IntegratedScanCtrl Grid.Row="1" Grid.Column="2"></views1:IntegratedScanCtrl>
+        <views2:LayersInfoCtrl Grid.Row="1" Grid.Column="3"></views2:LayersInfoCtrl>
+        <views3:ToolbarCtrl Grid.ColumnSpan="4"></views3:ToolbarCtrl>
     </Grid>
 </Window>

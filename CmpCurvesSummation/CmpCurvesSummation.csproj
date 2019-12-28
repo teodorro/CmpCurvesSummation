@@ -94,5 +94,23 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CmpScanModule\CmpScanModule.csproj">
+      <Project>{e6ba4d11-45cf-4883-a1e3-e5f2ca4e97da}</Project>
+      <Name>CmpScanModule</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegratedScanModule\IntegratedScanModule.csproj">
+      <Project>{3b9e63fc-f30a-42c8-bb30-85e85f6ea40d}</Project>
+      <Name>IntegratedScanModule</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LayersInfoModule\LayersInfoModule.csproj">
+      <Project>{990e3e7f-7b5c-48e4-99d5-f968b7c08664}</Project>
+      <Name>LayersInfoModule</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ToolbarModule\ToolbarModule.csproj">
+      <Project>{16a8b445-bcad-4bd2-9a8a-186b9f7ae4d4}</Project>
+      <Name>ToolbarModule</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
