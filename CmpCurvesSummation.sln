@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmpCurvesSummation", "CmpCurvesSummation\CmpCurvesSummation.csproj", "{29884E25-A2A9-43C1-B8AA-D512D9AA4A89}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{DDEAE89F-0EE0-46F0-BF2E-A9C1D6AD9D2D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{EF0BC78F-80CC-4368-B0B8-0FB59999D3FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmpScanModule", "CmpScanModule\CmpScanModule.csproj", "{E6BA4D11-45CF-4883-A1E3-E5F2CA4E97DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegratedScanModule", "IntegratedScanModule\IntegratedScanModule.csproj", "{3B9E63FC-F30A-42C8-BB30-85E85F6EA40D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolbarModule", "ToolbarModule\ToolbarModule.csproj", "{16A8B445-BCAD-4BD2-9A8A-186B9F7AE4D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LayersInfoModule", "LayersInfoModule\LayersInfoModule.csproj", "{990E3E7F-7B5C-48E4-99D5-F968B7C08664}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{29884E25-A2A9-43C1-B8AA-D512D9AA4A89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29884E25-A2A9-43C1-B8AA-D512D9AA4A89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29884E25-A2A9-43C1-B8AA-D512D9AA4A89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29884E25-A2A9-43C1-B8AA-D512D9AA4A89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6BA4D11-45CF-4883-A1E3-E5F2CA4E97DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6BA4D11-45CF-4883-A1E3-E5F2CA4E97DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6BA4D11-45CF-4883-A1E3-E5F2CA4E97DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6BA4D11-45CF-4883-A1E3-E5F2CA4E97DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B9E63FC-F30A-42C8-BB30-85E85F6EA40D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B9E63FC-F30A-42C8-BB30-85E85F6EA40D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B9E63FC-F30A-42C8-BB30-85E85F6EA40D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B9E63FC-F30A-42C8-BB30-85E85F6EA40D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16A8B445-BCAD-4BD2-9A8A-186B9F7AE4D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16A8B445-BCAD-4BD2-9A8A-186B9F7AE4D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16A8B445-BCAD-4BD2-9A8A-186B9F7AE4D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16A8B445-BCAD-4BD2-9A8A-186B9F7AE4D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{990E3E7F-7B5C-48E4-99D5-F968B7C08664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{990E3E7F-7B5C-48E4-99D5-F968B7C08664}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{990E3E7F-7B5C-48E4-99D5-F968B7C08664}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{990E3E7F-7B5C-48E4-99D5-F968B7C08664}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C82E407E-ED32-46FA-BD41-0B470C4D086C}
+	EndGlobalSection
+EndGlobal
