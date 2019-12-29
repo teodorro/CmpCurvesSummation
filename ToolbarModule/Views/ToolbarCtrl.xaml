@@ -6,9 +6,13 @@
              xmlns:local="clr-namespace:ToolbarModule.Views"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="800">
+    <Control.CommandBindings>
+        <CommandBinding Command="Open" Executed="OpenFile"></CommandBinding>
+    </Control.CommandBindings>
     <Grid>
         <ToolBar>
-            <Button x:Name="ButtonOpenFile" Content="Open" Height="95" VerticalAlignment="Top" Width="75"/>
+            <Button x:Name="ButtonOpenFile" Content="Open" Height="95" VerticalAlignment="Top" Width="75"
+                    Command="Open"/>
             <Button x:Name="ButtonSaveFle" Content="Save" Height="95" VerticalAlignment="Top" Width="75"/>
 
         </ToolBar> 
