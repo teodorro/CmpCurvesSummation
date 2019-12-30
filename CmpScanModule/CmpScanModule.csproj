@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DiContainer.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\CmpScanViewModel.cs" />
     <Compile Include="Views\CmpScanCtrl.xaml.cs">
       <DependentUpon>CmpScanCtrl.xaml</DependentUpon>

@@ -15,10 +15,12 @@ namespace ToolbarModule.ViewModels
     }
 
 
+
     public class ToolbarViewModel : IToolbarViewModel
     {
         public event FileOpenHandler OnFileOpened;
         private IFileOpener _fileOpener;
+
 
         public ToolbarViewModel(IFileOpener fileOpener)
         {

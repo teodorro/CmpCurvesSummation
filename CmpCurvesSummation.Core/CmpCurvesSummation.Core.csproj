@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="CmpEvents.cs" />
     <Compile Include="CmpScan.cs" />
+    <Compile Include="IntegratedCmpScan.cs" />
     <Compile Include="Processing\LogarithmProcessing.cs" />
     <Compile Include="Processing\RawDataProcessor.cs" />
     <Compile Include="Processing\Smoothing.cs" />

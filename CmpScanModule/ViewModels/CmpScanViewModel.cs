@@ -7,7 +7,7 @@ using OxyPlot.Series;
 
 namespace CmpScanModule.ViewModels
 {
-    public class CmpScanViewModel
+    public class CmpScanViewModel 
     {
         private const int colorsCount = 1024;
 
@@ -33,11 +33,21 @@ namespace CmpScanModule.ViewModels
         private void LoadCmpScan()
         {
             LoadSeries();
-            SetAxes2();
+            UpdateAxes();
+            Plot.InvalidatePlot(true);
         }
 
-        private void SetAxes2()
+        // TODO: not clear wtf. If no cmpScan in the beginning - no axes. If no axes - update doesn't work - bad plot
+        private void UpdateAxes()
         {
+            if (Plot.Axes.Count == 0)
+            {
+                SetAxes();
+            }
+
+            if (Plot.Axes.Count == 1)
+                return;
+            
             if (Plot.Axes.All(x => x.Position != AxisPosition.Top))
                 Plot.Axes.First(x => x.Position == AxisPosition.Bottom).Position = AxisPosition.Top;
             var top = Plot.Axes.First(x => x.Position == AxisPosition.Top);
@@ -72,7 +82,7 @@ namespace CmpScanModule.ViewModels
         // TODO: different palettes and other
         public void SetAxes()
         {
-            Plot.Axes.Clear();
+            //Plot.Axes.Clear();
             Plot.Axes.Add(new LinearColorAxis
             {
                 Palette = OxyPalettes.Rainbow(colorsCount)
@@ -128,5 +138,6 @@ namespace CmpScanModule.ViewModels
 
             Plot.Series.Add(heatMapSeries);
         }
+
     }
 }
