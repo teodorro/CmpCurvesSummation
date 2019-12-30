@@ -1,4 +1,5 @@
-﻿using CmpCurvesSummation.Core;
+﻿using System.Windows.Input;
+using CmpCurvesSummation.Core;
 using Microsoft.Win32;
 using ToolbarModule.FileDialogs;
 
@@ -22,6 +23,7 @@ namespace ToolbarModule.ViewModels
         public ToolbarViewModel(IFileOpener fileOpener)
         {
             _fileOpener = fileOpener;
+            CommandManager.InvalidateRequerySuggested();
         }
 
 
