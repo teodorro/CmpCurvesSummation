@@ -58,13 +58,13 @@
   <ItemGroup>
     <Compile Include="DiContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\IntegratedScanViewModel.cs" />
-    <Compile Include="Views\IntegratedScanCtrl.xaml.cs">
-      <DependentUpon>IntegratedScanCtrl.xaml</DependentUpon>
+    <Compile Include="ViewModels\SummedOverHodographScanViewModel.cs" />
+    <Compile Include="Views\SummedOverHodographScanCtrl.xaml.cs">
+      <DependentUpon>SummedOverHodographScanCtrl.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\IntegratedScanCtrl.xaml">
+    <Page Include="Views\SummedOverHodographScanCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

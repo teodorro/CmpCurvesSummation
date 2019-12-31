@@ -12,17 +12,25 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using IntegratedScanModule.ViewModels;
 
 namespace IntegratedScanModule.Views
 {
     /// <summary>
-    /// Interaction logic for IntegratedScanCtrl.xaml
+    /// Interaction logic for SummedOverHodographScanCtrl.xaml
     /// </summary>
-    public partial class IntegratedScanCtrl : UserControl
+    public partial class SummedOverHodographScanCtrl : UserControl
     {
-        public IntegratedScanCtrl()
+
+        private SummedOverHodographScanViewModel _viewModel;
+        public SummedOverHodographScanViewModel ViewModel => _viewModel;
+
+        public SummedOverHodographScanCtrl()
         {
             InitializeComponent();
+
+            _viewModel = new SummedOverHodographScanViewModel();
+            DataContext = _viewModel;
         }
     }
 }

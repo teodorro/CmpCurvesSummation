@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
+using System.Linq; 
 
 namespace CmpCurvesSummation.Core
 {
-    public interface IIntegratedCmpScan
+    public interface ISummedOverHodographScan
     {
         List<double[]> Data { get; }
         double StepVelocity { get; set; }
@@ -18,7 +17,7 @@ namespace CmpCurvesSummation.Core
 
 
 
-    public class IntegratedCmpScan : IIntegratedCmpScan
+    public class SummedOverHodographScan : ISummedOverHodographScan
     {
         public List<double[]> Data { get; } = new List<double[]>();
         public double StepVelocity { get; set; } = 0.1;
