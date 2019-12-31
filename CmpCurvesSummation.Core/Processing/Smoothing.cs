@@ -4,7 +4,9 @@ namespace CmpCurvesSummation.Core.Processing
 {
     public class Smoothing : IRawDataProcessing
     {
-        public void Process(ICmpScan data)
+        public string Name { get; } = "Сглаживание";
+
+        public void Process(ICmpScan cmpScan)
         {
             throw new NotImplementedException();
         }

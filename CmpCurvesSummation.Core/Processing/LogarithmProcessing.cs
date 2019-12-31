@@ -4,9 +4,12 @@ namespace CmpCurvesSummation.Core.Processing
 {
     public class LogarithmProcessing : IRawDataProcessing
     {
-        public void Process(ICmpScan data)
+        public string Name { get; } = "Логарифм амплитуды";
+
+
+        public void Process(ICmpScan cmpScan)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
     }
 }
