@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using CmpCurvesSummation.Core;
 
-namespace CmpCurvesSummation.Core.Processing
+namespace ProcessingModule
 {
     /// <summary>
     /// Make some processing on CMP Scan
@@ -26,7 +27,8 @@ namespace CmpCurvesSummation.Core.Processing
 
     public class RawDataProcessor : IRawDataProcessor
     {
-        public ObservableCollection<IRawDataProcessing> Operations { get; } = new ObservableCollection<IRawDataProcessing>();
+        public ObservableCollection<IRawDataProcessing> Operations { get; } =
+            new ObservableCollection<IRawDataProcessing>();
 
         public void Process(ICmpScan cmpScan)
         {
@@ -37,7 +39,6 @@ namespace CmpCurvesSummation.Core.Processing
 
         public void AutoDetectProcessingsToUse(CmpScan data)
         {
-
         }
     }
 }

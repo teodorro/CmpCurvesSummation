@@ -1,4 +1,4 @@
-﻿namespace ToolbarModule.FileDialogs
+﻿namespace CmpFileService
 {
     public class FileSaver
     {

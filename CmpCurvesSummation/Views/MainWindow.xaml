@@ -8,12 +8,15 @@
         xmlns:views1="clr-namespace:IntegratedScanModule.Views;assembly=IntegratedScanModule"
         xmlns:views2="clr-namespace:LayersInfoModule.Views;assembly=LayersInfoModule"
         xmlns:views3="clr-namespace:ToolbarModule.Views;assembly=ToolbarModule"
+        xmlns:processingModule="clr-namespace:ProcessingModule;assembly=ProcessingModule"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="800" Width="1400">
     <Grid>
         <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="250"/>
         </Grid.ColumnDefinitions>
@@ -21,11 +24,11 @@
             <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ScrollBar Grid.Column="1"  Grid.Row="1"/>
-        <views:CmpScanCtrl x:Name="CmpScanControl" Grid.Row="1"></views:CmpScanCtrl>
-        <views1:SummedOverHodographScanCtrl x:Name="SummedOverCurveScanControl" Grid.Row="1" Grid.Column="2"></views1:SummedOverHodographScanCtrl>
-        <views2:LayersInfoCtrl x:Name="LayersInfoControl" Grid.Row="1" Grid.Column="3"></views2:LayersInfoCtrl>
-        <views3:ToolbarCtrl x:Name="ToolbarControl" Grid.ColumnSpan="4"></views3:ToolbarCtrl>
+        <processingModule:ProcessingCtrl x:Name="ProcessingControl" Grid.Row="1" Grid.Column="0" Margin="10,5,5,35"></processingModule:ProcessingCtrl>
+        <views:CmpScanCtrl x:Name="CmpScanControl" Grid.Row="1" Grid.Column="1"></views:CmpScanCtrl>
+        <views1:SummedOverHodographScanCtrl x:Name="SummedOverCurveScanControl" Grid.Row="1" Grid.Column="3"></views1:SummedOverHodographScanCtrl>
+        <views2:LayersInfoCtrl x:Name="LayersInfoControl" Grid.Row="1" Grid.Column="4"></views2:LayersInfoCtrl>
+        <views3:ToolbarCtrl x:Name="ToolbarControl" Grid.ColumnSpan="5"></views3:ToolbarCtrl>
     </Grid>
 </Window>
 

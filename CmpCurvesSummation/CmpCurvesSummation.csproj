@@ -105,6 +105,10 @@
       <Project>{efa91824-72ee-429d-94bf-78a3e064c467}</Project>
       <Name>CmpCurvesSummation.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CmpFileService\GprFileService.csproj">
+      <Project>{083AAA69-571D-4170-95B0-1EE49BB9552A}</Project>
+      <Name>GprFileService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CmpScanModule\CmpScanModule.csproj">
       <Project>{e6ba4d11-45cf-4883-a1e3-e5f2ca4e97da}</Project>
       <Name>CmpScanModule</Name>
@@ -116,6 +120,10 @@
     <ProjectReference Include="..\LayersInfoModule\LayersInfoModule.csproj">
       <Project>{990e3e7f-7b5c-48e4-99d5-f968b7c08664}</Project>
       <Name>LayersInfoModule</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProcessingModule\ProcessingModule.csproj">
+      <Project>{9566d199-0c80-465b-af73-984acd0689bf}</Project>
+      <Name>ProcessingModule</Name>
     </ProjectReference>
     <ProjectReference Include="..\ToolbarModule\ToolbarModule.csproj">
       <Project>{16a8b445-bcad-4bd2-9a8a-186b9f7ae4d4}</Project>

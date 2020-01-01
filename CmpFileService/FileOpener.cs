@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using CmpCurvesSummation.Core;
 
-namespace ToolbarModule.FileDialogs
+namespace CmpFileService
 {
     /// <summary>
     /// To open all types of files

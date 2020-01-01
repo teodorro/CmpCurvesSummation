@@ -47,12 +47,7 @@
     <Compile Include="CmpEvents.cs" />
     <Compile Include="CmpScan.cs" />
     <Compile Include="CoordinatesConverter.cs" />
-    <Compile Include="Processing\ZeroAmplitudeCorrection.cs" />
     <Compile Include="SummedOverHodographScan.cs" />
-    <Compile Include="Processing\LogarithmProcessing.cs" />
-    <Compile Include="Processing\RawDataProcessor.cs" />
-    <Compile Include="Processing\Smoothing.cs" />
-    <Compile Include="Processing\StraightenSynchronizationLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

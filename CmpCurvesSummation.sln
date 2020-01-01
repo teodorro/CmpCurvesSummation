@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmpCurvesSummation.Core.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolbarModule.Tests", "ToolbarModule.Tests\ToolbarModule.Tests.csproj", "{0D58A3EC-7BD4-4FE1-95BA-D0C91EE8F2B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GprFileService", "CmpFileService\GprFileService.csproj", "{083AAA69-571D-4170-95B0-1EE49BB9552A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessingModule", "ProcessingModule\ProcessingModule.csproj", "{9566D199-0C80-465B-AF73-984ACD0689BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +65,14 @@ Global
 		{0D58A3EC-7BD4-4FE1-95BA-D0C91EE8F2B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D58A3EC-7BD4-4FE1-95BA-D0C91EE8F2B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D58A3EC-7BD4-4FE1-95BA-D0C91EE8F2B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{083AAA69-571D-4170-95B0-1EE49BB9552A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{083AAA69-571D-4170-95B0-1EE49BB9552A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{083AAA69-571D-4170-95B0-1EE49BB9552A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{083AAA69-571D-4170-95B0-1EE49BB9552A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9566D199-0C80-465B-AF73-984ACD0689BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9566D199-0C80-465B-AF73-984ACD0689BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9566D199-0C80-465B-AF73-984ACD0689BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9566D199-0C80-465B-AF73-984ACD0689BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

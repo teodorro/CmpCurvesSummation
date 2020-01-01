@@ -1,6 +1,6 @@
 ﻿using System;
+using CmpFileService;
 using StructureMap;
-using ToolbarModule.FileDialogs;
 
 namespace CmpCurvesSummation
 {

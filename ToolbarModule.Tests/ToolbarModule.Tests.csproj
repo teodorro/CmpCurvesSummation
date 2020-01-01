@@ -73,6 +73,10 @@
       <Project>{efa91824-72ee-429d-94bf-78a3e064c467}</Project>
       <Name>CmpCurvesSummation.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CmpFileService\GprFileService.csproj">
+      <Project>{083AAA69-571D-4170-95B0-1EE49BB9552A}</Project>
+      <Name>GprFileService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ToolbarModule\ToolbarModule.csproj">
       <Project>{16a8b445-bcad-4bd2-9a8a-186b9f7ae4d4}</Project>
       <Name>ToolbarModule</Name>

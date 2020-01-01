@@ -1,7 +1,7 @@
 ﻿using System.Windows.Input;
 using CmpCurvesSummation.Core;
+using CmpFileService;
 using Microsoft.Win32;
-using ToolbarModule.FileDialogs;
 
 namespace ToolbarModule.ViewModels
 {

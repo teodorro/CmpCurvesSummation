@@ -1,10 +1,12 @@
 ﻿using System;
+using ProcessingModule;
 
 namespace CmpCurvesSummation.Core.Processing
 {
-    public class StraightenSynchronizationLine : IRawDataProcessing
+    public class LogarithmProcessing : IRawDataProcessing
     {
-        public string Name { get; } = "Выпрямление линии синхронизации";
+        public string Name { get; } = "Логарифм амплитуды";
+
 
         public void Process(ICmpScan cmpScan)
         {
