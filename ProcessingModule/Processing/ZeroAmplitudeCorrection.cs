@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ProcessingModule;
+using CmpCurvesSummation.Core;
 
-namespace CmpCurvesSummation.Core.Processing
+namespace ProcessingModule.Processing
 {
     /// <summary>
     /// Krot software uses only not negative numbers for values of amplitude. Which conflicts with physical sense
@@ -17,6 +17,9 @@ namespace CmpCurvesSummation.Core.Processing
     {
         private List<double[]> _data;
         public string Name { get; } = "Корректировка нулевой амплитуды";
+
+
+        public override string ToString() => Name;
 
         public void Process(ICmpScan cmpScan)
         {
@@ -46,7 +49,7 @@ namespace CmpCurvesSummation.Core.Processing
                     ascan[i] = ascan[i] - zeroAmp;
         }
 
-        // TODO: Узнать у Меркулова, где там ноль и что за амплитуды вообще
+        // TODO: Узнать у Меркулова, где там ноль, и что за амплитуды вообще
         private void Convert6000()
         {
             throw new System.NotImplementedException();

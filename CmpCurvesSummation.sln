@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmpCurvesSummation.Core", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmpCurvesSummation.Core.Tests", "CmpCurvesSummation.Core.Tests\CmpCurvesSummation.Core.Tests.csproj", "{7FF73DF4-0002-43F5-A1F8-22893AA9A6EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolbarModule.Tests", "ToolbarModule.Tests\ToolbarModule.Tests.csproj", "{0D58A3EC-7BD4-4FE1-95BA-D0C91EE8F2B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GprFileService.Tests", "ToolbarModule.Tests\GprFileService.Tests.csproj", "{0D58A3EC-7BD4-4FE1-95BA-D0C91EE8F2B0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GprFileService", "CmpFileService\GprFileService.csproj", "{083AAA69-571D-4170-95B0-1EE49BB9552A}"
 EndProject

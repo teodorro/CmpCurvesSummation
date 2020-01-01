@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CmpFileService;
+using GprFileService;
 using Xunit;
 
-namespace CmpCurvesSummation.Core.Tests
+namespace GprFileService.Tests
 {
     public class FileOpenerTests
     {

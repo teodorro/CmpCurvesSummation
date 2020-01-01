@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 using CmpCurvesSummation.Core;
-using CmpFileService;
+using GprFileService;
 using Microsoft.Win32;
 
 namespace ToolbarModule.ViewModels

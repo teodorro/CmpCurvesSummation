@@ -11,9 +11,9 @@
     </Control.CommandBindings>
     <Grid>
         <ToolBar>
-            <Button x:Name="ButtonOpenFile" Content="Open" Height="95" VerticalAlignment="Top" Width="75"
+            <Button x:Name="ButtonOpenFile" Content="Open" Height="50" VerticalAlignment="Top" Width="50"
                     Command="Open" />
-            <Button x:Name="ButtonSaveFle" Content="Save" Height="95" VerticalAlignment="Top" Width="75"/>
+            <Button x:Name="ButtonSaveFle" Content="Save" Height="50" VerticalAlignment="Top" Width="50"/>
 
         </ToolBar> 
 

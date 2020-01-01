@@ -1,4 +1,4 @@
-﻿<UserControl x:Name="LabelChoose" x:Class="ProcessingModule.ProcessingCtrl"
+﻿<UserControl x:Name="LabelChoose" x:Class="ProcessingModule.Views.ProcessingCtrl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -14,9 +14,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label Content="Текущая последовательность обработок" VerticalAlignment="Bottom" />
-        <ListBox x:Name="ListBoxProcessing" Grid.Row="1" />
+        <ListBox x:Name="ListBoxProcessing" Grid.Row="1" ItemsSource="{Binding CurrentProcessings}"/>
         <Label Content="Возможные процедуры обработки" Grid.Row="2" VerticalAlignment="Bottom"  />
-        <ListBox x:Name="ListBoxChoose" Grid.Row="3" />
+        <ListBox x:Name="ListBoxChoose" Grid.Row="3" ItemsSource="{Binding AvailableProcessings}"/>
 
     </Grid>
 </UserControl>

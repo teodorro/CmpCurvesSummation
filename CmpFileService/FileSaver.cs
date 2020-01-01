@@ -1,4 +1,4 @@
-﻿namespace CmpFileService
+﻿namespace GprFileService
 {
     public class FileSaver
     {

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using CmpCurvesSummation.Core;
 
-namespace CmpFileService
+namespace GprFileService
 {
     /// <summary>
     /// To open all types of files

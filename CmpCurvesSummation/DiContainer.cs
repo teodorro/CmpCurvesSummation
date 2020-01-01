@@ -1,5 +1,5 @@
 ﻿using System;
-using CmpFileService;
+using GprFileService;
 using StructureMap;
 
 namespace CmpCurvesSummation

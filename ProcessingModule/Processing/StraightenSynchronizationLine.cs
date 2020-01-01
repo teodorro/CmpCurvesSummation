@@ -1,11 +1,12 @@
-﻿using System;
-using ProcessingModule;
+﻿using CmpCurvesSummation.Core;
 
-namespace CmpCurvesSummation.Core.Processing
+namespace ProcessingModule.Processing
 {
     public class StraightenSynchronizationLine : IRawDataProcessing
     {
         public string Name { get; } = "Выпрямление линии синхронизации";
+
+        public override string ToString() => Name;
 
         public void Process(ICmpScan cmpScan)
         {
