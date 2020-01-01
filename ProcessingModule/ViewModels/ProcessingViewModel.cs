@@ -1,24 +1,12 @@
 ﻿using System.Collections.ObjectModel;
+using ProcessingModule.Processing;
 
 namespace ProcessingModule.ViewModels
 {
     public class ProcessingViewModel
     {
-        //        public ObservableCollection<IRawDataProcessing> AvailableProcessings =
-        //            new ObservableCollection<IRawDataProcessing>()
-        //            {
-        //                new ZeroAmplitudeCorrection()
-        //            };
-        //
-        //        public ObservableCollection<IRawDataProcessing> CurrentProcessings = new ObservableCollection<IRawDataProcessing>();
+        public ObservableCollection<IRawDataProcessing> ChooseList { get; } = new ObservableCollection<IRawDataProcessing>() { new ZeroAmplitudeCorrection() };
 
-        public ObservableCollection<string> AvailableProcessings =
-            new ObservableCollection<string>()
-            {
-                "zero", "fvgikft"
-            };
-
-        public ObservableCollection<string> CurrentProcessings = new ObservableCollection<string>();
-
+        public ObservableCollection<IRawDataProcessing> ProcessingList { get; } = new ObservableCollection<IRawDataProcessing>();
     }
 }
