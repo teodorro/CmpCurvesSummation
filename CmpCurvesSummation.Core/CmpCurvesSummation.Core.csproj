@@ -45,12 +45,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CmpEvents.cs" />
+    <Compile Include="CmpMath.cs" />
     <Compile Include="CmpScan.cs" />
     <Compile Include="CoordinatesConverter.cs" />
+    <Compile Include="DiContainer.cs" />
     <Compile Include="SummedOverHodographScan.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Dictionary.txt" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

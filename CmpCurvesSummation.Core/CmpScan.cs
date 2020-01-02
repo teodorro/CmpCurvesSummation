@@ -13,8 +13,8 @@ namespace CmpCurvesSummation.Core
     public interface ICmpScan
     {
         List<double[]> Data { get; }
-        List<int[]> RawData { get; }
-        double StepX { get; set; }
+        List<double[]> RawData { get; }
+        double _StepDistance { get; set; }
         double StepTime { get; set; }
         int LengthDimensionless { get; }
         double Length { get; }
@@ -28,11 +28,11 @@ namespace CmpCurvesSummation.Core
     public class CmpScan : ICmpScan
     {
         public List<double[]> Data { get; } = new List<double[]>();
-        public List<int[]> RawData { get; } = new List<int[]>();
-        public double StepX { get; set; } = 0.1;
+        public List<double[]> RawData { get; } = new List<double[]>();
+        public double _StepDistance { get; set; } = 0.1;
         public double StepTime { get; set; } = 1;
         public int LengthDimensionless => Data.Count;
-        public double Length => Data.Count * StepX;
+        public double Length => Data.Count * _StepDistance;
         public int AscanLengthDimensionless => Data.Any() ? Data.Select(x => x.Length).Min() : -1;
         public double AscanLength => AscanLengthDimensionless * StepTime;
 

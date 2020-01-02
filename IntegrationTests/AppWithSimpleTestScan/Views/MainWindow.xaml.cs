@@ -1,10 +1,8 @@
 ﻿using System.Windows;
+using AppWithSimpleTestScan.ViewModels;
 using CmpCurvesSummation.Core;
-using CmpCurvesSummation.ViewModels;
-using GprFileService;
-using StructureMap;
 
-namespace CmpCurvesSummation.Views
+namespace AppWithSimpleTestScan.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -15,19 +13,18 @@ namespace CmpCurvesSummation.Views
 
         public MainWindow()
         {
-            InitializeDiContainer();
-
             InitializeComponent();
 
             _viewModel = new MainWindowViewModel();
             DataContext = _viewModel;
 
-            ToolbarControl.ViewModel.OnFileOpened += CmpScanControl.ViewModel.DataLoaded;
+            SetUpEvents();
         }
 
-        private void InitializeDiContainer()
+        private void SetUpEvents()
         {
-            DiContainer.Instance.Container = new Container(_ => { _.For<IFileOpener>().Use<FileOpener>(); });
+            ToolbarControl.ViewModel.OnFileOpened += CmpScanControl.ViewModel.DataLoaded;
+
         }
     }
 }

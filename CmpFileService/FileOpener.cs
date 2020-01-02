@@ -48,10 +48,10 @@ namespace GprFileService
                 if (curAscanNum == cmpScan.LengthDimensionless)
                 {
                     var ascanLengthDimensionless = krotFileData.Count(x => x[0] == curAscanNum);
-                    cmpScan.RawData.Add(new int[ascanLengthDimensionless]);
+                    cmpScan.RawData.Add(new double[ascanLengthDimensionless]);
                 }
                 var curAscanPoint = Convert.ToInt32(piece[1] / cmpScan.StepTime);
-                cmpScan.RawData[curAscanNum][curAscanPoint] = Convert.ToInt32(piece[2]);
+                cmpScan.RawData[curAscanNum][curAscanPoint] = piece[2];
             }
 
             return cmpScan;

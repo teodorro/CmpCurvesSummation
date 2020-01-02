@@ -13,6 +13,15 @@ namespace CmpCurvesSummation.Core
         }
     }
 
+    public class RawCmpProcessedEventArgs : EventArgs
+    {
+        public ICmpScan CmpScan { get; }
+        public RawCmpProcessedEventArgs(ICmpScan cmpScan)
+        {
+            CmpScan = cmpScan;
+        }
+    }
+
 
     public class SummedOverHodographEventArgs : EventArgs
     {

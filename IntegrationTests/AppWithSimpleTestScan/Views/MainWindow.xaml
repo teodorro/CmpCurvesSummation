@@ -1,0 +1,32 @@
+﻿<Window x:Class="AppWithSimpleTestScan.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AppWithSimpleTestScan"
+        xmlns:views="clr-namespace:ProcessingModule.Views;assembly=ProcessingModule"
+        xmlns:views1="clr-namespace:CmpScanModule.Views;assembly=CmpScanModule"
+        xmlns:views2="clr-namespace:IntegratedScanModule.Views;assembly=IntegratedScanModule"
+        xmlns:views3="clr-namespace:LayersInfoModule.Views;assembly=LayersInfoModule"
+        xmlns:views4="clr-namespace:ToolbarModule.Views;assembly=ToolbarModule"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="1400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="270"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="270"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <views:ProcessingCtrl x:Name="ProcessingControl" Grid.Row="1" Grid.Column="0" Margin="10,5,5,35"></views:ProcessingCtrl>
+        <views1:CmpScanCtrl x:Name="CmpScanControl" Grid.Row="1" Grid.Column="1"></views1:CmpScanCtrl>
+        <views2:SummedOverHodographScanCtrl x:Name="SummedOverCurveScanControl" Grid.Row="1" Grid.Column="3"></views2:SummedOverHodographScanCtrl>
+        <views3:LayersInfoCtrl x:Name="LayersInfoControl" Grid.Row="1" Grid.Column="4"></views3:LayersInfoCtrl>
+        <views4:ToolbarCtrl x:Name="ToolbarControl" Grid.ColumnSpan="5"></views4:ToolbarCtrl>
+    </Grid>
+</Window>
