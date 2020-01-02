@@ -10,7 +10,7 @@ namespace ToolbarModule.ViewModels
 
     public interface IToolbarViewModel
     {
-        event FileOpenHandler OnFileOpened;
+        event FileOpenHandler FileOpened;
         void OpenFile();
     }
 
@@ -18,7 +18,7 @@ namespace ToolbarModule.ViewModels
 
     public class ToolbarViewModel : IToolbarViewModel
     {
-        public event FileOpenHandler OnFileOpened;
+        public event FileOpenHandler FileOpened;
         private IFileOpener _fileOpener;
 
 
@@ -35,7 +35,7 @@ namespace ToolbarModule.ViewModels
             if (fileDialog.ShowDialog() == true)
             {
                 var data = _fileOpener.OpenKrotTxt(fileDialog.FileName);
-                OnFileOpened.Invoke(this, new FileLoadedEventArgs(data));
+                FileOpened.Invoke(this, new FileLoadedEventArgs(data));
             }
         }
     }

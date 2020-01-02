@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using AppWithSimpleTestScan.ViewModels;
-using CmpCurvesSummation.Core;
 
 namespace AppWithSimpleTestScan.Views
 {
@@ -23,8 +22,8 @@ namespace AppWithSimpleTestScan.Views
 
         private void SetUpEvents()
         {
-            ToolbarControl.ViewModel.OnFileOpened += CmpScanControl.ViewModel.DataLoaded;
-
+            //            ToolbarControl.ViewModel.OnFileOpened += CmpScanControl.ViewModel.DataLoaded;
+            ToolbarControl.ViewModel.FileOpened += ProcessingControl.ViewModel.OnFileLoaded;
         }
     }
 }

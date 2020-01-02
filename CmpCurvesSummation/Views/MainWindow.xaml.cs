@@ -22,7 +22,7 @@ namespace CmpCurvesSummation.Views
             _viewModel = new MainWindowViewModel();
             DataContext = _viewModel;
 
-            ToolbarControl.ViewModel.OnFileOpened += CmpScanControl.ViewModel.DataLoaded;
+            //ToolbarControl.ViewModel.FileOpened += CmpScanControl.ViewModel.DataLoaded;
         }
 
         private void InitializeDiContainer()

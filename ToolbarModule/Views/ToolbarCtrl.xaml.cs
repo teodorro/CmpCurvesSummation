@@ -40,6 +40,6 @@ namespace ToolbarModule.Views
             _viewModel.OpenFile();
 
         }
-        
+
     }
 }

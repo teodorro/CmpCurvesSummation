@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using CmpCurvesSummation.Core;
+using ProcessingModule.Processing;
 
 namespace ProcessingModule
 {
@@ -19,26 +20,39 @@ namespace ProcessingModule
     /// </summary>
     public interface IRawDataProcessor
     {
-        void AutoDetectProcessingsToUse(CmpScan data);
-        ObservableCollection<IRawDataProcessing> Operations { get; }
+        void InitOperationList();
+        ObservableCollection<IRawDataProcessing> OperationsAvailable { get; }
+        ObservableCollection<IRawDataProcessing> OperationsToProcess { get; }
         void Process(ICmpScan cmpScan);
+        void AutoDetectOperationsNeeded(CmpScan data);
     }
 
 
     public class RawDataProcessor : IRawDataProcessor
     {
-        public ObservableCollection<IRawDataProcessing> Operations { get; } =
+        public ObservableCollection<IRawDataProcessing> OperationsAvailable { get; } =
+            new ObservableCollection<IRawDataProcessing>();
+        public ObservableCollection<IRawDataProcessing> OperationsToProcess { get; } =
             new ObservableCollection<IRawDataProcessing>();
 
         public void Process(ICmpScan cmpScan)
         {
             cmpScan.CopyRawDataToProcessed();
-            foreach (var operation in Operations)
+            foreach (var operation in OperationsToProcess)
                 operation.Process(cmpScan);
         }
 
-        public void AutoDetectProcessingsToUse(CmpScan data)
+        public void AutoDetectOperationsNeeded(CmpScan data)
         {
+            throw new System.NotImplementedException();
+        }
+
+        public void InitOperationList()
+        {
+            OperationsAvailable.Add(new ZeroAmplitudeCorrection());
+            OperationsAvailable.Add(new LogarithmProcessing());
+            OperationsAvailable.Add(new StraightenSynchronizationLine());
+            OperationsAvailable.Add(new Smoothing());
         }
     }
 }

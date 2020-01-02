@@ -10,14 +10,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Label Content="Текущая последовательность обработок" VerticalAlignment="Bottom" FontWeight="Bold" />
-        <ListBox x:Name="ListViewChoose" Grid.Row="1" ItemsSource="{Binding ProcessingList}" AllowDrop="True" Drop="ListViewChoose_Drop" />
-        <Label Content="Возможные процедуры обработки" Grid.Row="2" VerticalAlignment="Bottom" FontWeight="Bold"  />
-        <ListBox x:Name="ListViewProcessing"  Grid.Row="3" ItemsSource="{Binding ChooseList}"  PreviewMouseMove="ListViewProcessing_PreviewMouseMove">
-        </ListBox>
+        <DataGrid x:Name="ProcessingListDataGrid" Grid.Row="1" ItemsSource="{Binding ProcessingRowList}" CanUserAddRows="False" CanUserSortColumns="False"/>
     </Grid>
 </UserControl>
