@@ -9,6 +9,8 @@ namespace CmpCurvesSummation.Core
 
 
         public const double SpeedOfLight = 0.3;
+        public const double WaterPermittivity = 81;
+        public double WaterVelocity => SpeedOfLight / (2 * Math.Sqrt(WaterPermittivity));
 
         public double Permittivity(double velocity) => Math.Pow(SpeedOfLight / 2 / velocity, 2);
 

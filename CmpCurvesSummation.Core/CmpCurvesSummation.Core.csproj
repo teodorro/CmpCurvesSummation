@@ -49,7 +49,7 @@
     <Compile Include="CmpScan.cs" />
     <Compile Include="CoordinatesConverter.cs" />
     <Compile Include="DiContainer.cs" />
-    <Compile Include="SummedOverHodographScan.cs" />
+    <Compile Include="SummedScan.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

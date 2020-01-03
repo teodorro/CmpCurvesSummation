@@ -11,7 +11,9 @@ namespace SummedScanModule.ViewModels
     {
         private const int colorsCount = 1024;
 
-        private ISummedOverHodographScan _summedOverHodographScan;
+        private ICmpScan _cmpScan;
+        private ISummedScan _summedScan;
+
         public PlotModel Plot { get; private set; }
 
 
@@ -23,14 +25,27 @@ namespace SummedScanModule.ViewModels
         }
 
 
-        public void DataLoaded(object obj, SummedOverHodographEventArgs args)
+        public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args)
         {
-            _summedOverHodographScan = args.SummedOverHodographScan;
+            _cmpScan = args.CmpScan;
 
-            LoadCmpScan();
+            _summedScan = new SummedScan(_cmpScan);
+            LoadSummedScan();
         }
 
-        private void LoadCmpScan()
+        private void SumScan(ICmpScan cmpScan)
+        {
+            throw new NotImplementedException();
+        }
+
+//        public void DataLoaded(object obj, SummedOverHodographEventArgs args)
+//        {
+//            _summedOverHodographScan = args.SummedScan;
+//
+//            LoadCmpScan();
+//        }
+
+        private void LoadSummedScan()
         {
             LoadSeries();
             UpdateAxes();
@@ -52,11 +67,11 @@ namespace SummedScanModule.ViewModels
                 Plot.Axes.First(x => x.Position == AxisPosition.Bottom).Position = AxisPosition.Top;
             var top = Plot.Axes.First(x => x.Position == AxisPosition.Top);
             top.AbsoluteMinimum = 0;
-            top.AbsoluteMaximum = _summedOverHodographScan.VelocityLength;
+            top.AbsoluteMaximum = _summedScan.VelocityLength;
 
             var left = Plot.Axes.First(x => x.Position == AxisPosition.Left);
             left.AbsoluteMinimum = 0;
-            left.AbsoluteMaximum = _summedOverHodographScan.AscanLength;
+            left.AbsoluteMaximum = _summedScan.AscanLength;
             left.StartPosition = 1;
             left.EndPosition = 0;
         }
@@ -68,9 +83,9 @@ namespace SummedScanModule.ViewModels
             var heatMapSeries = new HeatMapSeries
             {
                 X0 = 0,
-                X1 = _summedOverHodographScan.VelocityLength,
+                X1 = _summedScan.VelocityLength,
                 Y0 = 0,
-                Y1 = _summedOverHodographScan.AscanLength,
+                Y1 = _summedScan.AscanLength,
                 Interpolate = true,
                 RenderMethod = HeatMapRenderMethod.Bitmap,
                 Data = GetDataArray()
@@ -91,11 +106,11 @@ namespace SummedScanModule.ViewModels
 
         private double[,] GetDataArray()
         {
-            var res = new double[_summedOverHodographScan.VelocityLengthDimensionless, _summedOverHodographScan.AscanLengthDimensionless];
+            var res = new double[_summedScan.VelocityLengthDimensionless, _summedScan.AscanLengthDimensionless];
 
-            for (int i = 0; i < _summedOverHodographScan.VelocityLengthDimensionless; i++)
-                for (int j = 0; j < _summedOverHodographScan.AscanLengthDimensionless; j++)
-                    res[i, j] = _summedOverHodographScan.Data[i][j];
+            for (int i = 0; i < _summedScan.VelocityLengthDimensionless; i++)
+                for (int j = 0; j < _summedScan.AscanLengthDimensionless; j++)
+                    res[i, j] = _summedScan.Data[i][j];
 
             return res;
         }

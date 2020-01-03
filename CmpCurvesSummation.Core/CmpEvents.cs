@@ -26,10 +26,10 @@ namespace CmpCurvesSummation.Core
 
     public class SummedOverHodographEventArgs : EventArgs
     {
-        public ISummedOverHodographScan SummedOverHodographScan { get; }
-        public SummedOverHodographEventArgs(ISummedOverHodographScan summedOverHodographScan)
+        public ISummedScan SummedScan { get; }
+        public SummedOverHodographEventArgs(ISummedScan summedScan)
         {
-            SummedOverHodographScan = summedOverHodographScan;
+            SummedScan = summedScan;
         }
     }
 
