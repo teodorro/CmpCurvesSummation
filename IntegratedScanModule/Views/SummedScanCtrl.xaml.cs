@@ -12,24 +12,24 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using IntegratedScanModule.ViewModels;
+using SummedScanModule.ViewModels;
 
-namespace IntegratedScanModule.Views
+namespace SummedScanModule.Views
 {
     /// <summary>
-    /// Interaction logic for SummedOverHodographScanCtrl.xaml
+    /// Interaction logic for SummedScanCtrl.xaml
     /// </summary>
-    public partial class SummedOverHodographScanCtrl : UserControl
+    public partial class SummedScanCtrl : UserControl
     {
 
-        private SummedOverHodographScanViewModel _viewModel;
-        public SummedOverHodographScanViewModel ViewModel => _viewModel;
+        private SummedScanViewModel _viewModel;
+        public SummedScanViewModel ViewModel => _viewModel;
 
-        public SummedOverHodographScanCtrl()
+        public SummedScanCtrl()
         {
             InitializeComponent();
 
-            _viewModel = new SummedOverHodographScanViewModel();
+            _viewModel = new SummedScanViewModel();
             DataContext = _viewModel;
         }
     }

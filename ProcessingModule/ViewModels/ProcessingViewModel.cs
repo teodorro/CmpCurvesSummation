@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using CmpCurvesSummation.Core;
+using ProcessingModule.Annotations;
 using ProcessingModule.Processing;
 
 namespace ProcessingModule.ViewModels
@@ -8,8 +11,10 @@ namespace ProcessingModule.ViewModels
 
     public delegate void RawCmpProcessedHandler(object obj, RawCmpProcessedEventArgs e);
 
+
     public class ProcessingViewModel
     {
+        private ICmpScan _cmpScan;
         public event RawCmpProcessedHandler RawCmpDataProcessed;
 
         public ObservableCollection<ProcessingDataRow> ProcessingRowList { get; } = new ObservableCollection<ProcessingDataRow>();
@@ -31,11 +36,9 @@ namespace ProcessingModule.ViewModels
             foreach (var operation in Processor.OperationsAvailable)
             {
                 var enabled = IsOperationEnabled(operation);
-                ProcessingRowList.Add(new ProcessingDataRow()
-                {
-                    Processing = operation,
-                    Enabled = enabled
-                });
+                var processingDataRow = new ProcessingDataRow(enabled, operation);
+                processingDataRow.ProcessingListChanged += OnProcessingListChanged;
+                ProcessingRowList.Add(processingDataRow);
                 if (enabled)
                     Processor.OperationsToProcess.Add(operation);
             }
@@ -51,17 +54,76 @@ namespace ProcessingModule.ViewModels
 
         public void OnFileLoaded(object sender, FileLoadedEventArgs e)
         {
-            var cmpScan = e.CmpScan;
-            Processor.Process(cmpScan);
-            RawCmpDataProcessed.Invoke(this, new RawCmpProcessedEventArgs(cmpScan));
+            _cmpScan = e.CmpScan;
+            Processor.Process(_cmpScan);
+            RawCmpDataProcessed.Invoke(this, new RawCmpProcessedEventArgs(_cmpScan));
+        }
+
+        public void OnProcessingListChanged(object sender, ProcessingListChangedEventArgs e)
+        {
+            if (e.Enabled)
+            {
+                Processor.OperationsToProcess.Add(e.Processing);
+            }
+            else
+            {
+                Processor.OperationsToProcess.Remove(e.Processing);
+            }
+            Processor.Process(_cmpScan);
+            RawCmpDataProcessed.Invoke(this, new RawCmpProcessedEventArgs(_cmpScan));
         }
     }
 
 
-    public class ProcessingDataRow
+    public delegate void ProcessingListChangedHandler(object obj, ProcessingListChangedEventArgs e);
+
+    public class ProcessingListChangedEventArgs : EventArgs
     {
-        public string Name => Processing.ToString();
-        public bool Enabled { get; set; }
         public IRawDataProcessing Processing { get; set; }
+        public bool Enabled { get; set; }
+    }
+
+
+
+    public class ProcessingDataRow //: INotifyPropertyChanged
+    {
+        public ProcessingDataRow(bool enabled, IRawDataProcessing processing)
+        {
+            _enabled = enabled;
+            _processing = processing;
+        }
+
+        public event ProcessingListChangedHandler ProcessingListChanged;
+
+        public string Name => Processing.ToString();
+
+        private bool _enabled;
+
+        public bool Enabled
+        {
+            get => _enabled;
+            set
+            {
+                _enabled = value;
+                ProcessingListChanged.Invoke(this, new ProcessingListChangedEventArgs()
+                {
+                    Processing = _processing,
+                    Enabled = _enabled
+                });
+//                OnPropertyChanged(nameof(Enabled));
+            }
+        }
+
+        private IRawDataProcessing _processing;
+        public IRawDataProcessing Processing => _processing;
+
+
+//        public event PropertyChangedEventHandler PropertyChanged;
+//
+//        [NotifyPropertyChangedInvocator]
+//        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+//        {
+//            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+//        }
     }
 }

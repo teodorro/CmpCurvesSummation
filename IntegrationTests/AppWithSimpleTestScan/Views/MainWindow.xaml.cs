@@ -25,6 +25,7 @@ namespace AppWithSimpleTestScan.Views
             //            ToolbarControl.ViewModel.OnFileOpened += CmpScanControl.ViewModel.DataLoaded;
             ToolbarControl.ViewModel.FileOpened += ProcessingControl.ViewModel.OnFileLoaded;
             ProcessingControl.ViewModel.RawCmpDataProcessed += CmpScanControl.ViewModel.OnRawCmpDataProcessed;
+            ToolbarControl.ViewModel.FileOpened += StepsControl.ViewModel.OnFileLoaded;
         }
     }
 }

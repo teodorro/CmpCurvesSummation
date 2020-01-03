@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "Integra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmpScanModule", "CmpScanModule\CmpScanModule.csproj", "{E6BA4D11-45CF-4883-A1E3-E5F2CA4E97DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegratedScanModule", "IntegratedScanModule\IntegratedScanModule.csproj", "{3B9E63FC-F30A-42C8-BB30-85E85F6EA40D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SummedScanModule", "IntegratedScanModule\SummedScanModule.csproj", "{3B9E63FC-F30A-42C8-BB30-85E85F6EA40D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolbarModule", "ToolbarModule\ToolbarModule.csproj", "{16A8B445-BCAD-4BD2-9A8A-186B9F7AE4D4}"
 EndProject

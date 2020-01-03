@@ -6,14 +6,15 @@
         xmlns:local="clr-namespace:AppWithSimpleTestScan"
         xmlns:views="clr-namespace:ProcessingModule.Views;assembly=ProcessingModule"
         xmlns:views1="clr-namespace:CmpScanModule.Views;assembly=CmpScanModule"
-        xmlns:views2="clr-namespace:IntegratedScanModule.Views;assembly=IntegratedScanModule"
         xmlns:views3="clr-namespace:LayersInfoModule.Views;assembly=LayersInfoModule"
         xmlns:views4="clr-namespace:ToolbarModule.Views;assembly=ToolbarModule"
+        xmlns:views5="clr-namespace:AppWithSimpleTestScan.Views"
+        xmlns:views6="clr-namespace:SummedScanModule.Views;assembly=IntegratedScanModule"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1400">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="270"/>
+            <ColumnDefinition Width="350"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="*"/>
@@ -22,11 +23,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <views:ProcessingCtrl x:Name="ProcessingControl" Grid.Row="1" Grid.Column="0" Margin="10,5,5,35"></views:ProcessingCtrl>
-        <views1:CmpScanCtrl x:Name="CmpScanControl" Grid.Row="1" Grid.Column="1"></views1:CmpScanCtrl>
-        <views2:SummedOverHodographScanCtrl x:Name="SummedOverCurveScanControl" Grid.Row="1" Grid.Column="3"></views2:SummedOverHodographScanCtrl>
-        <views3:LayersInfoCtrl x:Name="LayersInfoControl" Grid.Row="1" Grid.Column="4"></views3:LayersInfoCtrl>
+        <views:ProcessingCtrl x:Name="ProcessingControl" Grid.Row="2" Grid.Column="0" Margin="10,5,5,35"></views:ProcessingCtrl>
+        <views1:CmpScanCtrl x:Name="CmpScanControl" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2"></views1:CmpScanCtrl>
+        <views6:SummedScanCtrl x:Name="SummedOverCurveScanControl" Grid.Row="1" Grid.Column="3" Grid.RowSpan="2"></views6:SummedScanCtrl>
+        <views3:LayersInfoCtrl x:Name="LayersInfoControl" Grid.Row="1" Grid.Column="4" Grid.RowSpan="2"></views3:LayersInfoCtrl>
         <views4:ToolbarCtrl x:Name="ToolbarControl" Grid.ColumnSpan="5"></views4:ToolbarCtrl>
+        <views5:StepsCtrl x:Name="StepsControl" Grid.Row="1"></views5:StepsCtrl>
     </Grid>
 </Window>

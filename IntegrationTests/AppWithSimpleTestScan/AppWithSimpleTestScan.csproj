@@ -58,6 +58,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\StepsViewModel.cs" />
+    <Compile Include="Views\StepsCtrl.xaml.cs">
+      <DependentUpon>StepsCtrl.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -72,6 +76,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\StepsCtrl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -113,9 +121,9 @@
       <Project>{E6BA4D11-45CF-4883-A1E3-E5F2CA4E97DA}</Project>
       <Name>CmpScanModule</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\IntegratedScanModule\IntegratedScanModule.csproj">
+    <ProjectReference Include="..\..\IntegratedScanModule\SummedScanModule.csproj">
       <Project>{3B9E63FC-F30A-42C8-BB30-85E85F6EA40D}</Project>
-      <Name>IntegratedScanModule</Name>
+      <Name>SummedScanModule</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\LayersInfoModule\LayersInfoModule.csproj">
       <Project>{990E3E7F-7B5C-48E4-99D5-F968B7C08664}</Project>

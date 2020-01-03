@@ -5,9 +5,9 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
-namespace IntegratedScanModule.ViewModels
+namespace SummedScanModule.ViewModels
 {
-    public class SummedOverHodographScanViewModel
+    public class SummedScanViewModel
     {
         private const int colorsCount = 1024;
 
@@ -15,7 +15,7 @@ namespace IntegratedScanModule.ViewModels
         public PlotModel Plot { get; private set; }
 
 
-        public SummedOverHodographScanViewModel()
+        public SummedScanViewModel()
         {
             Plot = new PlotModel { Title = "После суммирования" };
             TestScan();

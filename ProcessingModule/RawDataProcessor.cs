@@ -53,6 +53,7 @@ namespace ProcessingModule
             OperationsAvailable.Add(new LogarithmProcessing());
             OperationsAvailable.Add(new StraightenSynchronizationLine());
             OperationsAvailable.Add(new Smoothing());
+            OperationsAvailable.Add(new ClearAppearanceAscans());
         }
     }
 }
