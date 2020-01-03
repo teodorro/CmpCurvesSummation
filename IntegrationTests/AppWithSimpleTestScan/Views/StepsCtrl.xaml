@@ -18,7 +18,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label x:Name="StepDistanceLabel" Content="Шаг измерений, м" Grid.Row="1" Margin="15,5"/>
-        <Label x:Name="StepTimeLabel" Content="Дискрет по времени, нс" Grid.Row="2"  Margin="15,5"/>
+        <Label x:Name="StepTimeLabel" Content="Шаг по времени, нс" Grid.Row="2"  Margin="15,5"/>
         <ComboBox x:Name="StepTimeComboBox" Grid.Column="1" Grid.Row="2" Margin="5,5,15,5" SelectedItem="{Binding StepTime}"  ItemsSource="{Binding StepsTime}"/>
         <ComboBox x:Name="StepDistanceComboBox" Grid.Column="1" Grid.Row="1" Margin="5,5,15,5" SelectedItem="{Binding StepDistance}" ItemsSource="{Binding StepsDistance}"/>
     </Grid>

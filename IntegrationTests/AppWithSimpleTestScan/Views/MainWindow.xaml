@@ -25,7 +25,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <views:ProcessingCtrl x:Name="ProcessingControl" Grid.Row="2" Grid.Column="0" Margin="10,5,5,35"></views:ProcessingCtrl>
+        <views:ProcessingCtrl x:Name="ProcessingControl" Grid.Row="2" Grid.Column="0" Margin="10,5,5,10"></views:ProcessingCtrl>
         <views1:CmpScanCtrl x:Name="CmpScanControl" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2"></views1:CmpScanCtrl>
         <views6:SummedScanCtrl x:Name="SummedOverCurveScanControl" Grid.Row="1" Grid.Column="3" Grid.RowSpan="2"></views6:SummedScanCtrl>
         <views3:LayersInfoCtrl x:Name="LayersInfoControl" Grid.Row="1" Grid.Column="4" Grid.RowSpan="2"></views3:LayersInfoCtrl>

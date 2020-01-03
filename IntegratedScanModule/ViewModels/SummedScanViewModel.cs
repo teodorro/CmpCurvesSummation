@@ -2,6 +2,7 @@
 using System.Linq;
 using CmpCurvesSummation.Core;
 using OxyPlot;
+using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
@@ -21,6 +22,7 @@ namespace SummedScanModule.ViewModels
         {
             Plot = new PlotModel { Title = "После суммирования" };
             TestScan();
+            TestAnnotations();
             SetAxes();
         }
 
@@ -33,10 +35,7 @@ namespace SummedScanModule.ViewModels
             LoadSummedScan();
         }
 
-        private void SumScan(ICmpScan cmpScan)
-        {
-            throw new NotImplementedException();
-        }
+        
 
 //        public void DataLoaded(object obj, SummedOverHodographEventArgs args)
 //        {
@@ -49,7 +48,42 @@ namespace SummedScanModule.ViewModels
         {
             LoadSeries();
             UpdateAxes();
-            Plot.InvalidatePlot(true);
+
+            TestAnnotations();
+
+            Plot.InvalidatePlot(true); // refresh plot?
+        }
+
+        private void TestAnnotations()
+        {
+//            var annotation = new TextAnnotation
+//            {
+//                Text = "vfdsvfds",
+//                TextPosition = new DataPoint(0, 22)
+//            };
+//            Plot.Annotations.Add(annotation);
+
+            var a2 = new EllipseAnnotation()
+            {
+                Fill = OxyColor.FromArgb(100, 255, 255, 255),
+                
+                X = 43,
+                Y = 55,
+                Height = 10,
+                Width = 10
+            };
+
+            Plot.Annotations.Add(a2);
+            
+            var a4 = new PolylineAnnotation();
+            a4.Points.Add(new DataPoint(10, 22));
+            a4.Points.Add(new DataPoint(13, 27));
+            a4.Points.Add(new DataPoint(30, 42));
+            a4.Points.Add(new DataPoint(22, 68));
+            a4.Points.Add(new DataPoint(20, 72));
+            a4.Color = OxyColor.FromRgb(255, 255, 255);
+            a4.InterpolationAlgorithm = new CanonicalSpline(0.5);
+            Plot.Annotations.Add(a4);
         }
 
         // TODO: not clear wtf. If no cmpScan in the beginning - no axes. If no axes - update doesn't work - bad plot

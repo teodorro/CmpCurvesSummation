@@ -43,37 +43,42 @@ namespace CmpCurvesSummation.Core
             var maxVelocity = CmpMath.SpeedOfLight;
             var maxHeight = maxTime * minVelocity;
             var minHeight = 0;
-            var dLength = cmpScan.AscanLengthDimensionless;
-            var vLength = 200;
-            var hLength = 200;
+            var dLength = cmpScan.LengthDimensionless;
+            var vLength = 100;
+            var hLength = 500;
 
             var hStep = maxHeight / hLength;
             var vStep = (maxVelocity - minVelocity) / vLength;
             var tStep = cmpScan.StepTime;
 
             for (int j = 0; j < hLength; j++)
-            for (int k = 0; k < vLength; k++)
             {
-                var h = hStep * j;
-                var v = vStep * k + minVelocity;
-                var hodograph = new Double[dLength];
-                for (int i = 0; i < dLength; i++)
+                Data.Add(new double[vLength]);
+                for (int k = 0; k < vLength; k++)
                 {
-                    var d = i * cmpScan.StepDistance;
-                    hodograph[i] = CmpMath.Instance.HodographLineLoza(d, h, v);
-                }
-
-                var sum = 0.0;
-                for (int i = 0; i < dLength; i++)
-                {
-                    var tIndex = Convert.ToInt32(Math.Round(hodograph[i] / tStep));
-                    if (tIndex >= 0 && tIndex < cmpScan.AscanLengthDimensionless)
+                    var h = hStep * j;
+                    var v = vStep * k + minVelocity;
+                    var hodograph = new Double[dLength];
+                    for (int i = 0; i < dLength; i++)
                     {
-                        sum += cmpScan.Data[i][tIndex];
+                        var d = i * cmpScan.StepDistance;
+                        hodograph[i] = CmpMath.Instance.HodographLineLoza(d, h, v);
                     }
+
+                    var sum = 0.0;
+                    for (int i = 0; i < dLength; i++)
+                    {
+                        var tIndex = Convert.ToInt32(Math.Round(hodograph[i] / tStep));
+                        if (tIndex >= 0 && tIndex < cmpScan.AscanLengthDimensionless)
+                        {
+                            sum += cmpScan.Data[i][tIndex];
+                        }
+                    }
+
+                    Data[j][k] = sum;
                 }
             }
-            
+
 
             // make scales
             // calc row of t
