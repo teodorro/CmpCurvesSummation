@@ -22,7 +22,7 @@ namespace AppWithSimpleTestScan
         {
             DiContainer.Instance.Container = new Container(_ =>
             {
-                _.For<IFileOpener>().Use<SimpleTestScanGenerator>();
+                _.For<IFileOpener>().Use<TestScanGenerator>();
                 _.For<IRawDataProcessor>().Use<RawDataProcessor>();
             });
         }

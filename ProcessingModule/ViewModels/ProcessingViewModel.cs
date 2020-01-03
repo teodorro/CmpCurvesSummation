@@ -5,8 +5,13 @@ using ProcessingModule.Processing;
 
 namespace ProcessingModule.ViewModels
 {
+
+    public delegate void RawCmpProcessedHandler(object obj, RawCmpProcessedEventArgs e);
+
     public class ProcessingViewModel
     {
+        public event RawCmpProcessedHandler RawCmpDataProcessed;
+
         public ObservableCollection<ProcessingDataRow> ProcessingRowList { get; } = new ObservableCollection<ProcessingDataRow>();
 
         public IRawDataProcessor Processor { get; }
@@ -39,7 +44,7 @@ namespace ProcessingModule.ViewModels
         // TODO: should be placed in config or something
         private bool IsOperationEnabled(IRawDataProcessing operation)
         {
-            if (operation is Smoothing || operation is LogarithmProcessing)
+            if (operation is Smoothing || operation is LogarithmProcessing || operation is ZeroAmplitudeCorrection)
                 return false;
             return true;
         }
@@ -48,6 +53,7 @@ namespace ProcessingModule.ViewModels
         {
             var cmpScan = e.CmpScan;
             Processor.Process(cmpScan);
+            RawCmpDataProcessed.Invoke(this, new RawCmpProcessedEventArgs(cmpScan));
         }
     }
 

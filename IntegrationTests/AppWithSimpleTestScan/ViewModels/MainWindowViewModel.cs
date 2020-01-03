@@ -19,13 +19,8 @@ namespace AppWithSimpleTestScan.ViewModels
         {
             var _cmpScan = args.CmpScan;
 
-            ProcessData(_cmpScan);
         }
 
-        private void ProcessData(ICmpScan cmpScan)
-        {
-
-        }
 
     }
 }

@@ -9,7 +9,7 @@ using GprFileService;
 
 namespace AppWithSimpleTestScan
 {
-    class SimpleTestScanGenerator : IFileOpener
+    class TestScanGenerator : IFileOpener
     {
         private int _cmpLength = 100;
         private int _ascanLength = 500;
@@ -26,7 +26,7 @@ namespace AppWithSimpleTestScan
         private double _ampForSync = 5;
 
 
-        public SimpleTestScanGenerator()
+        public TestScanGenerator()
         {
             _velocities = new double[_numLayers];
             _heights = new double[_numLayers];

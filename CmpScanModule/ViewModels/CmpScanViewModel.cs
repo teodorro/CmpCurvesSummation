@@ -24,12 +24,12 @@ namespace CmpScanModule.ViewModels
         }
 
 
-//        public void DataLoaded(object obj, FileLoadedEventArgs args)
-//        {
-//            _cmpScan = args.CmpScan;
-//            
-//            LoadCmpScan();
-//        }
+        public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args)
+        {
+            _cmpScan = args.CmpScan;
+            
+            LoadCmpScan();
+        }
 
         private void LoadCmpScan()
         {
