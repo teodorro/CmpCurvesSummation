@@ -8,12 +8,18 @@ using OxyPlot.Series;
 
 namespace SummedScanModule.ViewModels
 {
+
+
+    public delegate void HodographDrawClickHander(object obj, HodographDrawClickEventArgs e);
+
     public class SummedScanViewModel
     {
         private const int colorsCount = 1024;
 
         private ICmpScan _cmpScan;
         private ISummedScan _summedScan;
+
+        public event HodographDrawClickHander HodographDrawClick;
 
         public PlotModel Plot { get; private set; }
 
@@ -24,6 +30,7 @@ namespace SummedScanModule.ViewModels
             TestScan();
             TestAnnotations();
             SetAxes();
+            Plot.MouseDown += PlotOnMouseDown;
         }
 
 
@@ -36,14 +43,6 @@ namespace SummedScanModule.ViewModels
         }
 
         
-
-//        public void DataLoaded(object obj, SummedOverHodographEventArgs args)
-//        {
-//            _summedOverHodographScan = args.SummedScan;
-//
-//            LoadCmpScan();
-//        }
-
         private void LoadSummedScan()
         {
             LoadSeries();
@@ -51,17 +50,55 @@ namespace SummedScanModule.ViewModels
 
             TestAnnotations();
 
+
             Plot.InvalidatePlot(true); // refresh plot?
+        }
+
+        private void PlotOnMouseDown(object sender, OxyMouseDownEventArgs e)
+        {
+            if (e.ClickCount == 2 && e.ChangedButton == OxyMouseButton.Left)
+            {
+                Axis X_Axis = null;
+                Axis Y_Axis = null;
+                
+                var axisList = Plot.Axes;
+
+                foreach (var ax in axisList)
+                {
+                    if (ax.Position == AxisPosition.Top)
+                        X_Axis = ax;
+                    else if (ax.Position == AxisPosition.Left)
+                        Y_Axis = ax;
+                }
+
+                var p = Axis.InverseTransform(e.Position, X_Axis, Y_Axis);
+
+                var a2 = new EllipseAnnotation()
+                {
+                    Fill = OxyColor.FromArgb(255, 255, 255, 255),
+
+                    X = p.X,
+                    Y = p.Y,
+                    Height = 1,
+                    Width = 0.01
+                };
+
+                Plot.Annotations.Add(a2);
+                
+                Plot.InvalidatePlot(true);
+
+                HodographDrawClick?.Invoke(this, new HodographDrawClickEventArgs(){H = p.Y, V = p.X});
+            }
         }
 
         private void TestAnnotations()
         {
-//            var annotation = new TextAnnotation
-//            {
-//                Text = "vfdsvfds",
-//                TextPosition = new DataPoint(0, 22)
-//            };
-//            Plot.Annotations.Add(annotation);
+            var annotation = new TextAnnotation
+            {
+                Text = "hodograph",
+                TextPosition = new DataPoint(0, 22)
+            };
+            Plot.Annotations.Add(annotation);
 
             var a2 = new EllipseAnnotation()
             {
@@ -148,6 +185,7 @@ namespace SummedScanModule.ViewModels
 
             return res;
         }
+
 
 
         private void TestScan()

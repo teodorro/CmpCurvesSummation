@@ -15,7 +15,7 @@
         <oxy:PlotView
             x:Name="MyHeatMapPlot"
             Grid.Row="0" Grid.Column="0"
-            Model="{Binding Plot}">
+            Model="{Binding Plot}"  >
 
         </oxy:PlotView>
     </Grid>

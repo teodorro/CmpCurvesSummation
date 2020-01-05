@@ -2,17 +2,21 @@
 using System.Linq;
 using CmpCurvesSummation.Core;
 using OxyPlot;
+using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace CmpScanModule.ViewModels
 {
+
     public class CmpScanViewModel 
     {
         private const int colorsCount = 1024;
 
         private ICmpScan _cmpScan;
         public PlotModel Plot { get; private set; }
+
+        
 
 
         public CmpScanViewModel()
@@ -140,5 +144,18 @@ namespace CmpScanModule.ViewModels
             Plot.Series.Add(heatMapSeries);
         }
 
+        public void OnHodographDrawClick(object obj, HodographDrawClickEventArgs e)
+        {
+            var hodograph = new PolylineAnnotation();
+            hodograph.Points.Add(new DataPoint(e.V, e.H));
+            hodograph.Points.Add(new DataPoint(e.V + 2, e.H + 5));
+            hodograph.Points.Add(new DataPoint(e.V + 4, e.H + 15));
+            hodograph.Color = OxyColor.FromRgb(255, 255, 255);
+            hodograph.InterpolationAlgorithm = new CanonicalSpline(0.5);
+            hodograph.LineStyle = LineStyle.Solid;
+            Plot.Annotations.Add(hodograph);
+
+            Plot.InvalidatePlot(true);
+        }
     }
 }

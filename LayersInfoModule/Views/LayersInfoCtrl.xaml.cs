@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LayersInfoModule.ViewModels;
 
 namespace LayersInfoModule.Views
 {
@@ -20,9 +21,16 @@ namespace LayersInfoModule.Views
     /// </summary>
     public partial class LayersInfoCtrl : UserControl
     {
+        private LayersInfoViewModel _viewModel;
+        public LayersInfoViewModel ViewModel => _viewModel;
+
         public LayersInfoCtrl()
         {
             InitializeComponent();
+
+            _viewModel = new LayersInfoViewModel();
+            DataContext = _viewModel;
+
         }
     }
 }

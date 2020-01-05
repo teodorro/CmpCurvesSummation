@@ -21,9 +21,7 @@ namespace CmpCurvesSummation.Core
             CmpScan = cmpScan;
         }
     }
-
-
-
+    
     public class SummedOverHodographEventArgs : EventArgs
     {
         public ISummedScan SummedScan { get; }
@@ -33,7 +31,11 @@ namespace CmpCurvesSummation.Core
         }
     }
 
-
+    public class HodographDrawClickEventArgs : EventArgs
+    {
+        public double V { get; set; }
+        public double H { get; set; }
+    }
 
 
 

@@ -35,11 +35,15 @@ namespace ToolbarModule.Views
             DataContext = _viewModel;
         }
 
-        private void OpenFile(object sender, ExecutedRoutedEventArgs e)
+//        private void OpenFile(object sender, ExecutedRoutedEventArgs e)
+//        {
+//            _viewModel.OpenFile();
+//
+//        }
+
+        private void ButtonOpenFile_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.OpenFile();
-
         }
-
     }
 }

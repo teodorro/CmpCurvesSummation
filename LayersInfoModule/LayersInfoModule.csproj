@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\LayersInfoViewModel.cs" />
     <Compile Include="Views\LayersInfoCtrl.xaml.cs">
       <DependentUpon>LayersInfoCtrl.xaml</DependentUpon>
     </Compile>
@@ -60,7 +61,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\" />
+    <ProjectReference Include="..\CmpCurvesSummation.Core\CmpCurvesSummation.Core.csproj">
+      <Project>{efa91824-72ee-429d-94bf-78a3e064c467}</Project>
+      <Name>CmpCurvesSummation.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

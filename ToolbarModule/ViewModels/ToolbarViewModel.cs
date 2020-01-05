@@ -25,7 +25,7 @@ namespace ToolbarModule.ViewModels
         public ToolbarViewModel(IFileOpener fileOpener)
         {
             _fileOpener = fileOpener;
-            CommandManager.InvalidateRequerySuggested();
+            //CommandManager.InvalidateRequerySuggested();
         }
 
 

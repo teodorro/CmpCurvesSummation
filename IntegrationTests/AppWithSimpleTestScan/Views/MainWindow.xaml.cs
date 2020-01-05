@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using AppWithSimpleTestScan.ViewModels;
+using SummedScanModule.Views;
 
 namespace AppWithSimpleTestScan.Views
 {
@@ -27,6 +28,8 @@ namespace AppWithSimpleTestScan.Views
             ProcessingControl.ViewModel.RawCmpDataProcessed += CmpScanControl.ViewModel.OnRawCmpDataProcessed;
             ToolbarControl.ViewModel.FileOpened += StepsControl.ViewModel.OnFileLoaded;
             ProcessingControl.ViewModel.RawCmpDataProcessed += SummedOverCurveScanControl.ViewModel.OnRawCmpDataProcessed;
+            SummedOverCurveScanControl.ViewModel.HodographDrawClick += CmpScanControl.ViewModel.OnHodographDrawClick;
+            SummedOverCurveScanControl.ViewModel.HodographDrawClick += LayersInfoControl.ViewModel.OnHodographDrawClick;
         }
     }
 }
