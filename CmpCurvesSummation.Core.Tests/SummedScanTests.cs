@@ -9,7 +9,7 @@ namespace CmpCurvesSummation.Core.Tests
         {
             var cmpScan = GetSimpleCmpScan();
 
-            var summedScan = new SummedScan(cmpScan);
+            var summedScan = new SummedScanVH(cmpScan);
             var data = summedScan.Data;
 
             // assert smth

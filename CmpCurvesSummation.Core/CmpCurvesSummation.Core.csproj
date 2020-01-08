@@ -49,8 +49,9 @@
     <Compile Include="CmpScan.cs" />
     <Compile Include="CoordinatesConverter.cs" />
     <Compile Include="DiContainer.cs" />
-    <Compile Include="SummedScan.cs" />
+    <Compile Include="SummedScanVH.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SummedScanVT.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dictionary.txt" />

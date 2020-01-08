@@ -4,60 +4,67 @@ using System.Linq;
 
 namespace CmpCurvesSummation.Core
 {
-    public interface ISummedScan
+    public interface ISummedScanVH
     {
         List<double[]> Data { get; }
-        double StepVelocity { get; set; }
         double StepTime { get; set; }
-        double StepHeight { get; }
-        int VelocityLengthDimensionless { get; }
-        double VelocityLength { get; }
+        double MinVelocity { get; }
+        double MaxVelocity { get; }
         int AscanLengthDimensionless { get; }
+        double MinHeight { get; }
+        double MaxHeight { get; }
         double AscanLength { get; }
+        double[,] GetDataArray();
 
     }
 
 
 
-    public class SummedScan : ISummedScan
+    public class SummedScanVH : ISummedScanVH
     {
         public List<double[]> Data { get; } = new List<double[]>();
         public double StepVelocity { get; set; } = 0.001;
         public double StepHeight { get; set; } = 0.1;
         public double StepTime { get; set; } = 1;
-        
+        public double MinVelocity { get; } = CmpMath.Instance.Velocity(CmpMath.WaterPermittivity);
+        public double MaxVelocity { get; } = CmpMath.SpeedOfLight / 2;
+
         public int VelocityLengthDimensionless => Data.Count;
         public double VelocityLength => Data.Count * StepVelocity;
         public int AscanLengthDimensionless => Data.Any() ? Data.Select(x => x.Length).Min() : -1;
+        public double MinHeight { get; } = 0;
+        public double MaxHeight { get; private set; }
         public double AscanLength => AscanLengthDimensionless * StepTime;
+        int vLength = 100;
+        int hLength = 500;
 
-        public SummedScan(ICmpScan cmpScan)
+
+        public SummedScanVH(ICmpScan cmpScan)
         {
+            MaxHeight = MaxVelocity * AscanLengthDimensionless * StepTime;
             Sum(cmpScan);
         }
+
 
         private void Sum(ICmpScan cmpScan)
         {
             var maxTime = cmpScan.AscanLength;
-            var minVelocity = CmpMath.Instance.WaterVelocity;
-            var maxVelocity = CmpMath.SpeedOfLight;
-            var maxHeight = maxTime * minVelocity;
-            var minHeight = 0;
+            MaxHeight = maxTime * MaxVelocity; // ----------------------------- TODO: What depth should be chosen? This one is too high
             var dLength = cmpScan.LengthDimensionless;
-            var vLength = 100;
-            var hLength = 500;
 
-            var hStep = maxHeight / hLength;
-            var vStep = (maxVelocity - minVelocity) / vLength;
+            var hStep = (MaxHeight - MinHeight) / cmpScan.AscanLengthDimensionless;
+            var vStep = (MaxVelocity - MinVelocity) / vLength;
             var tStep = cmpScan.StepTime;
 
-            for (int j = 0; j < hLength; j++)
+
+            for (int k = 0; k < vLength; k++)
             {
-                Data.Add(new double[vLength]);
-                for (int k = 0; k < vLength; k++)
+                var v = vStep * k + MinVelocity;
+                Data.Add(new double[hLength]);
+
+                for (int j = 0; j < hLength; j++)
                 {
                     var h = hStep * j;
-                    var v = vStep * k + minVelocity;
                     var hodograph = new Double[dLength];
                     for (int i = 0; i < dLength; i++)
                     {
@@ -75,14 +82,21 @@ namespace CmpCurvesSummation.Core
                         }
                     }
 
-                    Data[j][k] = sum;
+                    Data[k][j] = sum;
                 }
             }
 
+        }
 
-            // make scales
-            // calc row of t
-            // sum and put in data. What will happen with those where there's no appropriate t?
+        public double[,] GetDataArray()
+        {
+            var res = new double[VelocityLengthDimensionless, AscanLengthDimensionless];
+
+            for (int i = 0; i < VelocityLengthDimensionless; i++)
+            for (int j = 0; j < AscanLengthDimensionless; j++)
+                res[i, j] = Data[i][j];
+
+            return res;
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using CmpCurvesSummation.Core;
-using ProcessingModule.Annotations;
 using ProcessingModule.Processing;
 
 namespace ProcessingModule.ViewModels
@@ -47,9 +44,9 @@ namespace ProcessingModule.ViewModels
         // TODO: should be placed in config or something
         private bool IsOperationEnabled(IRawDataProcessing operation)
         {
-            if (operation is Smoothing || operation is LogarithmProcessing || operation is ZeroAmplitudeCorrection)
+            if (operation is Smoothing || operation is LogarithmProcessing || operation is ZeroAmplitudeCorrection || operation is ClearAppearanceAscans)
                 return false;
-            return true;
+            return false;
         }
 
         public void OnFileLoaded(object sender, FileLoadedEventArgs e)

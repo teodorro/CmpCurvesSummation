@@ -80,7 +80,7 @@ namespace CmpScanModule.ViewModels
                 RenderMethod = HeatMapRenderMethod.Bitmap,
                 Data = GetDataArray()
             };
-
+            heatMapSeries.Interpolate = false;
             Plot.Series.Add(heatMapSeries);
         }
 

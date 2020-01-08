@@ -8,8 +8,6 @@ using OxyPlot.Series;
 
 namespace SummedScanModule.ViewModels
 {
-
-
     public delegate void HodographDrawClickHander(object obj, HodographDrawClickEventArgs e);
 
     public class SummedScanViewModel
@@ -17,7 +15,7 @@ namespace SummedScanModule.ViewModels
         private const int colorsCount = 1024;
 
         private ICmpScan _cmpScan;
-        private ISummedScan _summedScan;
+        private ISummedScanVT _summedScan;
 
         public event HodographDrawClickHander HodographDrawClick;
 
@@ -27,8 +25,10 @@ namespace SummedScanModule.ViewModels
         public SummedScanViewModel()
         {
             Plot = new PlotModel { Title = "После суммирования" };
+
             TestScan();
             TestAnnotations();
+
             SetAxes();
             Plot.MouseDown += PlotOnMouseDown;
         }
@@ -38,7 +38,7 @@ namespace SummedScanModule.ViewModels
         {
             _cmpScan = args.CmpScan;
 
-            _summedScan = new SummedScan(_cmpScan);
+            _summedScan = new SummedScanVT(_cmpScan);
             LoadSummedScan();
         }
 
@@ -49,8 +49,7 @@ namespace SummedScanModule.ViewModels
             UpdateAxes();
 
             TestAnnotations();
-
-
+            
             Plot.InvalidatePlot(true); // refresh plot?
         }
 
@@ -91,38 +90,6 @@ namespace SummedScanModule.ViewModels
             }
         }
 
-        private void TestAnnotations()
-        {
-            var annotation = new TextAnnotation
-            {
-                Text = "hodograph",
-                TextPosition = new DataPoint(0, 22)
-            };
-            Plot.Annotations.Add(annotation);
-
-            var a2 = new EllipseAnnotation()
-            {
-                Fill = OxyColor.FromArgb(100, 255, 255, 255),
-                
-                X = 43,
-                Y = 55,
-                Height = 10,
-                Width = 10
-            };
-
-            Plot.Annotations.Add(a2);
-            
-            var a4 = new PolylineAnnotation();
-            a4.Points.Add(new DataPoint(10, 22));
-            a4.Points.Add(new DataPoint(13, 27));
-            a4.Points.Add(new DataPoint(30, 42));
-            a4.Points.Add(new DataPoint(22, 68));
-            a4.Points.Add(new DataPoint(20, 72));
-            a4.Color = OxyColor.FromRgb(255, 255, 255);
-            a4.InterpolationAlgorithm = new CanonicalSpline(0.5);
-            Plot.Annotations.Add(a4);
-        }
-
         // TODO: not clear wtf. If no cmpScan in the beginning - no axes. If no axes - update doesn't work - bad plot
         private void UpdateAxes()
         {
@@ -137,12 +104,14 @@ namespace SummedScanModule.ViewModels
             if (Plot.Axes.All(x => x.Position != AxisPosition.Top))
                 Plot.Axes.First(x => x.Position == AxisPosition.Bottom).Position = AxisPosition.Top;
             var top = Plot.Axes.First(x => x.Position == AxisPosition.Top);
-            top.AbsoluteMinimum = 0;
-            top.AbsoluteMaximum = _summedScan.VelocityLength;
+            top.AbsoluteMinimum = _summedScan.MinVelocity;
+            top.AbsoluteMaximum = _summedScan.MaxVelocity;
 
             var left = Plot.Axes.First(x => x.Position == AxisPosition.Left);
-            left.AbsoluteMinimum = 0;
-            left.AbsoluteMaximum = _summedScan.AscanLength;
+            //            left.AbsoluteMinimum = _summedScan.MinHeight;
+            //            left.AbsoluteMaximum = _summedScan.MaxHeight;
+                        left.AbsoluteMinimum = _summedScan.MinTime;
+                        left.AbsoluteMaximum = _summedScan.MaxTime;
             left.StartPosition = 1;
             left.EndPosition = 0;
         }
@@ -153,13 +122,15 @@ namespace SummedScanModule.ViewModels
 
             var heatMapSeries = new HeatMapSeries
             {
-                X0 = 0,
-                X1 = _summedScan.VelocityLength,
-                Y0 = 0,
-                Y1 = _summedScan.AscanLength,
-                Interpolate = true,
+                X0 = _summedScan.MinVelocity,
+                X1 = _summedScan.MaxVelocity,
+                //                Y0 = _summedScan.MinHeight,
+                //                Y1 = _summedScan.MaxHeight,
+                                Y0 = _summedScan.MinTime,
+                                Y1 = _summedScan.MaxTime,
+                Interpolate = false,
                 RenderMethod = HeatMapRenderMethod.Bitmap,
-                Data = GetDataArray()
+                Data = _summedScan.GetDataArray()
             };
 
             Plot.Series.Add(heatMapSeries);
@@ -175,16 +146,7 @@ namespace SummedScanModule.ViewModels
             });
         }
 
-        private double[,] GetDataArray()
-        {
-            var res = new double[_summedScan.VelocityLengthDimensionless, _summedScan.AscanLengthDimensionless];
 
-            for (int i = 0; i < _summedScan.VelocityLengthDimensionless; i++)
-                for (int j = 0; j < _summedScan.AscanLengthDimensionless; j++)
-                    res[i, j] = _summedScan.Data[i][j];
-
-            return res;
-        }
 
 
 
@@ -222,6 +184,38 @@ namespace SummedScanModule.ViewModels
 
 
             Plot.Series.Add(heatMapSeries);
+        }
+
+        private void TestAnnotations()
+        {
+            var annotation = new TextAnnotation
+            {
+                Text = "hodograph",
+                TextPosition = new DataPoint(0, 22)
+            };
+            Plot.Annotations.Add(annotation);
+
+            var a2 = new EllipseAnnotation()
+            {
+                Fill = OxyColor.FromArgb(100, 255, 255, 255),
+
+                X = 43,
+                Y = 55,
+                Height = 10,
+                Width = 10
+            };
+
+            Plot.Annotations.Add(a2);
+
+            var a4 = new PolylineAnnotation();
+            a4.Points.Add(new DataPoint(10, 22));
+            a4.Points.Add(new DataPoint(13, 27));
+            a4.Points.Add(new DataPoint(30, 42));
+            a4.Points.Add(new DataPoint(22, 68));
+            a4.Points.Add(new DataPoint(20, 72));
+            a4.Color = OxyColor.FromRgb(255, 255, 255);
+            a4.InterpolationAlgorithm = new CanonicalSpline(0.5);
+            Plot.Annotations.Add(a4);
         }
     }
 }

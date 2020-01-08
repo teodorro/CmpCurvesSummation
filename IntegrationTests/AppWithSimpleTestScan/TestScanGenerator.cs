@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Management.Instrumentation;
 using System.Text;
 using System.Threading.Tasks;
 using CmpCurvesSummation.Core;
@@ -22,7 +21,7 @@ namespace AppWithSimpleTestScan
         /// </summary>
         private double[] _velocities;
         private double[] _heights;
-        private int _numLayers = 2;
+        private int _numLayers = 3;
         private double _ampForSync = 5;
 
 
@@ -31,11 +30,15 @@ namespace AppWithSimpleTestScan
             _velocities = new double[_numLayers];
             _heights = new double[_numLayers];
 
-            _velocities[0] = 0.05;
-            _velocities[1] = 0.04;
+            _velocities[0] = 0.15;
+            _velocities[1] = 0.05;
+            _velocities[2] = 0.05;
+            //_velocities[3] = 0.04;
 
-            _heights[0] = 2;
-            _heights[1] = 5;
+            _heights[0] = 0;
+            _heights[1] = 0;
+            _heights[2] = 2;
+//            _heights[3] = 5;
         }
 
         
@@ -49,7 +52,7 @@ namespace AppWithSimpleTestScan
             var cmpScan = new CmpScan();
 
             LoadData(cmpScan);
-            LozaStyleSynchronize(_ampForSync, cmpScan);
+            //LozaStyleSynchronize(_ampForSync, cmpScan);
             cmpScan.CopyRawDataToProcessed();
 
             return cmpScan;
@@ -71,14 +74,31 @@ namespace AppWithSimpleTestScan
         {
             var time = j * _stepTime;
             var distance = i * _stepDistance;
+            var reflection = 0.0;
+//            var hodograph1 = CmpMath.Instance.HodographLineLoza(distance, _heights[0], _velocities[0]);
+//            var reflection1 = MexicanHatWavelet(time, hodograph1) * AttenuationCoef(i, j);
+//            var reflection1 = SimpleWavelet(time, hodograph1) ;
 
-            var hodograph1 = CmpMath.Instance.HodographLineLoza(distance, _heights[0], _velocities[0]);
-            var reflection1 = MexicanHatWavelet(time, hodograph1) * AttenuationCoef(i, j);
+            for (int k = 0; k < _numLayers; k++)
+            {
+                var hodograph = CmpMath.Instance.HodographLineLoza(distance, _heights[k], _velocities[k]);
+                reflection += SimpleWavelet(time, hodograph);
+//                reflection += MexicanHatWavelet(time, hodograph) * AttenuationCoef(i, j);
+                //                asd[i] = CmpMath.Instance.HodographLineLoza(distance, _heights[2], _velocities[2]);
+            }
 
             //            var hodograph2 = HodographLine(distance, 1);
             //            var reflection2 = MexicanHatWavelet(time, hodograph2) * AttenuationCoef(i, j);
 
-            return reflection1;// + reflection2;
+            //            return reflection1;// + reflection2;
+            return reflection;
+        }
+
+//        private double[] asd = new double[100];
+
+        private double SimpleWavelet(double time, double offset)
+        {
+            return Math.Abs(time - offset) <= _stepTime ? 5 : 0;
         }
 
         private static double MexicanHatWavelet(double time, double offset)
