@@ -4,13 +4,23 @@ using CmpCurvesSummation.Core;
 
 namespace LayersInfoModule.ViewModels
 {
+    public delegate void DeleteLayerHander(object obj, DeleteLayerEventsArgs e);
+
     public class LayersInfoViewModel
     {
+
+        public event DeleteLayerHander DeleteClick;
+
         public ObservableCollection<LayerInfo> Layers { get; } = new ObservableCollection<LayerInfo>();
 
-        public void OnHodographDrawClick(object sender, HodographDrawClickEventArgs e)
+        public void OnHodographDrawClick(object sender, HodographDrawVTClickEventArgs e)
         {
-            Layers.Add(new LayerInfo(Math.Round(e.H, 2), Math.Round(e.H, 2), Math.Round(e.V, 2)));
+            Layers.Add(new LayerInfo(0, 0, e.Velocity){Time = e.Time});
+        }
+
+        public void OnDeleteRowClick(object sender, DeleteLayerEventsArgs e)
+        {
+            DeleteClick.Invoke(sender, e);
         }
     }
 
@@ -24,6 +34,7 @@ namespace LayersInfoModule.ViewModels
             Velocity = velocity;
         }
 
+        public double Time { get; set; }
         public double Height { get; }
         public double Thickness { get; }
         public double Velocity { get; }

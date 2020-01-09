@@ -31,12 +31,41 @@ namespace CmpCurvesSummation.Core
         }
     }
 
-    public class HodographDrawClickEventArgs : EventArgs
+    public class HodographDrawVHClickEventArgs : EventArgs
     {
-        public double V { get; set; }
-        public double H { get; set; }
+        public HodographDrawVHClickEventArgs(double velocity, double height)
+        {
+            Velocity = velocity;
+            Height = height;
+        }
+
+        public double Velocity { get; }
+        public double Height { get; }
     }
 
+    public class HodographDrawVTClickEventArgs : EventArgs
+    {
+        public HodographDrawVTClickEventArgs(double velocity, double time)
+        {
+            Velocity = velocity;
+            Time = time;
+        }
+
+        public double Velocity { get; set; }
+        public double Time { get; set; }
+    }
+
+    public class DeleteLayerEventsArgs : EventArgs
+    {
+        public DeleteLayerEventsArgs(double velocity, double time)
+        {
+            Velocity = velocity;
+            Time = time;
+        }
+
+        public double Velocity { get; set; }
+        public double Time { get; set; }
+    }
 
 
 

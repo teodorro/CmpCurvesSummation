@@ -8,7 +8,7 @@ using OxyPlot.Series;
 
 namespace SummedScanModule.ViewModels
 {
-    public delegate void HodographDrawClickHander(object obj, HodographDrawClickEventArgs e);
+    public delegate void HodographDrawClickHander(object obj, HodographDrawVTClickEventArgs e);
 
     public class SummedScanViewModel
     {
@@ -71,22 +71,20 @@ namespace SummedScanModule.ViewModels
                 }
 
                 var p = Axis.InverseTransform(e.Position, X_Axis, Y_Axis);
-
-                var a2 = new EllipseAnnotation()
+                var v = Math.Round(p.X, 4);
+                var t = Math.Round(p.Y, 2);
+                var point = new PointAnnotation()
                 {
-                    Fill = OxyColor.FromArgb(255, 255, 255, 255),
-
-                    X = p.X,
-                    Y = p.Y,
-                    Height = 1,
-                    Width = 0.01
+                    Fill = OxyColor.FromRgb(0, 0, 0),
+                    X = v,
+                    Y = t
                 };
+                point.Size = 2;
 
-                Plot.Annotations.Add(a2);
-                
+                Plot.Annotations.Add(point);
                 Plot.InvalidatePlot(true);
 
-                HodographDrawClick?.Invoke(this, new HodographDrawClickEventArgs(){H = p.Y, V = p.X});
+                HodographDrawClick?.Invoke(this, new HodographDrawVTClickEventArgs(v, t));
             }
         }
 
@@ -144,6 +142,14 @@ namespace SummedScanModule.ViewModels
             {
                 Palette = OxyPalettes.Rainbow(colorsCount)
             });
+        }
+
+        public void OnDeleteClick(object obj, DeleteLayerEventsArgs e)
+        {
+            var annotation = Plot.Annotations.FirstOrDefault(
+                x => (x as PointAnnotation)?.Y == e.Time && (x as PointAnnotation)?.X == e.Velocity);
+            Plot.Annotations.Remove(annotation);
+            Plot.InvalidatePlot(true);
         }
 
 

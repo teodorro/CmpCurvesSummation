@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CmpCurvesSummation.Core;
 using LayersInfoModule.ViewModels;
 
 namespace LayersInfoModule.Views
@@ -30,7 +31,17 @@ namespace LayersInfoModule.Views
 
             _viewModel = new LayersInfoViewModel();
             DataContext = _viewModel;
+            LayersListDataGrid.PreviewKeyDown += LayersListDataGridOnKeyDown;
+        }
 
+        private void LayersListDataGridOnKeyDown(object sender, KeyEventArgs keyEventArgs)
+        {
+            if (keyEventArgs.Key == Key.Delete)
+            {
+                var dataGrid = (DataGrid) sender;
+                var layer = (dataGrid.SelectedItem as LayerInfo);
+                ViewModel.OnDeleteRowClick(sender, new DeleteLayerEventsArgs(layer.Velocity, layer.Time));
+            }
         }
     }
 }

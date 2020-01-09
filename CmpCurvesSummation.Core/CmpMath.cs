@@ -26,7 +26,8 @@ namespace CmpCurvesSummation.Core
         {
             double part1 = 1 / velocity;
             double part2 = Math.Sqrt(Math.Pow(height, 2) + Math.Pow(distance / 2, 2));
-            return part1 * part2 - distance / SpeedOfLight;
+            var part3 = distance / SpeedOfLight;
+            return part1 * part2 - part3;
         }
 
 
