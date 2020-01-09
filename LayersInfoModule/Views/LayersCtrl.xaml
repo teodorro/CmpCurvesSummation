@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="LayersInfoModule.Views.LayersInfoCtrl"
+﻿<UserControl x:Class="LayersInfoModule.Views.LayersCtrl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -14,7 +14,7 @@
 
         <Label Content="Слои" VerticalAlignment="Bottom" FontWeight="Bold" />
         <DataGrid x:Name="LayersListDataGrid" Grid.Row="1" CanUserAddRows="False" CanUserSortColumns="False"
-                  ItemsSource="{Binding Layers}">
+                  ItemsSource="{Binding Layers}" AutoGeneratingColumn="LayersListDataGrid_AutoGeneratingColumn" >
             <!-- <DataGrid.ItemContainerStyle> -->
             <!--     <Style TargetType="DataGridRow"> -->
             <!--         <EventSetter Event="MouseDoubleClick" Handler="ProcessingListDataGrid_DoubleClick"></EventSetter> -->

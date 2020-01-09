@@ -18,21 +18,23 @@ using LayersInfoModule.ViewModels;
 namespace LayersInfoModule.Views
 {
     /// <summary>
-    /// Interaction logic for LayersInfoCtrl.xaml
+    /// Interaction logic for LayersCtrl.xaml
     /// </summary>
-    public partial class LayersInfoCtrl : UserControl
+    public partial class LayersCtrl : UserControl
     {
-        private LayersInfoViewModel _viewModel;
-        public LayersInfoViewModel ViewModel => _viewModel;
+        private LayersViewModel _viewModel;
+        public LayersViewModel ViewModel => _viewModel;
 
-        public LayersInfoCtrl()
+
+        public LayersCtrl()
         {
             InitializeComponent();
 
-            _viewModel = new LayersInfoViewModel();
+            _viewModel = new LayersViewModel();
             DataContext = _viewModel;
             LayersListDataGrid.PreviewKeyDown += LayersListDataGridOnKeyDown;
         }
+
 
         private void LayersListDataGridOnKeyDown(object sender, KeyEventArgs keyEventArgs)
         {
@@ -42,6 +44,11 @@ namespace LayersInfoModule.Views
                 var layer = (dataGrid.SelectedItem as LayerInfo);
                 ViewModel.OnDeleteRowClick(sender, new DeleteLayerEventsArgs(layer.Velocity, layer.Time));
             }
+        }
+
+        private void LayersListDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            e.Column.Header = ((System.ComponentModel.MemberDescriptor) e.PropertyDescriptor).DisplayName;
         }
     }
 }

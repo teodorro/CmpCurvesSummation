@@ -58,9 +58,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModels\StepsViewModel.cs" />
-    <Compile Include="Views\StepsCtrl.xaml.cs">
-      <DependentUpon>StepsCtrl.xaml</DependentUpon>
+    <Compile Include="ViewModels\OptionsViewModel.cs" />
+    <Compile Include="Views\OptionsCtrl.xaml.cs">
+      <DependentUpon>OptionsCtrl.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -76,7 +76,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\StepsCtrl.xaml">
+    <Page Include="Views\OptionsCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

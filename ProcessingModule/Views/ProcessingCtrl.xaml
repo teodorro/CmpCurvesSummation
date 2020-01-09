@@ -14,7 +14,7 @@
 
         <Label Content="Текущая последовательность обработок" VerticalAlignment="Bottom" FontWeight="Bold" />
         <DataGrid x:Name="ProcessingListDataGrid" Grid.Row="1" CanUserAddRows="False" CanUserSortColumns="False"
-                  ItemsSource="{Binding ProcessingRowList}" >
+                  ItemsSource="{Binding ProcessingRowList}" AutoGeneratingColumn="ProcessingListDataGrid_AutoGeneratingColumn"  >
             <DataGrid.ItemContainerStyle>
                 <Style TargetType="DataGridRow">
                     <EventSetter Event="MouseDoubleClick" Handler="ProcessingListDataGrid_DoubleClick"></EventSetter>

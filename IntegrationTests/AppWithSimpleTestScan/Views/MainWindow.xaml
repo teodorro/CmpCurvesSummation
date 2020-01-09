@@ -28,8 +28,8 @@
         <views:ProcessingCtrl x:Name="ProcessingControl" Grid.Row="2" Grid.Column="0" Margin="10,5,5,10"></views:ProcessingCtrl>
         <views1:CmpScanCtrl x:Name="CmpScanControl" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="0,0,0,5"></views1:CmpScanCtrl>
         <views6:SummedScanCtrl x:Name="SummedOverCurveScanControl" Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" Margin="0,0,0,5"></views6:SummedScanCtrl>
-        <views3:LayersInfoCtrl x:Name="LayersInfoControl" Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" Margin="10,5,5,10"></views3:LayersInfoCtrl>
+        <views3:LayersCtrl x:Name="LayersInfoControl" Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" Margin="10,5,5,10"></views3:LayersCtrl>
         <views4:ToolbarCtrl x:Name="ToolbarControl" Grid.ColumnSpan="5"></views4:ToolbarCtrl>
-        <views5:StepsCtrl x:Name="StepsControl" Grid.Row="1"></views5:StepsCtrl>
+        <views5:OptionsCtrl x:Name="StepsControl" Grid.Row="1"></views5:OptionsCtrl>
     </Grid>
 </Window>

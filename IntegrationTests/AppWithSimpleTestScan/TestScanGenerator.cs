@@ -82,8 +82,8 @@ namespace AppWithSimpleTestScan
             for (int k = 0; k < _numLayers; k++)
             {
                 var hodograph = CmpMath.Instance.HodographLineLoza(distance, _heights[k], _velocities[k]);
-                reflection += SimpleWavelet(time, hodograph);
-//                reflection += MexicanHatWavelet(time, hodograph) * AttenuationCoef(i, j);
+//                reflection += SimpleWavelet(time, hodograph);
+                reflection += MexicanHatWavelet(time, hodograph) * AttenuationCoef(i, j);
                 //                asd[i] = CmpMath.Instance.HodographLineLoza(distance, _heights[2], _velocities[2]);
             }
 

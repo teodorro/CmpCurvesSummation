@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using CmpCurvesSummation.Core;
 using ProcessingModule.Processing;
 
@@ -92,10 +93,12 @@ namespace ProcessingModule.ViewModels
 
         public event ProcessingListChangedHandler ProcessingListChanged;
 
+        [DisplayName("Обработка")]
         public string Name => Processing.ToString();
 
         private bool _enabled;
 
+        [DisplayName("Вкл.")]
         public bool Enabled
         {
             get => _enabled;

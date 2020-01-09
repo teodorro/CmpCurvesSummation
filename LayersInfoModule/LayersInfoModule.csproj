@@ -49,13 +49,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\LayersInfoViewModel.cs" />
-    <Compile Include="Views\LayersInfoCtrl.xaml.cs">
-      <DependentUpon>LayersInfoCtrl.xaml</DependentUpon>
+    <Compile Include="ViewModels\LayersViewModel.cs" />
+    <Compile Include="Views\LayersCtrl.xaml.cs">
+      <DependentUpon>LayersCtrl.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\LayersInfoCtrl.xaml">
+    <Page Include="Views\LayersCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

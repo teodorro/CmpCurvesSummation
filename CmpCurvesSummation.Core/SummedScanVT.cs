@@ -24,7 +24,6 @@ namespace CmpCurvesSummation.Core
     public class SummedScanVT : ISummedScanVT
     {
         private const int _vLengthDimensionless = 100;
-        private const int hLengthDimensionless = 123;
 
         public List<double[]> Data { get; } = new List<double[]>();
         public double StepVelocity { get; set; } = 0.001;
@@ -149,7 +148,7 @@ namespace CmpCurvesSummation.Core
                     sum = 0;
                     t0 = j * StepTime;
                     h = v * t0;
-                    for (int i = 0; i < cmpScan.Length; i++)
+                    for (int i = 0; i < cmpScan.LengthDimensionless; i++)
                     {
                         d = i * StepDistance;
 

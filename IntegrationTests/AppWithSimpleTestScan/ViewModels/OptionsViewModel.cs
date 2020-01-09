@@ -6,7 +6,7 @@ using CmpScanModule.Annotations;
 
 namespace AppWithSimpleTestScan.ViewModels
 {
-    public class StepsViewModel : INotifyPropertyChanged
+    public class OptionsViewModel : INotifyPropertyChanged
     {
         private double _stepTime = CmpCurvesSummation.Core.CmpScan.DefaultStepTime;
         public double StepTime
@@ -40,7 +40,7 @@ namespace AppWithSimpleTestScan.ViewModels
         public ICmpScan CmpScan { get; private set; }
         
 
-        public StepsViewModel()
+        public OptionsViewModel()
         {
             InitStepsTime();
             InitStepsDistance();

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="AppWithSimpleTestScan.Views.StepsCtrl"
+﻿<UserControl x:Class="AppWithSimpleTestScan.Views.OptionsCtrl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -15,11 +15,15 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="195*"/>
         </Grid.RowDefinitions>
         <Label x:Name="StepDistanceLabel" Content="Шаг измерений, м" Grid.Row="1" Margin="15,5"/>
         <Label x:Name="StepTimeLabel" Content="Шаг по времени, нс" Grid.Row="2"  Margin="15,5"/>
         <ComboBox x:Name="StepTimeComboBox" Grid.Column="1" Grid.Row="2" Margin="5,5,15,5" SelectedItem="{Binding StepTime}"  ItemsSource="{Binding StepsTime}"/>
         <ComboBox x:Name="StepDistanceComboBox" Grid.Column="1" Grid.Row="1" Margin="5,5,15,5" SelectedItem="{Binding StepDistance}" ItemsSource="{Binding StepsDistance}"/>
+        <CheckBox x:Name="AutoSummationCheckBox" Content="Автоматически суммировать" Margin="20,0,15,15" Grid.Row="3" VerticalAlignment="Bottom"/>
+        <CheckBox x:Name="AutoCorrectionPointClickCheckBox" Content="Автокоррекция клика" Margin="20,0,15,15" Grid.Row="4" VerticalAlignment="Bottom"/>
     </Grid>
 </UserControl>

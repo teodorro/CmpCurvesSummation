@@ -37,24 +37,37 @@ namespace ProcessingModule.Views
 
         private void ProcessingListDataGrid_DoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var dataRow = ((System.Windows.Controls.DataGridRow) e.Source).Item as ProcessingDataRow;
+            var dataRow = ((DataGridRow) e.Source).Item as ProcessingDataRow;
             if (dataRow != null && dataRow.Processing is ClearAppearanceAscans)
             {
                 new ClearAppearanceAscansCtrl().Show();
             }
         }
 
-//        private void DataGrid_GotFocus(object sender, RoutedEventArgs e)
-//        {
-//            // Lookup for the source to be DataGridCell
-//            if (e.OriginalSource.GetType() == typeof(DataGridCell))
-//            {
-//                // Starts the Edit on the row;
-//                DataGrid grd = (DataGrid)sender;
-//                grd.BeginEdit(e);
-////                ((ProcessingModule.ViewModels.ProcessingDataRow)((System.Windows.Controls.Primitives.Selector)e.Source).SelectedItem).Enabled
-//            }
-//        }
+        private void ProcessingListDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            e.Column.Header = ((System.ComponentModel.MemberDescriptor)e.PropertyDescriptor).DisplayName;
+            if (((System.ComponentModel.MemberDescriptor) e.PropertyDescriptor).DisplayName ==
+                ((System.ComponentModel.MemberDescriptor) e.PropertyDescriptor).Name)
+            {
+                e.Column.Visibility = Visibility.Hidden;
+                e.Column.Width = 0;
+            }
+            else
+                e.Column.Width = DataGridLength.Auto;
+        }
+
+        //        private void DataGrid_GotFocus(object sender, RoutedEventArgs e)
+        //        {
+        //            // Lookup for the source to be DataGridCell
+        //            if (e.OriginalSource.GetType() == typeof(DataGridCell))
+        //            {
+        //                // Starts the Edit on the row;
+        //                DataGrid grd = (DataGrid)sender;
+        //                grd.BeginEdit(e);
+        ////                ((ProcessingModule.ViewModels.ProcessingDataRow)((System.Windows.Controls.Primitives.Selector)e.Source).SelectedItem).Enabled
+        //            }
+        //        }
 
 
         //        private void ListViewProcessing_PreviewMouseMove(object sender, MouseEventArgs e)

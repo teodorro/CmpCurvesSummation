@@ -25,6 +25,7 @@ namespace CmpCurvesSummation.Core
     }
 
 
+
     public class CmpScan : ICmpScan
     {
         public const double DefaultStepDistance = 0.1;

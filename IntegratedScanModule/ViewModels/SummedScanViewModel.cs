@@ -16,10 +16,10 @@ namespace SummedScanModule.ViewModels
 
         private ICmpScan _cmpScan;
         private ISummedScanVT _summedScan;
+        public PlotModel Plot { get; }
 
         public event HodographDrawClickHander HodographDrawClick;
 
-        public PlotModel Plot { get; private set; }
 
 
         public SummedScanViewModel()

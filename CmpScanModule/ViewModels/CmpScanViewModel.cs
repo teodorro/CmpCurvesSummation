@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Management.Instrumentation;
 using CmpCurvesSummation.Core;
 using OxyPlot;
 using OxyPlot.Annotations;
@@ -18,8 +17,6 @@ namespace CmpScanModule.ViewModels
         public PlotModel Plot { get; private set; }
 
         
-
-
         public CmpScanViewModel()
         {
             Plot = new PlotModel { Title = "Годограф" };
@@ -32,7 +29,6 @@ namespace CmpScanModule.ViewModels
         public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args)
         {
             _cmpScan = args.CmpScan;
-            
             LoadCmpScan();
         }
 
@@ -47,9 +43,7 @@ namespace CmpScanModule.ViewModels
         private void UpdateAxes()
         {
             if (Plot.Axes.Count == 0)
-            {
                 SetAxes();
-            }
 
             if (Plot.Axes.Count == 1)
                 return;
@@ -70,7 +64,6 @@ namespace CmpScanModule.ViewModels
         private void LoadSeries()
         {
             Plot.Series.Clear();
-
             var heatMapSeries = new HeatMapSeries
             {
                 X0 = 0,
@@ -88,7 +81,6 @@ namespace CmpScanModule.ViewModels
         // TODO: different palettes and other
         public void SetAxes()
         {
-            //Plot.Axes.Clear();
             Plot.Axes.Add(new LinearColorAxis
             {
                 Palette = OxyPalettes.Rainbow(colorsCount)
@@ -104,6 +96,36 @@ namespace CmpScanModule.ViewModels
                 res[i, j] = _cmpScan.Data[i][j];
 
             return res;
+        }
+
+        public void OnHodographDrawClick(object obj, HodographDrawVTClickEventArgs e)
+        {
+            var h = e.Velocity * e.Time;
+            var v = e.Velocity;
+            var hodograph = new double[_cmpScan.LengthDimensionless];
+            var hodographCurve = new PolylineAnnotation();
+            for (int i = 0; i < _cmpScan.LengthDimensionless; i++)
+            {
+                var d = i * _cmpScan.StepTime;
+                hodograph[i] = Math.Round(CmpMath.Instance.HodographLineLoza(d, h, v), 4);
+                hodographCurve.Points.Add(new DataPoint(d, hodograph[i]));
+            }
+
+            hodographCurve.Color = OxyColor.FromRgb(0, 0, 0);
+            hodographCurve.InterpolationAlgorithm = new CanonicalSpline(0.5);
+            hodographCurve.LineStyle = LineStyle.Solid;
+            Plot.Annotations.Add(hodographCurve);
+
+            Plot.InvalidatePlot(true);
+        }
+
+        public void OnDeleteClick(object obj, DeleteLayerEventsArgs e)
+        {
+            var h = Math.Round(e.Velocity * e.Time, 4);
+            var t = Math.Round(CmpMath.Instance.HodographLineLoza(0, h, e.Velocity), 2);
+            var annotation = Plot.Annotations.FirstOrDefault(x => (x as PolylineAnnotation)?.Points[0].Y == t);
+            Plot.Annotations.Remove(annotation);
+            Plot.InvalidatePlot(true);
         }
 
 
@@ -141,7 +163,6 @@ namespace CmpScanModule.ViewModels
                 Data = data
             };
 
-
             Plot.Series.Add(heatMapSeries);
         }
 
@@ -159,34 +180,6 @@ namespace CmpScanModule.ViewModels
 //            Plot.InvalidatePlot(true);
 //        }
 
-        public void OnHodographDrawClick(object obj, HodographDrawVTClickEventArgs e)
-        {
-            var h = e.Velocity * e.Time;
-            var v = e.Velocity;
-            var hodograph = new double[_cmpScan.LengthDimensionless];
-            var hodographCurve = new PolylineAnnotation();
-            for (int i = 0; i < _cmpScan.LengthDimensionless; i++)
-            {
-                var d = i * _cmpScan.StepTime;
-                hodograph[i] = Math.Round(CmpMath.Instance.HodographLineLoza(d, h, v), 4);
-                hodographCurve.Points.Add(new DataPoint(d, hodograph[i]));
-            }
-
-            hodographCurve.Color = OxyColor.FromRgb(0, 0, 0);
-            hodographCurve.InterpolationAlgorithm = new CanonicalSpline(0.5);
-            hodographCurve.LineStyle = LineStyle.Solid;
-            Plot.Annotations.Add(hodographCurve);
-
-            Plot.InvalidatePlot(true);
-        }
-
-        public void OnDeleteClick(object obj, DeleteLayerEventsArgs e)
-        {
-            var h = Math.Round(e.Velocity * e.Time, 4);
-            var t = Math.Round(CmpMath.Instance.HodographLineLoza(0, h, e.Velocity), 2);
-            var annotation = Plot.Annotations.FirstOrDefault(x => (x as PolylineAnnotation)?.Points[0].Y == t);
-            Plot.Annotations.Remove(annotation);
-            Plot.InvalidatePlot(true);
-        }
+        
     }
 }

@@ -17,18 +17,18 @@ using AppWithSimpleTestScan.ViewModels;
 namespace AppWithSimpleTestScan.Views
 {
     /// <summary>
-    /// Interaction logic for StepsCtrl.xaml
+    /// Interaction logic for OptionsCtrl.xaml
     /// </summary>
-    public partial class StepsCtrl : UserControl
+    public partial class OptionsCtrl : UserControl
     {
-        private StepsViewModel _viewModel;
-        public StepsViewModel ViewModel => _viewModel;
+        private OptionsViewModel _viewModel;
+        public OptionsViewModel ViewModel => _viewModel;
 
-        public StepsCtrl()
+        public OptionsCtrl()
         {
             InitializeComponent();
 
-            _viewModel = new StepsViewModel();
+            _viewModel = new OptionsViewModel();
             DataContext = _viewModel;
         }
     }
