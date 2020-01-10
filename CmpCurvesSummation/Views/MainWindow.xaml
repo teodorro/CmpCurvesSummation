@@ -7,19 +7,19 @@
         xmlns:views="clr-namespace:CmpScanModule.Views;assembly=CmpScanModule"
         xmlns:views1="clr-namespace:SummedScanModule.Views;assembly=SummedScanModule"
         xmlns:views2="clr-namespace:LayersInfoModule.Views;assembly=LayersInfoModule"
-        xmlns:views3="clr-namespace:ToolbarModule.Views;assembly=ToolbarModule"
         xmlns:processingModule="clr-namespace:ProcessingModule;assembly=ProcessingModule"
         xmlns:views4="clr-namespace:ProcessingModule.Views;assembly=ProcessingModule"
         xmlns:views5="clr-namespace:SummedScanModule.Views;assembly=IntegratedScanModule"
+        xmlns:views7="clr-namespace:CmpCurvesSummation.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1400">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="270"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="270"/>
+            <ColumnDefinition Width="400"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -29,7 +29,7 @@
         <views:CmpScanCtrl x:Name="CmpScanControl" Grid.Row="1" Grid.Column="1"></views:CmpScanCtrl>
         <views5:SummedScanCtrl x:Name="SummedOverCurveScanControl" Grid.Row="1" Grid.Column="3"></views5:SummedScanCtrl>
         <views2:LayersCtrl x:Name="LayersInfoControl" Grid.Row="1" Grid.Column="4"></views2:LayersCtrl>
-        <views3:ToolbarCtrl x:Name="ToolbarControl" Grid.ColumnSpan="5"></views3:ToolbarCtrl>
+        <views7:ToolbarCtrl x:Name="ToolbarControl" Grid.ColumnSpan="5"></views7:ToolbarCtrl>
     </Grid>
 </Window>
 

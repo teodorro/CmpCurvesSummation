@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmpScanModule", "CmpScanMod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SummedScanModule", "IntegratedScanModule\SummedScanModule.csproj", "{3B9E63FC-F30A-42C8-BB30-85E85F6EA40D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolbarModule", "ToolbarModule\ToolbarModule.csproj", "{16A8B445-BCAD-4BD2-9A8A-186B9F7AE4D4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LayersInfoModule", "LayersInfoModule\LayersInfoModule.csproj", "{990E3E7F-7B5C-48E4-99D5-F968B7C08664}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmpCurvesSummation.Core", "CmpCurvesSummation.Core\CmpCurvesSummation.Core.csproj", "{EFA91824-72EE-429D-94BF-78A3E064C467}"
@@ -49,10 +47,6 @@ Global
 		{3B9E63FC-F30A-42C8-BB30-85E85F6EA40D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B9E63FC-F30A-42C8-BB30-85E85F6EA40D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B9E63FC-F30A-42C8-BB30-85E85F6EA40D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{16A8B445-BCAD-4BD2-9A8A-186B9F7AE4D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16A8B445-BCAD-4BD2-9A8A-186B9F7AE4D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16A8B445-BCAD-4BD2-9A8A-186B9F7AE4D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16A8B445-BCAD-4BD2-9A8A-186B9F7AE4D4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{990E3E7F-7B5C-48E4-99D5-F968B7C08664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{990E3E7F-7B5C-48E4-99D5-F968B7C08664}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{990E3E7F-7B5C-48E4-99D5-F968B7C08664}.Release|Any CPU.ActiveCfg = Release|Any CPU

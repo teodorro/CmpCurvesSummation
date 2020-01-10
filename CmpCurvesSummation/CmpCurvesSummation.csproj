@@ -58,6 +58,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\ToolbarViewModel.cs" />
+    <Compile Include="Views\ToolbarCtrl.xaml.cs">
+      <DependentUpon>ToolbarCtrl.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -71,6 +75,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ToolbarCtrl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -123,10 +131,6 @@
     <ProjectReference Include="..\ProcessingModule\ProcessingModule.csproj">
       <Project>{9566d199-0c80-465b-af73-984acd0689bf}</Project>
       <Name>ProcessingModule</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ToolbarModule\ToolbarModule.csproj">
-      <Project>{16a8b445-bcad-4bd2-9a8a-186b9f7ae4d4}</Project>
-      <Name>ToolbarModule</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

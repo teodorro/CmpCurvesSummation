@@ -77,10 +77,6 @@
       <Project>{083AAA69-571D-4170-95B0-1EE49BB9552A}</Project>
       <Name>GprFileService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ToolbarModule\ToolbarModule.csproj">
-      <Project>{16a8b445-bcad-4bd2-9a8a-186b9f7ae4d4}</Project>
-      <Name>ToolbarModule</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

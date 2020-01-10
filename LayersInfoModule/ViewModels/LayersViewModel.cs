@@ -9,6 +9,7 @@ namespace LayersInfoModule.ViewModels
 {
     public delegate void DeleteLayerHander(object obj, DeleteLayerEventsArgs e);
 
+
     public class LayersViewModel
     {
         public event DeleteLayerHander DeleteClick;
@@ -19,6 +20,11 @@ namespace LayersInfoModule.ViewModels
         public void OnHodographDrawClick(object sender, HodographDrawVTClickEventArgs e)
         {
             Layers.Add(new LayerInfo(e.Time, e.Velocity));
+            SortLayers();
+        }
+
+        private void SortLayers()
+        {
             var sorted = Layers.OrderBy(x => x.Time).ToList();
             Layers.Clear();
             foreach (var layer in sorted)
@@ -31,6 +37,10 @@ namespace LayersInfoModule.ViewModels
         }
     }
 
+
+    /// <summary>
+    /// Compare different layers to make it organized according to the depth
+    /// </summary>
     public class LayerComparer : IComparer<LayerInfo>
     {
         public int Compare(LayerInfo x, LayerInfo y)
@@ -40,6 +50,9 @@ namespace LayersInfoModule.ViewModels
     }
 
 
+    /// <summary>
+    /// info about layer which is used as a row in the table of layers
+    /// </summary>
     public class LayerInfo
     {
         public LayerInfo(double time, double velocity)
@@ -48,13 +61,13 @@ namespace LayersInfoModule.ViewModels
             Velocity = velocity;
         }
 
-        [DisplayName("Время")]
+        [DisplayName("Время, нс")]
         public double Time { get; set; }
-        [DisplayName("Глубина")]
+        [DisplayName("Глубина, м")]
         public double Height { get; }
-        [DisplayName("Толщина")]
+        [DisplayName("Толщина, м")]
         public double Thickness { get; }
-        [DisplayName("Скорость")]
+        [DisplayName("Скорость, м/нс")]
         public double Velocity { get; }
         [DisplayName("Диэл. пр-ть")]
         public double Permittivity => Math.Round(CmpMath.Instance.Permittivity(Velocity), 2);

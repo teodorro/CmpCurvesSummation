@@ -9,11 +9,13 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Content="Слои" VerticalAlignment="Bottom" FontWeight="Bold" />
-        <DataGrid x:Name="LayersListDataGrid" Grid.Row="1" CanUserAddRows="False" CanUserSortColumns="False"
+        <CheckBox x:Name="AutoCorrectionPointClickCheckBox" Content="Автокоррекция клика" Margin="5,0,15,0" Grid.Row="0" VerticalAlignment="Bottom"/>
+        <Label Content="Слои" VerticalAlignment="Bottom" FontWeight="Bold" Grid.Row="1" />
+        <DataGrid x:Name="LayersListDataGrid" Grid.Row="2" CanUserAddRows="False" CanUserSortColumns="False" 
                   ItemsSource="{Binding Layers}" AutoGeneratingColumn="LayersListDataGrid_AutoGeneratingColumn" >
             <!-- <DataGrid.ItemContainerStyle> -->
             <!--     <Style TargetType="DataGridRow"> -->

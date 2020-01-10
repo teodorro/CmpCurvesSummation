@@ -1,9 +1,8 @@
-﻿using System.Windows.Input;
-using CmpCurvesSummation.Core;
+﻿using CmpCurvesSummation.Core;
 using GprFileService;
 using Microsoft.Win32;
 
-namespace ToolbarModule.ViewModels
+namespace CmpCurvesSummation.ViewModels
 {
 
     public delegate void FileOpenHandler(object obj, FileLoadedEventArgs e);

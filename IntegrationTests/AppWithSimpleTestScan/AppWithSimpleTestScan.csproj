@@ -59,8 +59,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModels\OptionsViewModel.cs" />
+    <Compile Include="ViewModels\ToolbarViewModel.cs" />
     <Compile Include="Views\OptionsCtrl.xaml.cs">
       <DependentUpon>OptionsCtrl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ToolbarCtrl.xaml.cs">
+      <DependentUpon>ToolbarCtrl.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -79,6 +83,10 @@
     <Page Include="Views\OptionsCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ToolbarCtrl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -132,10 +140,6 @@
     <ProjectReference Include="..\..\ProcessingModule\ProcessingModule.csproj">
       <Project>{9566D199-0C80-465B-AF73-984ACD0689BF}</Project>
       <Name>ProcessingModule</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ToolbarModule\ToolbarModule.csproj">
-      <Project>{16A8B445-BCAD-4BD2-9A8A-186B9F7AE4D4}</Project>
-      <Name>ToolbarModule</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

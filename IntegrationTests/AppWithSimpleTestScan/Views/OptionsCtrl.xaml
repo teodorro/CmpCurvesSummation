@@ -23,7 +23,6 @@
         <Label x:Name="StepTimeLabel" Content="Шаг по времени, нс" Grid.Row="2"  Margin="15,5"/>
         <ComboBox x:Name="StepTimeComboBox" Grid.Column="1" Grid.Row="2" Margin="5,5,15,5" SelectedItem="{Binding StepTime}"  ItemsSource="{Binding StepsTime}"/>
         <ComboBox x:Name="StepDistanceComboBox" Grid.Column="1" Grid.Row="1" Margin="5,5,15,5" SelectedItem="{Binding StepDistance}" ItemsSource="{Binding StepsDistance}"/>
-        <CheckBox x:Name="AutoSummationCheckBox" Content="Автоматически суммировать" Margin="20,0,15,15" Grid.Row="3" VerticalAlignment="Bottom"/>
-        <CheckBox x:Name="AutoCorrectionPointClickCheckBox" Content="Автокоррекция клика" Margin="20,0,15,15" Grid.Row="4" VerticalAlignment="Bottom"/>
+        <CheckBox x:Name="AutoSummationCheckBox" Content="Автоматически суммировать" Margin="20,0,15,15" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
     </Grid>
 </UserControl>
