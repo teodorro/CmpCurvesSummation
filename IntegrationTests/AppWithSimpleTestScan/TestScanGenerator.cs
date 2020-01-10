@@ -14,7 +14,8 @@ namespace AppWithSimpleTestScan
         private int _ascanLength = 500;
         private double _stepDistance = 0.1;
         private double _stepTime = 1;
-//        private double _offset = 50;
+        private double _timeBegin = -100;
+        private double _timeEnd = 400;
 
         /// <summary>
         /// Using radiovelocity, not the pure
@@ -75,44 +76,34 @@ namespace AppWithSimpleTestScan
             var time = j * _stepTime;
             var distance = i * _stepDistance;
             var reflection = 0.0;
-//            var hodograph1 = CmpMath.Instance.HodographLineLoza(distance, _heights[0], _velocities[0]);
-//            var reflection1 = MexicanHatWavelet(time, hodograph1) * AttenuationCoef(i, j);
-//            var reflection1 = SimpleWavelet(time, hodograph1) ;
 
             for (int k = 0; k < _numLayers; k++)
             {
                 var hodograph = CmpMath.Instance.HodographLineLoza(distance, _heights[k], _velocities[k]);
 //                reflection += SimpleWavelet(time, hodograph);
                 reflection += MexicanHatWavelet(time, hodograph) * AttenuationCoef(i, j);
-                //                asd[i] = CmpMath.Instance.HodographLineLoza(distance, _heights[2], _velocities[2]);
             }
 
-            //            var hodograph2 = HodographLine(distance, 1);
-            //            var reflection2 = MexicanHatWavelet(time, hodograph2) * AttenuationCoef(i, j);
-
-            //            return reflection1;// + reflection2;
             return reflection;
         }
-
-//        private double[] asd = new double[100];
-
+        
         private double SimpleWavelet(double time, double offset)
         {
             return Math.Abs(time - offset) <= _stepTime ? 5 : 0;
         }
 
-        private static double MexicanHatWavelet(double time, double offset)
+        private static double MexicanHatWavelet(double time, double hodographOffset)
         {
             var ampCoef = 1000;
             var sigma = 9;
-            var t = time - offset;
+            var t = time - hodographOffset;
             var part1 = 2 / (Math.Sqrt(3 * sigma) * Math.PI);
             var part2 = 1 - Math.Pow(t / sigma, 2);
             var part3 = Math.Exp(-t * t / (2 * sigma * sigma));
             return ampCoef * part1 * part2 * part3;
         }
 
-//        private double HodographLine(double d, int indexLayer)
+//        private double HodographLineClassic(double d, int indexLayer)
 //        {
 //            if (indexLayer >= _numLayers)
 //                throw new IndexOutOfRangeException("слоев меньше");

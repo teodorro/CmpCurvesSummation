@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace CmpCurvesSummation.Core
 {
+    /// <summary>
+    /// Data after summation process with (velocity, time) scale
+    /// </summary>
     public interface ISummedScanVT
     {
         List<double[]> Data { get; }
@@ -16,7 +19,6 @@ namespace CmpCurvesSummation.Core
         int AscanLengthDimensionless { get; }
         double AscanLength { get; }
         double[,] GetDataArray();
-
     }
 
 
@@ -46,88 +48,7 @@ namespace CmpCurvesSummation.Core
 
             Sum(cmpScan);
         }
-
-        //        private void Sum(ICmpScan cmpScan)
-        //        {
-        //            double t0;
-        //            double d0;
-        //            double v;
-        //            double d;
-        //            double h;
-        //            double t;
-        //            double sum;
-        //            var vStep = (MaxVelocity - MinVelocity) / _vLengthDimensionless;
-        //
-        //            for (int p = 0; p < _vLengthDimensionless; p++)
-        //            {
-        //                v = vStep * p + MinVelocity;
-        //                Data.Add(new double[AscanLengthDimensionless]);
-        //                for (int j = 0; j < AscanLengthDimensionless; j++)
-        //                {
-        //                    sum = 0;
-        //
-        //                    t0 = j * StepTime;
-        //                    for (int i = 0; i < cmpScan.Length; i++)
-        //                    {
-        //                        d0 = i * StepDistance;
-        //
-        //                        h = Math.Sqrt(v * v * Math.Pow(t0 + d0 / CmpMath.SpeedOfLight, 2) - d0 * d0 / 4);
-        //                        if (double.IsNaN(h))
-        //                            continue;
-        //                        for (int q = 0; q < cmpScan.Length; q++)
-        //                        {
-        //                            d = q * StepDistance;
-        //                            t = 1 / v * Math.Sqrt(h * h + d * d / 4) - d / CmpMath.SpeedOfLight;
-        //                            var tIndex = Convert.ToInt32(Math.Round(t / StepTime));
-        //                            if (tIndex >= 0 && tIndex < cmpScan.AscanLengthDimensionless)
-        //                            {
-        //                                sum += cmpScan.Data[i][tIndex];
-        //                            }
-        //                        }
-        //                    }
-        //
-        //                    Data[p][j] = sum;
-        //                }
-        //            }
-        //        }
-
-//        private void Sum(ICmpScan cmpScan)
-//        {
-//            double v;
-//            double d;
-//            double h;
-//            double t;
-//            double sum;
-//            var vStep = (MaxVelocity - MinVelocity) / _vLengthDimensionless;
-//
-//            for (int p = 0; p < _vLengthDimensionless; p++)
-//            {
-//                v = vStep * p + MinVelocity;
-//                Data.Add(new double[AscanLengthDimensionless]);
-//                for (int j = 0; j < AscanLengthDimensionless; j++)
-//                {
-//                    sum = 0;
-//                    t = j * StepTime;
-//                    h = v * t;
-//                    for (int i = 0; i < cmpScan.Length; i++)
-//                    {
-//                        d = i * StepDistance;
-//
-//                        if (double.IsNaN(h))
-//                            continue;
-//                        t = 1 / v * Math.Sqrt(h * h + d * d / 4) - d / CmpMath.SpeedOfLight;
-//                        var tIndex = Convert.ToInt32(Math.Round(t / StepTime));
-//                        if (tIndex >= 0 && tIndex < cmpScan.AscanLengthDimensionless)
-//                        {
-//                            sum += cmpScan.Data[i][tIndex];
-//                        }
-//                        
-//                    }
-//
-//                    Data[p][j] = sum ;
-//                }
-//            }
-//        }
+        
 
         private void Sum(ICmpScan cmpScan)
         {
@@ -151,18 +72,13 @@ namespace CmpCurvesSummation.Core
                     for (int i = 0; i < cmpScan.LengthDimensionless; i++)
                     {
                         d = i * StepDistance;
-
                         if (double.IsNaN(h))
                             continue;
-                        t = 1 / v * Math.Sqrt(h * h + d * d / 4) - d / CmpMath.SpeedOfLight;
+                        t = CmpMath.Instance.HodographLineLoza(d, h, v);
                         var tIndex = Convert.ToInt32(Math.Round(t / StepTime));
                         if (tIndex >= 0 && tIndex < cmpScan.AscanLengthDimensionless)
-                        {
                             sum += cmpScan.Data[i][tIndex];
-                        }
-
                     }
-
                     Data[p][j] = sum;
                 }
             }

@@ -42,7 +42,7 @@ namespace LayersInfoModule.Views
             {
                 var dataGrid = (DataGrid) sender;
                 var layer = (dataGrid.SelectedItem as LayerInfo);
-                ViewModel.OnDeleteRowClick(sender, new DeleteLayerEventsArgs(layer.Velocity, layer.Time));
+                ViewModel.OnDeleteRowClick(sender, new DeleteLayerEventsArgs(layer.AvgVelocity, layer.Time));
             }
         }
 

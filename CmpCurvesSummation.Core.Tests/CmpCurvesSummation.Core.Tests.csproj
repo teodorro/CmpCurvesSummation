@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CmpMathTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SummedScanTests.cs" />
   </ItemGroup>

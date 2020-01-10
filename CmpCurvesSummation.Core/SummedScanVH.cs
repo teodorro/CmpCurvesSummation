@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace CmpCurvesSummation.Core
 {
+    /// <summary>
+    /// Data after summation process with (depth, time) scale
+    /// </summary>
     public interface ISummedScanVH
     {
         List<double[]> Data { get; }
@@ -15,7 +18,6 @@ namespace CmpCurvesSummation.Core
         double MaxHeight { get; }
         double AscanLength { get; }
         double[,] GetDataArray();
-
     }
 
 

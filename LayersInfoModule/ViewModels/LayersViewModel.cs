@@ -19,8 +19,10 @@ namespace LayersInfoModule.ViewModels
 
         public void OnHodographDrawClick(object sender, HodographDrawVTClickEventArgs e)
         {
-            Layers.Add(new LayerInfo(e.Time, e.Velocity));
+            var newLayer = new LayerInfo(e.Time, e.Velocity);
+            Layers.Add(newLayer);
             SortLayers();
+
         }
 
         private void SortLayers()
@@ -55,21 +57,23 @@ namespace LayersInfoModule.ViewModels
     /// </summary>
     public class LayerInfo
     {
-        public LayerInfo(double time, double velocity)
+        public LayerInfo(double time, double avgVelocity)
         {
             Time = time;
-            Velocity = velocity;
+            AvgVelocity = avgVelocity;
         }
 
         [DisplayName("Время, нс")]
         public double Time { get; set; }
         [DisplayName("Глубина, м")]
-        public double Height { get; }
+        public double Height => Math.Round(Time * AvgVelocity, 2);
         [DisplayName("Толщина, м")]
         public double Thickness { get; }
-        [DisplayName("Скорость, м/нс")]
-        public double Velocity { get; }
-        [DisplayName("Диэл. пр-ть")]
-        public double Permittivity => Math.Round(CmpMath.Instance.Permittivity(Velocity), 2);
+        [DisplayName("Средняя скорость, м/нс")]
+        public double AvgVelocity { get; }
+        [DisplayName("Скорость в слое, м/нс")]
+        public double LayerVelocity { get; }
+        [DisplayName("Диэл. пр-ть слоя")]
+        public double Permittivity => Math.Round(CmpMath.Instance.Permittivity(AvgVelocity), 2);
     }
 }

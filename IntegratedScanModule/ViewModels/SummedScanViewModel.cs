@@ -140,7 +140,8 @@ namespace SummedScanModule.ViewModels
             //Plot.Axes.Clear();
             Plot.Axes.Add(new LinearColorAxis
             {
-                Palette = OxyPalettes.Rainbow(colorsCount)
+                                Palette = OxyPalettes.Jet(colorsCount)
+//                Palette = OxyPalettes.Gray(colorsCount)
             });
         }
 

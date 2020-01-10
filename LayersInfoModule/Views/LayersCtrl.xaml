@@ -17,11 +17,6 @@
         <Label Content="Слои" VerticalAlignment="Bottom" FontWeight="Bold" Grid.Row="1" />
         <DataGrid x:Name="LayersListDataGrid" Grid.Row="2" CanUserAddRows="False" CanUserSortColumns="False" 
                   ItemsSource="{Binding Layers}" AutoGeneratingColumn="LayersListDataGrid_AutoGeneratingColumn" >
-            <!-- <DataGrid.ItemContainerStyle> -->
-            <!--     <Style TargetType="DataGridRow"> -->
-            <!--         <EventSetter Event="MouseDoubleClick" Handler="ProcessingListDataGrid_DoubleClick"></EventSetter> -->
-            <!--     </Style> -->
-            <!-- </DataGrid.ItemContainerStyle> -->
         </DataGrid>
     </Grid>
 </UserControl>
