@@ -31,5 +31,10 @@ namespace AppWithSimpleTestScan.Views
             _viewModel = new OptionsViewModel();
             DataContext = _viewModel;
         }
+
+        private void ButtonSummation_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.LaunchSummation();
+        }
     }
 }

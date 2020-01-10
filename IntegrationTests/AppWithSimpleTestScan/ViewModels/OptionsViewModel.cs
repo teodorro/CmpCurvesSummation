@@ -6,8 +6,27 @@ using CmpScanModule.Annotations;
 
 namespace AppWithSimpleTestScan.ViewModels
 {
+    public delegate void AutoSummationCheckHander(object obj, AutoSummationCheckEventsArgs e);
+    public delegate void SummationHander(object obj, SummationClickEventsArgs e);
+
+
     public class OptionsViewModel : INotifyPropertyChanged
     {
+        public event AutoSummationCheckHander AutoSumCheckEvent;
+        public event SummationHander SummationClick;
+
+        private bool _manualSummation;
+        public bool ManualSummationPossible
+        {
+            get => _manualSummation;
+            set
+            {
+                _manualSummation = value;
+                OnPropertyChanged(nameof(ManualSummationPossible));
+            }
+        }
+        private bool _cmpScanLoaded;
+
         private double _stepTime = CmpCurvesSummation.Core.CmpScan.DefaultStepTime;
         public double StepTime
         {
@@ -37,6 +56,19 @@ namespace AppWithSimpleTestScan.ViewModels
         }
         public ObservableCollection<double> StepsDistance { get; set; } = new ObservableCollection<double>();
 
+        private bool _autoSummation;
+        public bool AutoSummation
+        {
+            get => _autoSummation;
+            set
+            {
+                _autoSummation = value;
+                ManualSummationPossible = !_autoSummation && _cmpScanLoaded;
+                OnPropertyChanged(nameof(AutoSummation));
+                AutoSumCheckEvent?.Invoke(this, new AutoSummationCheckEventsArgs(value));
+            }
+        }
+
         public ICmpScan CmpScan { get; private set; }
         
 
@@ -45,6 +77,13 @@ namespace AppWithSimpleTestScan.ViewModels
             InitStepsTime();
             InitStepsDistance();
         }
+
+
+        public void LaunchSummation()
+        {
+            SummationClick.Invoke(this, new SummationClickEventsArgs());
+        }
+
 
         private void InitStepsDistance()
         {
@@ -72,6 +111,12 @@ namespace AppWithSimpleTestScan.ViewModels
 
             CmpScan.StepTime = _stepTime;
             CmpScan.StepDistance = _stepDistance;
+        }
+
+        public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args)
+        {
+            _cmpScanLoaded = true;
+            ManualSummationPossible = !_autoSummation && _cmpScanLoaded;
         }
 
 

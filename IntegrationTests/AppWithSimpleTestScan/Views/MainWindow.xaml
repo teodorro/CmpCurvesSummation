@@ -29,6 +29,6 @@
         <views6:SummedScanCtrl x:Name="SummedOverCurveScanControl" Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" Margin="0,0,0,5"></views6:SummedScanCtrl>
         <views3:LayersCtrl x:Name="LayersInfoControl" Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" Margin="10,5,5,10"></views3:LayersCtrl>
         <views5:ToolbarCtrl x:Name="ToolbarControl" Grid.ColumnSpan="5"></views5:ToolbarCtrl>
-        <views5:OptionsCtrl x:Name="StepsControl" Grid.Row="1"></views5:OptionsCtrl>
+        <views5:OptionsCtrl x:Name="OptionsControl" Grid.Row="1"></views5:OptionsCtrl>
     </Grid>
 </Window>

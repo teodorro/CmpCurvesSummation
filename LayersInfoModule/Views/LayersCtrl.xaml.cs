@@ -50,5 +50,6 @@ namespace LayersInfoModule.Views
         {
             e.Column.Header = ((System.ComponentModel.MemberDescriptor) e.PropertyDescriptor).DisplayName;
         }
+
     }
 }

@@ -17,6 +17,7 @@ namespace SummedScanModule.ViewModels
         private ICmpScan _cmpScan;
         private ISummedScanVT _summedScan;
         public PlotModel Plot { get; }
+        internal bool AutoSummation { get; set; }
 
         public event HodographDrawClickHander HodographDrawClick;
 
@@ -38,11 +39,17 @@ namespace SummedScanModule.ViewModels
         {
             _cmpScan = args.CmpScan;
 
+            if (AutoSummation)
+                Sum();
+        }
+
+        private void Sum()
+        {
             _summedScan = new SummedScanVT(_cmpScan);
             LoadSummedScan();
         }
 
-        
+
         private void LoadSummedScan()
         {
             LoadSeries();
@@ -151,6 +158,16 @@ namespace SummedScanModule.ViewModels
                 x => (x as PointAnnotation)?.Y == e.Time && (x as PointAnnotation)?.X == e.Velocity);
             Plot.Annotations.Remove(annotation);
             Plot.InvalidatePlot(true);
+        }
+
+        public void OnAutoSummationChange(object sender, AutoSummationCheckEventsArgs e)
+        {
+            AutoSummation = e.Auto;
+        }
+
+        public void OnSummationClick(object obj, EventArgs e)
+        {
+            Sum();
         }
 
 

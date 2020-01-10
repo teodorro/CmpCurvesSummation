@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using CmpCurvesSummation.Core;
+using LayersInfoModule.Annotations;
 
 namespace LayersInfoModule.ViewModels
 {
     public delegate void DeleteLayerHander(object obj, DeleteLayerEventsArgs e);
 
 
-    public class LayersViewModel
+    public class LayersViewModel : INotifyPropertyChanged
     {
         public event DeleteLayerHander DeleteClick;
 
         public ObservableCollection<LayerInfo> Layers { get; } = new ObservableCollection<LayerInfo>();
+        
 
 
         public void OnHodographDrawClick(object sender, HodographDrawVTClickEventArgs e)
@@ -22,7 +25,6 @@ namespace LayersInfoModule.ViewModels
             var newLayer = new LayerInfo(e.Time, e.Velocity);
             Layers.Add(newLayer);
             SortLayers();
-
         }
 
         private void SortLayers()
@@ -36,6 +38,14 @@ namespace LayersInfoModule.ViewModels
         public void OnDeleteRowClick(object sender, DeleteLayerEventsArgs e)
         {
             DeleteClick?.Invoke(sender, e);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 

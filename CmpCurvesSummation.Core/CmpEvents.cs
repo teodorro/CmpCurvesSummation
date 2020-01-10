@@ -2,8 +2,6 @@
 
 namespace CmpCurvesSummation.Core
 {
-    
-
     public class FileLoadedEventArgs : EventArgs
     {
         public ICmpScan CmpScan { get; }
@@ -12,6 +10,7 @@ namespace CmpCurvesSummation.Core
             CmpScan = cmpScan;
         }
     }
+
 
     public class RawCmpProcessedEventArgs : EventArgs
     {
@@ -22,6 +21,7 @@ namespace CmpCurvesSummation.Core
         }
     }
     
+
     public class SummedOverHodographEventArgs : EventArgs
     {
         public ISummedScanVH SummedScan { get; }
@@ -30,6 +30,7 @@ namespace CmpCurvesSummation.Core
             SummedScan = summedScan;
         }
     }
+
 
     public class HodographDrawVHClickEventArgs : EventArgs
     {
@@ -43,6 +44,7 @@ namespace CmpCurvesSummation.Core
         public double Height { get; }
     }
 
+
     public class HodographDrawVTClickEventArgs : EventArgs
     {
         public HodographDrawVTClickEventArgs(double velocity, double time)
@@ -54,6 +56,7 @@ namespace CmpCurvesSummation.Core
         public double Velocity { get; set; }
         public double Time { get; set; }
     }
+
 
     public class DeleteLayerEventsArgs : EventArgs
     {
@@ -68,5 +71,19 @@ namespace CmpCurvesSummation.Core
     }
 
 
+    public class AutoSummationCheckEventsArgs : EventArgs
+    {
+        public AutoSummationCheckEventsArgs(bool auto)
+        {
+            Auto = auto;
+        }
+
+        public bool Auto { get; set; }
+    }
+
+
+    public class SummationClickEventsArgs : EventArgs
+    {
+    }
 
 }
