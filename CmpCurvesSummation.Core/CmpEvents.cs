@@ -2,6 +2,16 @@
 
 namespace CmpCurvesSummation.Core
 {
+
+    public enum PaletteType
+    {
+        Jet,
+        Gray,
+        BW
+    }
+
+
+
     public class FileLoadedEventArgs : EventArgs
     {
         public ICmpScan CmpScan { get; }
@@ -58,9 +68,9 @@ namespace CmpCurvesSummation.Core
     }
 
 
-    public class DeleteLayerEventsArgs : EventArgs
+    public class DeleteLayerEventArgs : EventArgs
     {
-        public DeleteLayerEventsArgs(double velocity, double time)
+        public DeleteLayerEventArgs(double velocity, double time)
         {
             Velocity = velocity;
             Time = time;
@@ -71,9 +81,9 @@ namespace CmpCurvesSummation.Core
     }
 
 
-    public class AutoSummationCheckEventsArgs : EventArgs
+    public class AutoSummationCheckEventArgs : EventArgs
     {
-        public AutoSummationCheckEventsArgs(bool auto)
+        public AutoSummationCheckEventArgs(bool auto)
         {
             Auto = auto;
         }
@@ -82,8 +92,18 @@ namespace CmpCurvesSummation.Core
     }
 
 
-    public class SummationClickEventsArgs : EventArgs
+    public class SummationClickEventArgs : EventArgs
     {
+    }
+
+    public class PaletteChangedEventArgs : EventArgs
+    {
+        public PaletteChangedEventArgs(PaletteType palette)
+        {
+            Palette = palette;
+        }
+
+        public PaletteType Palette { get; set; }
     }
 
 }

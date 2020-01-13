@@ -9,7 +9,7 @@ using LayersInfoModule.Annotations;
 
 namespace LayersInfoModule.ViewModels
 {
-    public delegate void DeleteLayerHander(object obj, DeleteLayerEventsArgs e);
+    public delegate void DeleteLayerHander(object obj, DeleteLayerEventArgs e);
 
 
     public class LayersViewModel : INotifyPropertyChanged
@@ -35,7 +35,7 @@ namespace LayersInfoModule.ViewModels
                 Layers.Add(layer);
         }
 
-        public void OnDeleteRowClick(object sender, DeleteLayerEventsArgs e)
+        public void OnDeleteRowClick(object sender, DeleteLayerEventArgs e)
         {
             DeleteClick?.Invoke(sender, e);
         }

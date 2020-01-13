@@ -16,6 +16,7 @@ namespace CmpCurvesSummation.Core
 
         public double Velocity(double permittivity) => SpeedOfLight / (2 * Math.Sqrt(permittivity));
         public double Permittivity(double velocity) => Math.Pow(SpeedOfLight / 2 / velocity, 2);
+        public double WaterVelocity => Velocity(WaterPermittivity);
 
 
         public double HodographLineClassic(double distance, double height, double velocity)

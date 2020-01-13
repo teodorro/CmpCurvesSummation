@@ -14,51 +14,55 @@ namespace CmpScanModule.ViewModels
         private const int colorsCount = 1024;
 
         private ICmpScan _cmpScan;
+        private PaletteType _palette = PaletteType.Jet;
         public PlotModel Plot { get; private set; }
 
         
         public CmpScanViewModel()
         {
             Plot = new PlotModel { Title = "Годограф" };
-            
-            TestScan();
-            SetAxes();
         }
 
 
         public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args)
         {
             _cmpScan = args.CmpScan;
-            LoadCmpScan();
-        }
-
-        private void LoadCmpScan()
-        {
             LoadSeries();
             UpdateAxes();
-            Plot.InvalidatePlot(true);
         }
-
-        // TODO: not clear wtf. If no cmpScan in the beginning - no axes. If no axes - update doesn't work - bad plot
+        
         private void UpdateAxes()
         {
-            if (Plot.Axes.Count == 0)
-                SetAxes();
+            Plot.InvalidatePlot(true); // to make axes be created
+
+            if (!Plot.Axes.Any(x => x is LinearColorAxis))
+                AddPalette(_palette);
 
             if (Plot.Axes.Count == 1)
                 return;
-            
+
+            TuneHorizontalAxis();
+            TuneVerticalAxis();
+
+            Plot.InvalidatePlot(true); // to update axes in UI
+        }
+
+        private void TuneVerticalAxis()
+        {
+            var left = Plot.Axes.First(x => x.Position == AxisPosition.Left);
+            left.StartPosition = 1;
+            left.EndPosition = 0;
+            left.AbsoluteMinimum = 0;
+            left.AbsoluteMaximum = _cmpScan.AscanLength;
+        }
+
+        private void TuneHorizontalAxis()
+        {
             if (Plot.Axes.All(x => x.Position != AxisPosition.Top))
                 Plot.Axes.First(x => x.Position == AxisPosition.Bottom).Position = AxisPosition.Top;
             var top = Plot.Axes.First(x => x.Position == AxisPosition.Top);
             top.AbsoluteMinimum = 0;
             top.AbsoluteMaximum = _cmpScan.Length;
-
-            var left = Plot.Axes.First(x => x.Position == AxisPosition.Left);
-            left.AbsoluteMinimum = 0;
-            left.AbsoluteMaximum = _cmpScan.AscanLength;
-            left.StartPosition = 1;
-            left.EndPosition = 0;
         }
 
         private void LoadSeries()
@@ -78,14 +82,19 @@ namespace CmpScanModule.ViewModels
             Plot.Series.Add(heatMapSeries);
         }
 
-        // TODO: different palettes and other
-        public void SetAxes()
+        public void AddPalette(PaletteType palette)
         {
-            Plot.Axes.Add(new LinearColorAxis
+            var oxyPalette = OxyPalettes.Jet(colorsCount);
+            switch (palette)
             {
-                                Palette = OxyPalettes.Jet(colorsCount)
-//                Palette = OxyPalettes.Gray(colorsCount)
-            });
+                case PaletteType.Gray:
+                    oxyPalette = OxyPalettes.Gray(colorsCount);
+                    break;
+                case PaletteType.BW:
+                    oxyPalette = OxyPalettes.Gray(2);
+                    break;
+            }
+            Plot.Axes.Add(new LinearColorAxis{ Palette = oxyPalette });
         }
 
         private double[,] GetDataArray()
@@ -120,7 +129,7 @@ namespace CmpScanModule.ViewModels
             Plot.InvalidatePlot(true);
         }
 
-        public void OnDeleteClick(object obj, DeleteLayerEventsArgs e)
+        public void OnDeleteClick(object obj, DeleteLayerEventArgs e)
         {
             var h = Math.Round(e.Velocity * e.Time, 4);
             var t = Math.Round(CmpMath.Instance.HodographLineLoza(0, h, e.Velocity), 2);
@@ -129,6 +138,17 @@ namespace CmpScanModule.ViewModels
             Plot.InvalidatePlot(true);
         }
 
+        public void OnPaletteChanged(object obj, PaletteChangedEventArgs e)
+        {
+            _palette = e.Palette;
+            if (Plot == null)
+                return;
+            if (Plot.Axes.Any(x => x is LinearColorAxis))
+                Plot.Axes.Remove(Plot.Axes.First(x => x is LinearColorAxis));
+            if (!Plot.Axes.Any(x => x is LinearColorAxis))
+                AddPalette(_palette);
+            Plot.InvalidatePlot(true);
+        }
 
 
 

@@ -6,14 +6,21 @@ using CmpScanModule.Annotations;
 
 namespace AppWithSimpleTestScan.ViewModels
 {
-    public delegate void AutoSummationCheckHander(object obj, AutoSummationCheckEventsArgs e);
-    public delegate void SummationHander(object obj, SummationClickEventsArgs e);
+    public delegate void AutoSummationCheckHander(object obj, AutoSummationCheckEventArgs e);
+    public delegate void SummationHander(object obj, SummationClickEventArgs e);
+    public delegate void PaletteChangedHander(object obj, PaletteChangedEventArgs e);
+
 
 
     public class OptionsViewModel : INotifyPropertyChanged
     {
+        public const string Jet = "Jet";
+        public const string Gray = "Gray";
+        public const string BW = "B&W";
+
         public event AutoSummationCheckHander AutoSumCheckEvent;
         public event SummationHander SummationClick;
+        public event PaletteChangedHander PaletteChanged;
 
         private bool _manualSummation;
         public bool ManualSummationPossible
@@ -65,7 +72,34 @@ namespace AppWithSimpleTestScan.ViewModels
                 _autoSummation = value;
                 ManualSummationPossible = !_autoSummation && _cmpScanLoaded;
                 OnPropertyChanged(nameof(AutoSummation));
-                AutoSumCheckEvent?.Invoke(this, new AutoSummationCheckEventsArgs(value));
+                AutoSumCheckEvent?.Invoke(this, new AutoSummationCheckEventArgs(value));
+            }
+        }
+
+        public ObservableCollection<string> Palettes { get; set; } = new ObservableCollection<string>();
+
+        private string _palette = Jet;
+        public string Palette
+        {
+            get => _palette;
+            set
+            {
+                _palette = value;
+                OnPropertyChanged(nameof(Palette));
+                PaletteType palette;
+                switch (_palette)
+                {
+                    case Gray:
+                        palette = PaletteType.Gray;
+                        break;
+                    case BW:
+                        palette = PaletteType.BW;
+                        break;
+                    default:
+                        palette = PaletteType.Jet;
+                        break;
+                }
+                PaletteChanged?.Invoke(this, new PaletteChangedEventArgs(palette));
             }
         }
 
@@ -76,12 +110,13 @@ namespace AppWithSimpleTestScan.ViewModels
         {
             InitStepsTime();
             InitStepsDistance();
+            InitPalettes();
         }
 
 
         public void LaunchSummation()
         {
-            SummationClick.Invoke(this, new SummationClickEventsArgs());
+            SummationClick?.Invoke(this, new SummationClickEventArgs());
         }
 
 
@@ -102,6 +137,13 @@ namespace AppWithSimpleTestScan.ViewModels
             StepsTime.Add(1);
             StepsTime.Add(2);
             StepsTime.Add(4);
+        }
+
+        private void InitPalettes()
+        {
+            Palettes.Add(Jet);
+            Palettes.Add(Gray);
+            Palettes.Add(BW);
         }
 
 

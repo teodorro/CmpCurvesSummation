@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using AppWithSimpleTestScan.ViewModels;
-using SummedScanModule.Views;
 
 namespace AppWithSimpleTestScan.Views
 {
@@ -19,7 +18,7 @@ namespace AppWithSimpleTestScan.Views
             DataContext = _viewModel;
 
             SetUpEvents();
-            SetUpAutoSummation(false);
+            SetUpAutoSummation(true);
         }
 
         private void SetUpAutoSummation(bool auto)
@@ -42,6 +41,8 @@ namespace AppWithSimpleTestScan.Views
             LayersInfoControl.ViewModel.DeleteClick += SummedOverCurveScanControl.ViewModel.OnDeleteClick;
             OptionsControl.ViewModel.SummationClick += SummedOverCurveScanControl.ViewModel.OnSummationClick;
             OptionsControl.ViewModel.AutoSumCheckEvent += SummedOverCurveScanControl.ViewModel.OnAutoSummationChange;
+            OptionsControl.ViewModel.PaletteChanged += CmpScanControl.ViewModel.OnPaletteChanged;
+            OptionsControl.ViewModel.PaletteChanged += SummedOverCurveScanControl.ViewModel.OnPaletteChanged;
         }
     }
 }

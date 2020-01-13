@@ -16,6 +16,8 @@ namespace SummedScanModule.ViewModels
 
         private ICmpScan _cmpScan;
         private ISummedScanVT _summedScan;
+        private PaletteType _palette = PaletteType.Jet;
+
         public PlotModel Plot { get; }
         internal bool AutoSummation { get; set; }
 
@@ -27,10 +29,6 @@ namespace SummedScanModule.ViewModels
         {
             Plot = new PlotModel { Title = "После суммирования" };
 
-            TestScan();
-            TestAnnotations();
-
-            SetAxes();
             Plot.MouseDown += PlotOnMouseDown;
         }
 
@@ -54,8 +52,6 @@ namespace SummedScanModule.ViewModels
         {
             LoadSeries();
             UpdateAxes();
-
-            TestAnnotations();
             
             Plot.InvalidatePlot(true); // refresh plot?
         }
@@ -80,79 +76,116 @@ namespace SummedScanModule.ViewModels
                 var p = Axis.InverseTransform(e.Position, X_Axis, Y_Axis);
                 var v = Math.Round(p.X, 4);
                 var t = Math.Round(p.Y, 2);
-                var point = new PointAnnotation()
+
+                if (IsPointOnPlot(p))
                 {
-                    Fill = OxyColor.FromRgb(0, 0, 0),
-                    X = v,
-                    Y = t
-                };
-                point.Size = 2;
-
-                Plot.Annotations.Add(point);
-                Plot.InvalidatePlot(true);
-
-                HodographDrawClick?.Invoke(this, new HodographDrawVTClickEventArgs(v, t));
+                    AddHodographToPlot(v, t);
+                }
             }
         }
 
-        // TODO: not clear wtf. If no cmpScan in the beginning - no axes. If no axes - update doesn't work - bad plot
+        private void AddHodographToPlot(double v, double t)
+        {
+            var point = new PointAnnotation()
+            {
+                Fill = OxyColor.FromRgb(0, 0, 0),
+                X = v,
+                Y = t
+            };
+            point.Size = 2;
+
+            Plot.Annotations.Add(point);
+            Plot.InvalidatePlot(true);
+
+            HodographDrawClick?.Invoke(this, new HodographDrawVTClickEventArgs(v, t));
+        }
+
+        private bool IsPointOnPlot(DataPoint point)
+        {
+            var v = Math.Round(point.X, 4);
+            var t = Math.Round(point.Y, 2);
+            if (v < CmpMath.Instance.WaterVelocity || v > CmpMath.SpeedOfLight / 2)
+                return false;
+            return true;
+        }
+
         private void UpdateAxes()
         {
-            if (Plot.Axes.Count == 0)
-            {
-                SetAxes();
-            }
+            Plot.InvalidatePlot(true); // to make axes be created
+
+            if (!Plot.Axes.Any(x => x is LinearColorAxis))
+                AddPalette(_palette);
 
             if (Plot.Axes.Count == 1)
                 return;
 
+            TuneHorizontalAxis();
+            TuneVerticalAxis();
+
+            Plot.InvalidatePlot(true); // to update axes in UI
+        }
+
+        private void TuneVerticalAxis()
+        {
+            var left = Plot.Axes.First(x => x.Position == AxisPosition.Left);
+            left.StartPosition = 1;
+            left.EndPosition = 0;
+            left.AbsoluteMinimum = 0;
+            left.AbsoluteMaximum = _cmpScan.AscanLength;
+        }
+
+        private void TuneHorizontalAxis()
+        {
             if (Plot.Axes.All(x => x.Position != AxisPosition.Top))
                 Plot.Axes.First(x => x.Position == AxisPosition.Bottom).Position = AxisPosition.Top;
             var top = Plot.Axes.First(x => x.Position == AxisPosition.Top);
             top.AbsoluteMinimum = _summedScan.MinVelocity;
             top.AbsoluteMaximum = _summedScan.MaxVelocity;
+        }
 
-            var left = Plot.Axes.First(x => x.Position == AxisPosition.Left);
-            //            left.AbsoluteMinimum = _summedScan.MinHeight;
-            //            left.AbsoluteMaximum = _summedScan.MaxHeight;
-                        left.AbsoluteMinimum = _summedScan.MinTime;
-                        left.AbsoluteMaximum = _summedScan.MaxTime;
-            left.StartPosition = 1;
-            left.EndPosition = 0;
+        public void AddPalette(PaletteType palette)
+        {
+            var oxyPalette = OxyPalettes.Jet(colorsCount);
+            switch (palette)
+            {
+                case PaletteType.Gray:
+                    oxyPalette = OxyPalettes.Gray(colorsCount);
+                    break;
+                case PaletteType.BW:
+                    oxyPalette = OxyPalettes.Gray(2);
+                    break;
+            }
+            Plot.Axes.Add(new LinearColorAxis { Palette = oxyPalette });
         }
 
         private void LoadSeries()
         {
             Plot.Series.Clear();
 
-            var heatMapSeries = new HeatMapSeries
+            if (_summedScan != null)
             {
-                X0 = _summedScan.MinVelocity,
-                X1 = _summedScan.MaxVelocity,
-                //                Y0 = _summedScan.MinHeight,
-                //                Y1 = _summedScan.MaxHeight,
-                                Y0 = _summedScan.MinTime,
-                                Y1 = _summedScan.MaxTime,
-                Interpolate = false,
-                RenderMethod = HeatMapRenderMethod.Bitmap,
-                Data = _summedScan.GetDataArray()
-            };
+                var heatMapSeries = new HeatMapSeries
+                {
+                    X0 = _summedScan.MinVelocity,
+                    X1 = _summedScan.MaxVelocity,
+                    //                Y0 = _summedScan.MinHeight,
+                    //                Y1 = _summedScan.MaxHeight,
+                    Y0 = _summedScan.MinTime,
+                    Y1 = _summedScan.MaxTime,
+                    Interpolate = false,
+                    RenderMethod = HeatMapRenderMethod.Bitmap,
+                    Data = _summedScan.GetDataArray()
+                };
 
-            Plot.Series.Add(heatMapSeries);
+                Plot.Series.Add(heatMapSeries);
+            }
+            else
+            {
+                Plot.Series.Add(new HeatMapSeries());
+            }
         }
 
-        // TODO: different palettes and other
-        public void SetAxes()
-        {
-            //Plot.Axes.Clear();
-            Plot.Axes.Add(new LinearColorAxis
-            {
-                                Palette = OxyPalettes.Jet(colorsCount)
-//                Palette = OxyPalettes.Gray(colorsCount)
-            });
-        }
-
-        public void OnDeleteClick(object obj, DeleteLayerEventsArgs e)
+        public void OnDeleteClick(object obj, DeleteLayerEventArgs e)
         {
             var annotation = Plot.Annotations.FirstOrDefault(
                 x => (x as PointAnnotation)?.Y == e.Time && (x as PointAnnotation)?.X == e.Velocity);
@@ -160,7 +193,7 @@ namespace SummedScanModule.ViewModels
             Plot.InvalidatePlot(true);
         }
 
-        public void OnAutoSummationChange(object sender, AutoSummationCheckEventsArgs e)
+        public void OnAutoSummationChange(object sender, AutoSummationCheckEventArgs e)
         {
             AutoSummation = e.Auto;
         }
@@ -168,6 +201,18 @@ namespace SummedScanModule.ViewModels
         public void OnSummationClick(object obj, EventArgs e)
         {
             Sum();
+        }
+
+        public void OnPaletteChanged(object obj, PaletteChangedEventArgs e)
+        {
+            _palette = e.Palette;
+            if (Plot == null)
+                return;
+            if (Plot.Axes.Any(x => x is LinearColorAxis))
+                Plot.Axes.Remove(Plot.Axes.First(x => x is LinearColorAxis));
+            if (!Plot.Axes.Any(x => x is LinearColorAxis))
+                AddPalette(_palette);
+            Plot.InvalidatePlot(true);
         }
 
 
