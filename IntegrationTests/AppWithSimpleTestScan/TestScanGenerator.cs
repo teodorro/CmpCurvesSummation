@@ -1,5 +1,5 @@
-﻿#define MexicanHatWavelet
-//#define SimpleWavelet
+﻿//#define MexicanHatWavelet
+#define SimpleWavelet
 
 using System;
 using System.Collections.Generic;
@@ -85,7 +85,7 @@ namespace AppWithSimpleTestScan
 #if MexicanHatWavelet
                 reflection += MexicanHatWavelet(time, hodographWithOffset) * AttenuationCoef(i, j);
 #elif SimpleWavelet
-                reflection += SimpleWavelet(time, hodograph);
+                reflection += SimpleWavelet(time, hodographWithOffset);
 #endif
             }
 

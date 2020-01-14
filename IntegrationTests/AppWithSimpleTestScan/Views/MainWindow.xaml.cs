@@ -18,14 +18,12 @@ namespace AppWithSimpleTestScan.Views
             DataContext = _viewModel;
 
             SetUpEvents();
-            SetUpAutoSummation(true);
+            SetUpAutoSummation(false);
         }
 
         private void SetUpAutoSummation(bool auto)
         {
-
             OptionsControl.ViewModel.AutoSummation = auto;
-
         }
 
         private void SetUpEvents()

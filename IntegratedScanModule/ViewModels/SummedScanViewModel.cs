@@ -33,6 +33,8 @@ namespace SummedScanModule.ViewModels
         }
 
 
+        private Axis TimeAxis => Plot.Axes.First(x => x.Position == AxisPosition.Left);
+
         public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args)
         {
             _cmpScan = args.CmpScan;
@@ -58,7 +60,8 @@ namespace SummedScanModule.ViewModels
 
         private void PlotOnMouseDown(object sender, OxyMouseDownEventArgs e)
         {
-            if (e.ClickCount == 2 && e.ChangedButton == OxyMouseButton.Left)
+            if (e.ClickCount == 2 && e.ChangedButton == OxyMouseButton.Left 
+                                  && TimeAxis != null)
             {
                 Axis X_Axis = null;
                 Axis Y_Axis = null;
@@ -73,38 +76,56 @@ namespace SummedScanModule.ViewModels
                         Y_Axis = ax;
                 }
 
-                var p = Axis.InverseTransform(e.Position, X_Axis, Y_Axis);
-                var v = Math.Round(p.X, 4);
-                var t = Math.Round(p.Y, 2);
+                var point = Axis.InverseTransform(e.Position, X_Axis, Y_Axis);
+                var velocity = Math.Round(point.X, 4);
+                var time = Math.Round(point.Y, 2);
 
-                if (IsPointOnPlot(p))
+                if (IsPointOnPlot(point))
                 {
-                    AddHodographToPlot(v, t);
+                    AddHodographToPlot(velocity, time);
                 }
             }
         }
 
-        private void AddHodographToPlot(double v, double t)
+        private void ChangeTimeOffset(double time)
+        {
+            TimeAxis.AbsoluteMinimum += time - TimeAxis.AbsoluteMinimum;
+            TimeAxis.AbsoluteMaximum += time - TimeAxis.AbsoluteMinimum;
+
+            Plot.InvalidatePlot(true);
+        }
+
+        private bool IsTimeOffsetChangeArea(DataPoint point)
+        {
+            var v = Math.Round(point.X, 4);
+            if (v < CmpMath.Instance.WaterVelocity || v >= CmpMath.SpeedOfLight / 2)
+                return true;
+            return false;
+        }
+
+        private void AddHodographToPlot(double velocity, double time)
         {
             var point = new PointAnnotation()
             {
                 Fill = OxyColor.FromRgb(0, 0, 0),
-                X = v,
-                Y = t
+                X = velocity,
+                Y = time
             };
             point.Size = 2;
 
             Plot.Annotations.Add(point);
             Plot.InvalidatePlot(true);
 
-            HodographDrawClick?.Invoke(this, new HodographDrawVTClickEventArgs(v, t));
+            HodographDrawClick?.Invoke(this, new HodographDrawVTClickEventArgs(velocity, time));
         }
 
         private bool IsPointOnPlot(DataPoint point)
         {
             var v = Math.Round(point.X, 4);
             var t = Math.Round(point.Y, 2);
-            if (v < CmpMath.Instance.WaterVelocity || v > CmpMath.SpeedOfLight / 2)
+            if (v < CmpMath.Instance.WaterVelocity || v >= CmpMath.SpeedOfLight / 2)
+                return false;
+            if (t < TimeAxis.AbsoluteMinimum || t >= TimeAxis.AbsoluteMaximum)
                 return false;
             return true;
         }
@@ -120,18 +141,18 @@ namespace SummedScanModule.ViewModels
                 return;
 
             TuneHorizontalAxis();
-            TuneVerticalAxis();
+            TuneVerticalAxis(_cmpScan.MinTime, _cmpScan.MaxTime);
 
             Plot.InvalidatePlot(true); // to update axes in UI
         }
 
-        private void TuneVerticalAxis()
+        private void TuneVerticalAxis(double min, double max)
         {
             var left = Plot.Axes.First(x => x.Position == AxisPosition.Left);
             left.StartPosition = 1;
             left.EndPosition = 0;
-            left.AbsoluteMinimum = 0;
-            left.AbsoluteMaximum = _cmpScan.AscanLength;
+            left.AbsoluteMinimum = min;
+            left.AbsoluteMaximum = max;
         }
 
         private void TuneHorizontalAxis()

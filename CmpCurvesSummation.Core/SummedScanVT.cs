@@ -34,7 +34,7 @@ namespace CmpCurvesSummation.Core
         public double MinVelocity { get; } = CmpMath.Instance.Velocity(CmpMath.WaterPermittivity);
         public double MaxVelocity { get; } = CmpMath.SpeedOfLight / 2;
         public double MinTime { get; } = 0;
-        public double MaxTime { get; }
+        public double MaxTime => MinTime + AscanLength;
         public int AscanLengthDimensionless { get; }
         public double AscanLength => AscanLengthDimensionless * StepTime;
 
@@ -43,8 +43,8 @@ namespace CmpCurvesSummation.Core
         {
             StepTime = cmpScan.StepTime;
             StepDistance = cmpScan.StepDistance;
-            MaxTime = cmpScan.AscanLengthDimensionless * StepTime;
             AscanLengthDimensionless = cmpScan.AscanLengthDimensionless;
+            MinTime = cmpScan.MinTime;
 
             Sum(cmpScan);
         }
@@ -52,12 +52,8 @@ namespace CmpCurvesSummation.Core
 
         private void Sum(ICmpScan cmpScan)
         {
-            double t0;
             double v;
-            double d;
             double h;
-            double t;
-            double sum;
             var vStep = (MaxVelocity - MinVelocity) / _vLengthDimensionless;
 
             for (int p = 0; p < _vLengthDimensionless; p++)
@@ -66,22 +62,28 @@ namespace CmpCurvesSummation.Core
                 Data.Add(new double[AscanLengthDimensionless]);
                 for (int j = 0; j < AscanLengthDimensionless; j++)
                 {
-                    sum = 0;
-                    t0 = j * StepTime;
-                    h = v * t0;
-                    for (int i = 0; i < cmpScan.LengthDimensionless; i++)
-                    {
-                        d = i * StepDistance;
-                        if (double.IsNaN(h))
-                            continue;
-                        t = CmpMath.Instance.HodographLineLoza(d, h, v);
-                        var tIndex = Convert.ToInt32(Math.Round(t / StepTime));
-                        if (tIndex >= 0 && tIndex < cmpScan.AscanLengthDimensionless)
-                            sum += cmpScan.Data[i][tIndex];
-                    }
-                    Data[p][j] = sum;
+                    var t = j * StepTime + MinTime;
+                    h = v * t;
+                    Data[p][j] = CalcSumForVelocityAndDepth(cmpScan, h, v);
                 }
             }
+        }
+
+        private double CalcSumForVelocityAndDepth(ICmpScan cmpScan, double h, double v)
+        {
+            double sum = 0;
+            for (int i = 0; i < cmpScan.LengthDimensionless; i++)
+            {
+                var d = i * StepDistance;
+                if (double.IsNaN(h) || h < 0)
+                    continue;
+                var t = CmpMath.Instance.HodographLineLoza(d, h, v);
+                var tIndex = Convert.ToInt32(Math.Round(t / StepTime - cmpScan.MinTime));
+                if (tIndex >= cmpScan.MinTime && tIndex < cmpScan.MaxTime)
+                    sum += cmpScan.Data[i][tIndex];
+            }
+
+            return sum;
         }
 
         public double[,] GetDataArray()

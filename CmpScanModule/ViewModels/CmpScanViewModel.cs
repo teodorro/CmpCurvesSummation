@@ -15,14 +15,19 @@ namespace CmpScanModule.ViewModels
 
         private ICmpScan _cmpScan;
         private PaletteType _palette = PaletteType.Jet;
+
         public PlotModel Plot { get; private set; }
 
         
         public CmpScanViewModel()
         {
             Plot = new PlotModel { Title = "Годограф" };
+            
+            Plot.MouseDown += PlotOnMouseDown;
         }
 
+
+        private Axis TimeAxis => Plot.Axes.First(x => x.Position == AxisPosition.Left);
 
         public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args)
         {
@@ -42,18 +47,18 @@ namespace CmpScanModule.ViewModels
                 return;
 
             TuneHorizontalAxis();
-            TuneVerticalAxis();
+            TuneVerticalAxis(0, _cmpScan.AscanLength);
 
             Plot.InvalidatePlot(true); // to update axes in UI
         }
 
-        private void TuneVerticalAxis()
+        private void TuneVerticalAxis(double min, double max)
         {
             var left = Plot.Axes.First(x => x.Position == AxisPosition.Left);
             left.StartPosition = 1;
             left.EndPosition = 0;
-            left.AbsoluteMinimum = 0;
-            left.AbsoluteMaximum = _cmpScan.AscanLength;
+            left.AbsoluteMinimum = min;
+            left.AbsoluteMaximum = max;
         }
 
         private void TuneHorizontalAxis()
@@ -148,6 +153,50 @@ namespace CmpScanModule.ViewModels
             if (!Plot.Axes.Any(x => x is LinearColorAxis))
                 AddPalette(_palette);
             Plot.InvalidatePlot(true);
+        }
+
+        private void PlotOnMouseDown(object sender, OxyMouseDownEventArgs e)
+        {
+            if (e.ClickCount == 2 && e.ChangedButton == OxyMouseButton.Left
+                                  && TimeAxis != null)
+            {
+                Axis X_Axis = null;
+                Axis Y_Axis = null;
+
+                var axisList = Plot.Axes;
+
+                foreach (var ax in axisList)
+                {
+                    if (ax.Position == AxisPosition.Top)
+                        X_Axis = ax;
+                    else if (ax.Position == AxisPosition.Left)
+                        Y_Axis = ax;
+                }
+
+                var point = Axis.InverseTransform(e.Position, X_Axis, Y_Axis);
+
+                if (IsTimeOffsetChangeArea(point))
+                {
+                    var offset = Math.Round(point.Y, 2);
+                    var heatMap = Plot.Series.First() as HeatMapSeries;
+                    heatMap.Y0 -= offset;
+                    heatMap.Y1 -= offset;
+                    TimeAxis.AbsoluteMinimum -= offset;
+                    TimeAxis.AbsoluteMaximum -= offset;
+
+                    _cmpScan.MinTime -= offset;
+
+                    Plot.InvalidatePlot(true);
+                }
+            }
+        }
+
+        private bool IsTimeOffsetChangeArea(DataPoint point)
+        {
+            var v = Math.Round(point.X, 4);
+            if (v < CmpMath.Instance.WaterVelocity || v >= CmpMath.SpeedOfLight / 2)
+                return true;
+            return false;
         }
 
 

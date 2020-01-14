@@ -20,6 +20,8 @@ namespace CmpCurvesSummation.Core
         double Length { get; }
         int AscanLengthDimensionless { get; }
         double AscanLength { get; }
+        double MinTime { get; set; }
+        double MaxTime { get; }
 
         void CopyRawDataToProcessed();
     }
@@ -34,11 +36,13 @@ namespace CmpCurvesSummation.Core
         public List<double[]> Data { get; } = new List<double[]>();
         public List<double[]> RawData { get; } = new List<double[]>();
         public double StepDistance { get; set; } = DefaultStepDistance;
-        public double StepTime { get; set; } = 1;
+        public double StepTime { get; set; } = DefaultStepTime;
         public int LengthDimensionless => Data.Count;
         public double Length => Data.Count * StepDistance;
         public int AscanLengthDimensionless => Data.Any() ? Data.Select(x => x.Length).Min() : -1;
         public double AscanLength => AscanLengthDimensionless * StepTime;
+        public double MinTime { get; set; } = 0;
+        public double MaxTime => MinTime + AscanLength;
 
         public void CopyRawDataToProcessed()
         {
