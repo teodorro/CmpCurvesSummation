@@ -21,25 +21,25 @@ namespace AppWithSimpleTestScan
         private double _stepTime = 1;
         private double _offset = 50;
         private double[] _velocities;
-        private double[] _heights;
-        private int _numLayers = 3;
+        private double[] _thicknesses;
+        private int _numLayers = 4;
         private double _ampForSync = 5;
 
 
         public TestScanGenerator()
         {
             _velocities = new double[_numLayers];
-            _heights = new double[_numLayers];
+            _thicknesses = new double[_numLayers];
 
-            _velocities[0] = 0.15;
-            _velocities[1] = 0.05;
-            _velocities[2] = 0.05;
-            //_velocities[3] = 0.04;
+            _velocities[0] = 0.3;
+            _velocities[1] = 0.1;
+            _velocities[2] = 0.1;
+            _velocities[3] = 0.05;
 
-            _heights[0] = 0;
-            _heights[1] = 0;
-            _heights[2] = 2;
-            //            _heights[3] = 5;
+            _thicknesses[0] = 0;
+            _thicknesses[1] = 0;
+            _thicknesses[2] = 2;
+            _thicknesses[3] = 1;
         }
 
 
@@ -79,7 +79,8 @@ namespace AppWithSimpleTestScan
 
             for (int k = 0; k < _numLayers; k++)
             {
-                var hodograph = CmpMath.Instance.HodographLineLoza(distance, _heights[k], _velocities[k]);
+                //                var hodograph = CmpMath.Instance.HodographLineLoza(distance, _thicknesses[k], _velocities[k]);
+                var hodograph = CmpMath.Instance.HodographLineLoza(distance, _thicknesses, _velocities, k);
                 var hodographWithOffset = hodograph + _offset;
 
 #if MexicanHatWavelet

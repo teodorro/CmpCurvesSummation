@@ -14,8 +14,8 @@ namespace CmpCurvesSummation.Core
         public const double SpeedOfLight = 0.3;
         public const double WaterPermittivity = 81;
 
-        public double Velocity(double permittivity) => SpeedOfLight / (2 * Math.Sqrt(permittivity));
-        public double Permittivity(double velocity) => Math.Pow(SpeedOfLight / 2 / velocity, 2);
+        public double Velocity(double permittivity) => SpeedOfLight / (Math.Sqrt(permittivity));
+        public double Permittivity(double velocity) => Math.Pow(SpeedOfLight / velocity, 2);
         public double WaterVelocity => Velocity(WaterPermittivity);
 
 
@@ -29,9 +29,43 @@ namespace CmpCurvesSummation.Core
         public double HodographLineLoza(double distance, double height, double velocity)
         {
             double part1 = 1 / velocity;
-            double part2 = Math.Sqrt(Math.Pow(height, 2) + Math.Pow(distance / 2, 2));
+            double part2 = Math.Sqrt(Math.Pow(height * 2, 2) + Math.Pow(distance, 2));
             var part3 = distance / SpeedOfLight;
             return part1 * part2 - part3;
+        }
+
+        public double HodographLineLoza(double distance, double[] depths, double[] velocities, int index)
+        {
+            if (depths == null || velocities == null)
+                throw new ArgumentNullException();
+            if (depths.Length != velocities.Length)
+                throw new ArgumentException();
+            if (index >= velocities.Length || index < 0)
+                throw new ArgumentOutOfRangeException();
+
+            double depth = 0;
+            for (int i = 0; i <= index; i++)
+                depth += depths[i];
+            double alpha = 0;
+            if (depth == 0)
+                alpha = Math.PI / 2;
+            else
+                alpha = Math.Atan(distance / depth);
+
+            double t = 0;
+            if (depth != 0)
+            {
+                for (int i = 0; i <= index; i++)
+                    t += depths[i] / velocities[i] / Math.Cos(alpha);
+            }
+            else
+            {
+                t += distance / velocities[index];
+            }
+
+            t -= distance / SpeedOfLight;
+
+            return t;
         }
 
         public double LayerThickness(double velocity, double timeCurrentDistanceZero, double timePreviousDistanceZero = 0)

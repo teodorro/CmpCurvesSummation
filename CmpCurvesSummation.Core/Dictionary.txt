@@ -1,14 +1,14 @@
 ﻿
 
 
-CMP - Common Mid Point
-CMP curve - Hodograph
+Common Mid Point - CMP
+CMP curve - Hodograph 
 CMP data - CMP-scan
 vertical line of CMP data - A-scan
 x axis of CMP data - Distance
 y axis of CMP data - Time
 procedure of calculating sums along hodographs - Summation
-data after procedure of summation - S-Scan
+data after procedure of summation - Sum-Scan
 
 
 
