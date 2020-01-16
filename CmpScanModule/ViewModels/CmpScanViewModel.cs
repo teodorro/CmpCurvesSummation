@@ -27,7 +27,9 @@ namespace CmpScanModule.ViewModels
         }
 
 
-        private Axis TimeAxis => Plot.Axes.First(x => x.Position == AxisPosition.Left);
+        private Axis TimeAxis => Plot.Axes.FirstOrDefault(x => x.Position == AxisPosition.Left);
+        private Axis DistanceAxis => Plot.Axes.FirstOrDefault(x => x.Position == AxisPosition.Top);
+        private HeatMapSeries HeatMap => Plot.Series.First() as HeatMapSeries;
 
         public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args)
         {
@@ -115,14 +117,14 @@ namespace CmpScanModule.ViewModels
 
         public void OnHodographDrawClick(object obj, HodographDrawVTClickEventArgs e)
         {
-            var h = e.Velocity * e.Time;
+            var h = CmpMath.Instance.Depth(e.Velocity, e.Time);
             var v = e.Velocity;
             var hodograph = new double[_cmpScan.LengthDimensionless];
             var hodographCurve = new PolylineAnnotation();
             for (int i = 0; i < _cmpScan.LengthDimensionless; i++)
             {
                 var d = i * _cmpScan.StepTime;
-                hodograph[i] = Math.Round(CmpMath.Instance.HodographLineLoza(d, h, v), 4);
+                hodograph[i] = Math.Round(CmpMath.Instance.HodographLineLoza(d, h, v), 2);
                 hodographCurve.Points.Add(new DataPoint(d, hodograph[i]));
             }
 
@@ -136,7 +138,7 @@ namespace CmpScanModule.ViewModels
 
         public void OnDeleteClick(object obj, DeleteLayerEventArgs e)
         {
-            var h = Math.Round(e.Velocity * e.Time, 4);
+            var h = CmpMath.Instance.Depth(e.Velocity, e.Time);
             var t = Math.Round(CmpMath.Instance.HodographLineLoza(0, h, e.Velocity), 2);
             var annotation = Plot.Annotations.FirstOrDefault(x => (x as PolylineAnnotation)?.Points[0].Y == t);
             Plot.Annotations.Remove(annotation);
@@ -160,96 +162,56 @@ namespace CmpScanModule.ViewModels
             if (e.ClickCount == 2 && e.ChangedButton == OxyMouseButton.Left
                                   && TimeAxis != null)
             {
-                Axis X_Axis = null;
-                Axis Y_Axis = null;
-
-                var axisList = Plot.Axes;
-
-                foreach (var ax in axisList)
-                {
-                    if (ax.Position == AxisPosition.Top)
-                        X_Axis = ax;
-                    else if (ax.Position == AxisPosition.Left)
-                        Y_Axis = ax;
-                }
-
-                var point = Axis.InverseTransform(e.Position, X_Axis, Y_Axis);
+                var point = GetPointFromOxyPosition(e);
 
                 if (IsTimeOffsetChangeArea(point))
                 {
                     var offset = Math.Round(point.Y, 2);
-                    var heatMap = Plot.Series.First() as HeatMapSeries;
-                    heatMap.Y0 -= offset;
-                    heatMap.Y1 -= offset;
-                    TimeAxis.AbsoluteMinimum -= offset;
-                    TimeAxis.AbsoluteMaximum -= offset;
-
+                    ModifyAxesTimeOffset(offset);
                     _cmpScan.MinTime -= offset;
-
                     Plot.InvalidatePlot(true);
                 }
             }
         }
 
+        private void ModifyAxesTimeOffset(double offset)
+        {
+            HeatMap.Y0 -= offset;
+            HeatMap.Y1 -= offset;
+            TimeAxis.AbsoluteMinimum -= offset;
+            TimeAxis.AbsoluteMaximum -= offset;
+        }
+
+        private DataPoint GetPointFromOxyPosition(OxyMouseDownEventArgs e)
+            => Axis.InverseTransform(e.Position, DistanceAxis, TimeAxis);
+
         private bool IsTimeOffsetChangeArea(DataPoint point)
         {
-            var v = Math.Round(point.X, 4);
+            var v = Math.Round(point.X, 3);
             if (v < CmpMath.Instance.WaterVelocity || v >= CmpMath.SpeedOfLight / 2)
                 return true;
             return false;
         }
-
-
-
-        private void TestScan()
+        
+        public void OnStepDistanceChanged(object sender, StepDistanceEventArgs e)
         {
-            Plot.Series.Clear();
-
-            // generate 1d normal distribution
-            var singleData = new double[100];
-            for (int x = 0; x < 100; ++x)
-            {
-                singleData[x] = Math.Exp((-1.0 / 2.0) * Math.Pow(((double)x - 50.0) / 20.0, 2.0));
-            }
-
-            // generate 2d normal distribution
-            var data = new double[100, 100];
-            for (int x = 0; x < 100; ++x)
-            {
-                for (int y = 0; y < 100; ++y)
-                {
-                    data[y, x] = singleData[x] * singleData[(y + 30) % 100] * 100;
-                }
-            }
-
-            var heatMapSeries = new HeatMapSeries
-            {
-                X0 = 0,
-                X1 = 99,
-                Y0 = 0,
-                Y1 = 99,
-                Interpolate = true,
-                RenderMethod = HeatMapRenderMethod.Bitmap,
-                Data = data
-            };
-
-            Plot.Series.Add(heatMapSeries);
+            var factor = e.NewStepDistance / e.OldStepDistance;
+            DistanceAxis.AbsoluteMinimum *= factor;
+            DistanceAxis.AbsoluteMaximum *= factor;
+            HeatMap.X0 *= factor;
+            HeatMap.X1 *= factor;
+            Plot.InvalidatePlot(true);
         }
 
-//        public void OnHodographDrawClick(object obj, HodographDrawVHClickEventArgs e)
-//        {
-//            var hodograph = new PolylineAnnotation();
-//            hodograph.Points.Add(new DataPoint(e.Velocity, e.Height));
-//            hodograph.Points.Add(new DataPoint(e.Velocity + 2, e.Height + 5));
-//            hodograph.Points.Add(new DataPoint(e.Velocity + 4, e.Height + 15));
-//            hodograph.Color = OxyColor.FromRgb(255, 255, 255);
-//            hodograph.InterpolationAlgorithm = new CanonicalSpline(0.5);
-//            hodograph.LineStyle = LineStyle.Solid;
-//            Plot.Annotations.Add(hodograph);
-//
-//            Plot.InvalidatePlot(true);
-//        }
+        public void OnStepTimeChanged(object sender, StepTimeEventArgs e)
+        {
+            var factor = e.NewStepTime / e.OldStepTime;
+            TimeAxis.AbsoluteMinimum *= factor;
+            TimeAxis.AbsoluteMaximum *= factor;
+            HeatMap.Y0 *= factor;
+            HeatMap.Y1 *= factor;
+            Plot.InvalidatePlot(true);
+        }
 
-        
     }
 }

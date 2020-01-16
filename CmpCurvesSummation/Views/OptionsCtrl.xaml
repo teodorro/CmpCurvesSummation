@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="AppWithSimpleTestScan.Views.OptionsCtrl"
+﻿<UserControl x:Class="CmpCurvesSummation.Views.OptionsCtrl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:AppWithSimpleTestScan.Views"
+             xmlns:local="clr-namespace:CmpCurvesSummation.Views"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="350">
     <Grid>
@@ -18,19 +18,28 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="195*"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label x:Name="StepDistanceLabel" Content="Шаг измерений, м" Grid.Row="1" Margin="15,5"/>
-        <ComboBox x:Name="StepDistanceComboBox" Grid.Column="1" Grid.Row="1" Margin="5,5,15,10" SelectedItem="{Binding StepDistance}" ItemsSource="{Binding StepsDistance}"/>
+        <ComboBox x:Name="StepDistanceComboBox" Grid.Column="1" Grid.Row="1" Margin="5,5,15,10" 
+                  SelectedItem="{Binding StepDistance}" ItemsSource="{Binding StepsDistance}"/>
         <Label x:Name="StepTimeLabel" Content="Шаг по времени, нс" Grid.Row="2"  Margin="15,5"/>
         <ComboBox x:Name="StepTimeComboBox" Grid.Column="1" Grid.Row="2" Margin="5,5,15,10" 
                   SelectedItem="{Binding StepTime}"  ItemsSource="{Binding StepsTime}"/>
+        <Label x:Name="PaletteLabel" Content="Палитра" Margin="15,5" Grid.Row="3"/>
         <ComboBox x:Name="PaletteComboBox" Margin="5,5,15,10" Grid.Row="3" Grid.Column="1"
                   ItemsSource="{Binding Palettes}" SelectedItem="{Binding Palette}"/>
-        <Label x:Name="PaletteLabel" Content="Палитра" Margin="15,5" Grid.Row="3"/>
-        <CheckBox x:Name="AutoSummationCheckBox" Content="Автоматически суммировать" Margin="20,0,15,15" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Bottom" 
+        <Label x:Name="PointColorLabel" Content="Цвет точек" Margin="15,5" Grid.Row="4"/>
+        <ComboBox x:Name="PointColorComboBox" Margin="5,5,15,10" Grid.Row="4" Grid.Column="1"
+                  />
+        <Label x:Name="HodographLabel" Content="Цвет годографов" Margin="15,5" Grid.Row="5"/>
+        <ComboBox x:Name="HodographComboBox" Margin="5,5,15,10" Grid.Row="5" Grid.Column="1"
+                  />
+        <CheckBox x:Name="AutoSummationCheckBox" Content="Автоматически суммировать" Margin="20,0,15,15" Grid.Row="6" Grid.ColumnSpan="2" VerticalAlignment="Bottom" 
                   IsChecked="{Binding AutoSummation}"/>
-        <Button x:Name="ButtonSummation" Content="Запустить суммирование" HorizontalAlignment="Left"  Grid.Row="5" Margin="20,0,15,15" Width="150" Grid.ColumnSpan="2" VerticalAlignment="Bottom" 
+        <Button x:Name="ButtonSummation" Content="Запустить суммирование" HorizontalAlignment="Left"  Grid.Row="7" Margin="20,0,15,15" Width="150" Grid.ColumnSpan="2" VerticalAlignment="Bottom" 
                 IsEnabled="{Binding ManualSummationPossible}" Click="ButtonSummation_Click" />
     </Grid>
 </UserControl>

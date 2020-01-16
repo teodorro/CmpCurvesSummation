@@ -1,5 +1,5 @@
-﻿//#define MexicanHatWavelet
-#define SimpleWavelet
+﻿#define MexicanHatWavelet
+//#define SimpleWavelet
 
 using System;
 using System.Collections.Generic;
@@ -80,7 +80,7 @@ namespace AppWithSimpleTestScan
             for (int k = 0; k < _numLayers; k++)
             {
                 //                var hodograph = CmpMath.Instance.HodographLineLoza(distance, _thicknesses[k], _velocities[k]);
-                var hodograph = CmpMath.Instance.HodographLineLoza(distance, _thicknesses, _velocities, k);
+                var hodograph = HodographLineLoza(distance, _thicknesses, _velocities, k);
                 var hodographWithOffset = hodograph + _offset;
 
 #if MexicanHatWavelet
@@ -126,6 +126,36 @@ namespace AppWithSimpleTestScan
                 for (int j = 0; j < _ascanLength; j++)
                     ascan[j] = j + newStart < _ascanLength ? ascan[j + newStart] : 0;
             }
+        }
+
+        public double HodographLineLoza(double distance, double[] depths, double[] velocities, int index)
+        {
+            if (depths == null || velocities == null)
+                throw new ArgumentNullException();
+            if (depths.Length != velocities.Length)
+                throw new ArgumentException();
+            if (index >= velocities.Length || index < 0)
+                throw new ArgumentOutOfRangeException();
+
+            double depth = 0;
+            for (int i = 0; i <= index; i++)
+                depth += depths[i];
+            double alpha = 0;
+            if (depth == 0)
+                alpha =  Double.NaN;
+            else
+                alpha = Math.Atan(distance / (2*depth));
+
+            double t = 0;
+            if (depth != 0)
+                for (int i = 0; i <= index; i++)
+                    t += 2*depths[i] / velocities[i] / Math.Cos(alpha);
+            else
+                t += distance / velocities[index];
+
+            t -= distance / CmpMath.SpeedOfLight;
+
+            return t;
         }
 
     }

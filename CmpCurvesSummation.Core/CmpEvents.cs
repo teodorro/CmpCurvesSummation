@@ -63,8 +63,8 @@ namespace CmpCurvesSummation.Core
             Time = time;
         }
 
-        public double Velocity { get; set; }
-        public double Time { get; set; }
+        public double Velocity { get; }
+        public double Time { get;  }
     }
 
 
@@ -76,8 +76,8 @@ namespace CmpCurvesSummation.Core
             Time = time;
         }
 
-        public double Velocity { get; set; }
-        public double Time { get; set; }
+        public double Velocity { get; }
+        public double Time { get; }
     }
 
 
@@ -88,13 +88,14 @@ namespace CmpCurvesSummation.Core
             Auto = auto;
         }
 
-        public bool Auto { get; set; }
+        public bool Auto { get; }
     }
 
 
     public class SummationClickEventArgs : EventArgs
     {
     }
+
 
     public class PaletteChangedEventArgs : EventArgs
     {
@@ -103,7 +104,45 @@ namespace CmpCurvesSummation.Core
             Palette = palette;
         }
 
-        public PaletteType Palette { get; set; }
+        public PaletteType Palette { get; }
     }
+
+
+    public class StepDistanceEventArgs : EventArgs
+    {
+        public StepDistanceEventArgs(double newStepDistance, double oldStepDistance)
+        {
+            NewStepDistance = newStepDistance;
+            OldStepDistance = oldStepDistance;
+        }
+
+        public double NewStepDistance { get; }
+        public double OldStepDistance { get; }
+    }
+
+
+    public class StepTimeEventArgs : EventArgs
+    {
+        public StepTimeEventArgs(double newStepTime, double oldStepTime)
+        {
+            NewStepTime = newStepTime;
+            OldStepTime = oldStepTime;
+        }
+
+        public double NewStepTime { get; }
+        public double OldStepTime { get; }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

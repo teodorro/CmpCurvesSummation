@@ -65,7 +65,6 @@ namespace SummedScanModule.ViewModels
             {
                 Axis X_Axis = null;
                 Axis Y_Axis = null;
-                
                 var axisList = Plot.Axes;
 
                 foreach (var ax in axisList)
@@ -77,14 +76,20 @@ namespace SummedScanModule.ViewModels
                 }
 
                 var point = Axis.InverseTransform(e.Position, X_Axis, Y_Axis);
-                var velocity = Math.Round(point.X, 4);
-                var time = Math.Round(point.Y, 2);
 
-                if (IsPointOnPlot(point))
+                if (IsPointOnPlot(point) && NoPointWithSameTime(point))
                 {
+                    var velocity = Math.Round(point.X, 3);
+                    var time = Math.Round(point.Y, 2);
                     AddHodographToPlot(velocity, time);
                 }
             }
+        }
+
+        private bool NoPointWithSameTime(DataPoint point)
+        {
+            var points = Plot.Annotations.OfType<PointAnnotation>();
+            return (points != null || points.Any(x => x.Y == point.Y));
         }
 
         private void ChangeTimeOffset(double time)
@@ -97,7 +102,7 @@ namespace SummedScanModule.ViewModels
 
         private bool IsTimeOffsetChangeArea(DataPoint point)
         {
-            var v = Math.Round(point.X, 4);
+            var v = Math.Round(point.X, 3);
             if (v < CmpMath.Instance.WaterVelocity || v >= CmpMath.SpeedOfLight / 2)
                 return true;
             return false;
@@ -121,9 +126,9 @@ namespace SummedScanModule.ViewModels
 
         private bool IsPointOnPlot(DataPoint point)
         {
-            var v = Math.Round(point.X, 4);
+            var v = Math.Round(point.X, 3);
             var t = Math.Round(point.Y, 2);
-            if (v < CmpMath.Instance.WaterVelocity || v >= CmpMath.SpeedOfLight / 2)
+            if (v < CmpMath.Instance.WaterVelocity || v >= CmpMath.SpeedOfLight)
                 return false;
             if (t < TimeAxis.AbsoluteMinimum || t >= TimeAxis.AbsoluteMaximum)
                 return false;

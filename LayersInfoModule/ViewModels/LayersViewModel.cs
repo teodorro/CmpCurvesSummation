@@ -18,11 +18,11 @@ namespace LayersInfoModule.ViewModels
 
         public ObservableCollection<LayerInfo> Layers { get; } = new ObservableCollection<LayerInfo>();
         
-
-
+        
         public void OnHodographDrawClick(object sender, HodographDrawVTClickEventArgs e)
         {
-            var newLayer = new LayerInfo(e.Time, e.Velocity);
+
+            var newLayer = new LayerInfo(e.Time, e.Velocity, Layers.LastOrDefault(x => x.Time < e.Time));
             Layers.Add(newLayer);
             SortLayers();
         }
@@ -37,8 +37,10 @@ namespace LayersInfoModule.ViewModels
 
         public void OnDeleteRowClick(object sender, DeleteLayerEventArgs e)
         {
+            Layers.Remove(Layers.First(x => x.Time == e.Time && x.AvgVelocity == e.Velocity));
             DeleteClick?.Invoke(sender, e);
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -51,6 +53,44 @@ namespace LayersInfoModule.ViewModels
 
 
     /// <summary>
+    /// info about layer which is used as a row in the table of layers
+    /// </summary>
+    public class LayerInfo
+    {
+        public LayerInfo(double time, double avgVelocity, LayerInfo prevLayer)
+        {
+            Time = time;
+            AvgVelocity = avgVelocity;
+            if (prevLayer == null)
+            {
+                Thickness = Depth;
+                LayerVelocity = AvgVelocity;
+            }
+            else
+            {
+                var depth = CmpMath.Instance.Depth(avgVelocity, time);
+                Thickness = Math.Round(CmpMath.Instance.LayerThickness(depth, prevLayer.Depth), 2);
+                LayerVelocity = Math.Round(CmpMath.Instance.LayerVelocity(time, 0, depth, avgVelocity, prevLayer.Depth, prevLayer.AvgVelocity), 3);
+
+            }
+        }
+
+        [DisplayName("Время, нс")]
+        public double Time { get; set; }
+        [DisplayName("Глубина, м")]
+        public double Depth => Math.Round(CmpMath.Instance.Depth(AvgVelocity, Time), 2);
+        [DisplayName("Средняя скорость, м/нс")]
+        public double AvgVelocity { get; }
+        [DisplayName("Толщина, м")]
+        public double Thickness { get; }
+        [DisplayName("Скорость в слое, м/нс")]
+        public double LayerVelocity { get; }
+        [DisplayName("Диэл. пр-ть слоя")]
+        public double Permittivity => Math.Round(CmpMath.Instance.Permittivity(LayerVelocity), 2);
+    }
+
+
+    /// <summary>
     /// Compare different layers to make it organized according to the depth
     /// </summary>
     public class LayerComparer : IComparer<LayerInfo>
@@ -59,31 +99,5 @@ namespace LayersInfoModule.ViewModels
         {
             return Convert.ToInt32((x.Time - y.Time) * 100);
         }
-    }
-
-
-    /// <summary>
-    /// info about layer which is used as a row in the table of layers
-    /// </summary>
-    public class LayerInfo
-    {
-        public LayerInfo(double time, double avgVelocity)
-        {
-            Time = time;
-            AvgVelocity = avgVelocity;
-        }
-
-        [DisplayName("Время, нс")]
-        public double Time { get; set; }
-        [DisplayName("Глубина, м")]
-        public double Height => Math.Round(Time * AvgVelocity, 2);
-        [DisplayName("Толщина, м")]
-        public double Thickness { get; }
-        [DisplayName("Средняя скорость, м/нс")]
-        public double AvgVelocity { get; }
-        [DisplayName("Скорость в слое, м/нс")]
-        public double LayerVelocity { get; }
-        [DisplayName("Диэл. пр-ть слоя")]
-        public double Permittivity => Math.Round(CmpMath.Instance.Permittivity(AvgVelocity), 2);
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System.Windows;
 using CmpCurvesSummation.Core;
 using CmpCurvesSummation.ViewModels;
-using GprFileService;
-using StructureMap;
 
 namespace CmpCurvesSummation.Views
 {
@@ -15,19 +13,12 @@ namespace CmpCurvesSummation.Views
 
         public MainWindow()
         {
-            InitializeDiContainer();
-
             InitializeComponent();
 
             _viewModel = new MainWindowViewModel();
             DataContext = _viewModel;
 
             //ToolbarControl.ViewModel.FileOpened += CmpScanControl.ViewModel.DataLoaded;
-        }
-
-        private void InitializeDiContainer()
-        {
-            DiContainer.Instance.Container = new Container(_ => { _.For<IFileOpener>().Use<FileOpener>(); });
         }
     }
 }

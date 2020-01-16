@@ -19,6 +19,8 @@ namespace CmpCurvesSummation.Core
         public double WaterVelocity => Velocity(WaterPermittivity);
 
 
+        public double Depth(double velocity, double time) => velocity * time / 2;
+        
         public double HodographLineClassic(double distance, double height, double velocity)
         {
             var part1 = 1 / velocity;
@@ -33,52 +35,31 @@ namespace CmpCurvesSummation.Core
             var part3 = distance / SpeedOfLight;
             return part1 * part2 - part3;
         }
-
-        public double HodographLineLoza(double distance, double[] depths, double[] velocities, int index)
+        
+        public double LayerThickness(double depth, double depthPrevious)
         {
-            if (depths == null || velocities == null)
-                throw new ArgumentNullException();
-            if (depths.Length != velocities.Length)
-                throw new ArgumentException();
-            if (index >= velocities.Length || index < 0)
-                throw new ArgumentOutOfRangeException();
-
-            double depth = 0;
-            for (int i = 0; i <= index; i++)
-                depth += depths[i];
-            double alpha = 0;
-            if (depth == 0)
-                alpha = Math.PI / 2;
-            else
-                alpha = Math.Atan(distance / depth);
-
-            double t = 0;
-            if (depth != 0)
-            {
-                for (int i = 0; i <= index; i++)
-                    t += depths[i] / velocities[i] / Math.Cos(alpha);
-            }
-            else
-            {
-                t += distance / velocities[index];
-            }
-
-            t -= distance / SpeedOfLight;
-
-            return t;
+            return depth - depthPrevious;
         }
 
-        public double LayerThickness(double velocity, double timeCurrentDistanceZero, double timePreviousDistanceZero = 0)
+        public double LayerVelocity(double time, double distance, double depth, double velocity, 
+            double depthPrevious, double velocityPrevious)
         {
-            return velocity * (timeCurrentDistanceZero - timePreviousDistanceZero);
+            time = time + distance / SpeedOfLight;
+
+            var partT1 = time;
+            var partT2 = velocity / velocityPrevious;
+            var partT3 = depthPrevious / depth;
+            var timeLayer =  time - partT1 * partT2 * partT3;
+
+            var partV1 = velocity;
+            var partV2 = (depth - depthPrevious) / depth;
+            var partV3 = time / timeLayer;
+
+            var velocityLayer = partV1 * partV2 * partV3;
+            return velocityLayer;
         }
 
-        public double LayerVelocity(double timeCurrentDistanceZero, double timePreviousDistanceZero, double avgVelocityCurrent, double avgVelocityPrevious)
-        {
-            var part1 = timeCurrentDistanceZero * avgVelocityCurrent * avgVelocityCurrent - timePreviousDistanceZero * avgVelocityPrevious * avgVelocityPrevious;
-            var part2 = timeCurrentDistanceZero - timePreviousDistanceZero;
-            return part1 / part2;
-        }
+
 
     }
 }

@@ -4,11 +4,13 @@ using System.Runtime.CompilerServices;
 using CmpCurvesSummation.Core;
 using CmpScanModule.Annotations;
 
-namespace AppWithSimpleTestScan.ViewModels
+namespace CmpCurvesSummation.ViewModels
 {
     public delegate void AutoSummationCheckHander(object obj, AutoSummationCheckEventArgs e);
     public delegate void SummationHander(object obj, SummationClickEventArgs e);
     public delegate void PaletteChangedHander(object obj, PaletteChangedEventArgs e);
+    public delegate void StepDistanceChangedHandler(object obj, StepDistanceEventArgs e);
+    public delegate void StepTimeChangedHandler(object obj, StepTimeEventArgs e);
 
 
 
@@ -18,9 +20,19 @@ namespace AppWithSimpleTestScan.ViewModels
         public const string Gray = "Gray";
         public const string BW = "B&W";
 
+//        public string Black = Colors.Black.ToString();
+//        public string White = Colors.White.ToString();
+//        public string Red = Colors.Red.ToString();
+//        public string Black = Colors.Black.ToString();
+//        public string Black = Colors.Black.ToString();
+
         public event AutoSummationCheckHander AutoSumCheckEvent;
         public event SummationHander SummationClick;
         public event PaletteChangedHander PaletteChanged;
+        public event StepDistanceChangedHandler StepDistanceChanged;
+        public event StepTimeChangedHandler StepTimeChanged;
+
+        public ICmpScan CmpScan { get; private set; }
 
         private bool _manualSummation;
         public bool ManualSummationPossible
@@ -40,10 +52,12 @@ namespace AppWithSimpleTestScan.ViewModels
             get => _stepTime;
             set
             {
+                var oldStepTime = _stepTime;
                 _stepTime = value;
                 if (CmpScan != null)
                     CmpScan.StepTime = value;
                 OnPropertyChanged(nameof(StepTime));
+                StepTimeChanged?.Invoke(this, new StepTimeEventArgs(_stepTime, oldStepTime));
             }
         }
 
@@ -55,10 +69,12 @@ namespace AppWithSimpleTestScan.ViewModels
             get => _stepDistance;
             set
             {
+                var oldStepDistance = _stepDistance;
                 _stepDistance = value;
                 if (CmpScan != null)
                     CmpScan.StepDistance = value;
                 OnPropertyChanged(nameof(StepDistance));
+                StepDistanceChanged?.Invoke(this, new StepDistanceEventArgs(_stepDistance, oldStepDistance));
             }
         }
         public ObservableCollection<double> StepsDistance { get; set; } = new ObservableCollection<double>();
@@ -102,8 +118,6 @@ namespace AppWithSimpleTestScan.ViewModels
                 PaletteChanged?.Invoke(this, new PaletteChangedEventArgs(palette));
             }
         }
-
-        public ICmpScan CmpScan { get; private set; }
         
 
         public OptionsViewModel()
@@ -116,7 +130,9 @@ namespace AppWithSimpleTestScan.ViewModels
 
         public void LaunchSummation()
         {
+            ManualSummationPossible = false;
             SummationClick?.Invoke(this, new SummationClickEventArgs());
+            ManualSummationPossible = true;
         }
 
 
@@ -151,6 +167,7 @@ namespace AppWithSimpleTestScan.ViewModels
         {
             CmpScan = e.CmpScan;
 
+            // TODO: should not be like this. More likely vice versa
             CmpScan.StepTime = _stepTime;
             CmpScan.StepDistance = _stepDistance;
         }

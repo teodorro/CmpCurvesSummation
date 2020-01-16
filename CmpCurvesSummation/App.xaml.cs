@@ -6,6 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using CmpCurvesSummation.Core;
+using GprFileService;
+using ProcessingModule;
+using StructureMap;
 
 namespace CmpCurvesSummation
 {
@@ -14,6 +17,18 @@ namespace CmpCurvesSummation
     /// </summary>
     public partial class App : Application
     {
-        
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            InitializeDiContainer();
+        }
+
+        private static void InitializeDiContainer()
+        {
+            DiContainer.Instance.Container = new Container(_ =>
+            {
+                _.For<IFileOpener>().Use<FileOpener>();
+                _.For<IRawDataProcessor>().Use<RawDataProcessor>();
+            });
+        }
     }
 }

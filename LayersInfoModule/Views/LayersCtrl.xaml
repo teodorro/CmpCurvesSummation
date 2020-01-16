@@ -15,7 +15,7 @@
 
         <CheckBox x:Name="AutoCorrectionPointClickCheckBox" Content="Автокоррекция клика" Margin="5,0,15,0" Grid.Row="0" VerticalAlignment="Bottom"/>
         <Label Content="Слои" VerticalAlignment="Bottom" FontWeight="Bold" Grid.Row="1" />
-        <DataGrid x:Name="LayersListDataGrid" Grid.Row="2" CanUserAddRows="False" CanUserSortColumns="False" 
+        <DataGrid x:Name="LayersListDataGrid" Grid.Row="2" CanUserAddRows="False" CanUserSortColumns="False" IsReadOnly="True"
                   ItemsSource="{Binding Layers}" AutoGeneratingColumn="LayersListDataGrid_AutoGeneratingColumn" >
         </DataGrid>
     </Grid>
