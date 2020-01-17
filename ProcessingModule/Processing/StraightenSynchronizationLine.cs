@@ -73,35 +73,35 @@ namespace ProcessingModule.Processing
 
         private int GetFirstExtremumIndex(double[] ascan)
         {
-            if (Math.Abs(ascan[0]) > Math.Abs(ascan[1]) && Math.Abs(ascan[0]) > MinAmplitudeToCheck)
+            if (Math.Abs(ascan[0]) > Math.Abs(ascan[1]) && Math.Abs(ascan[0]) >= MinAmplitudeToCheck)
                 return 0;
             for (int i = 1; i < ascan.Length; i++)
             {
-                if (ascan[i] > ascan[i - 1] && Math.Abs(ascan[i]) > MinAmplitudeToCheck)
+                if (Math.Abs(ascan[i]) > Math.Abs(ascan[i - 1]) && Math.Abs(ascan[i]) >= MinAmplitudeToCheck)
                 {
-                    if (ascan[i + 1] > ascan[i])
+                    if (Math.Abs(ascan[i + 1]) > Math.Abs(ascan[i]))
                         continue;
-                    if (ascan[i + 1] < ascan[i])
+                    if (Math.Abs(ascan[i + 1]) < Math.Abs(ascan[i]))
                         return i;
                     for (int j = i + 1; j < ascan.Length; j++)
                     {
-                        if (ascan[j] < ascan[i])
+                        if (Math.Abs(ascan[j]) < Math.Abs(ascan[i]))
                             return i + (j - i / 2);
-                        if (ascan[j] > ascan[i])
+                        if (Math.Abs(ascan[j]) > Math.Abs(ascan[i]))
                             break;
                     }
                 }
-                else if (ascan[i] < ascan[i - 1] && Math.Abs(ascan[i]) > MinAmplitudeToCheck)
+                else if (ascan[i] < ascan[i - 1] && Math.Abs(ascan[i]) >= MinAmplitudeToCheck)
                 {
-                    if (ascan[i + 1] < ascan[i])
+                    if (Math.Abs(ascan[i + 1]) < Math.Abs(ascan[i]))
                         continue;
-                    if (ascan[i + 1] > ascan[i])
+                    if (Math.Abs(ascan[i + 1]) > Math.Abs(ascan[i]))
                         return i;
                     for (int j = i + 1; j < ascan.Length; j++)
                     {
-                        if (ascan[j] > ascan[i])
+                        if (Math.Abs(ascan[j]) > Math.Abs(ascan[i]))
                             return i + (j - i / 2);
-                        if (ascan[j] < ascan[i])
+                        if (Math.Abs(ascan[j]) < Math.Abs(ascan[i]))
                             break;
                     }
                 }

@@ -25,6 +25,33 @@ namespace ProcessingModule.Tests
             return cmpScan;
         }
 
+        public ICmpScan GetSimpleCmpScanMinus()
+        {
+            var a = 3;
+            var cmpScan = new CmpScan();
+            for (int i = 0; i < a; i++)
+            {
+                var ascan = new double[2 * a];
+                cmpScan.RawData.Add(ascan);
+                ascan[i + 2] = -1;
+            }
+
+            return cmpScan;
+        }
+
+        public ICmpScan GetSimpleCmpScanFlat()
+        {
+            var cmpScan = new CmpScan();
+            var ascan1 = new double[] { 0, 1, 1, 1, 0 };
+            var ascan2 = new double[] { 0, 0, 0, 1, 0 };
+            var ascan3 = new double[] { 0, 1, 0, 0, 0 };
+            cmpScan.RawData.Add(ascan1);
+            cmpScan.RawData.Add(ascan2);
+            cmpScan.RawData.Add(ascan3);
+
+            return cmpScan;
+        }
+
         [Fact]
         public void AscansMove()
         {
@@ -37,6 +64,34 @@ namespace ProcessingModule.Tests
             Assert.Equal(1, cmpScan.Data[0][4]);
             Assert.Equal(1, cmpScan.Data[1][4]);
             Assert.Equal(1, cmpScan.Data[2][4]);
+        }
+
+        [Fact]
+        public void AscansMoveMinus()
+        {
+            var cmpScan = GetSimpleCmpScanMinus();
+            cmpScan.CopyRawDataToProcessed();
+            var processing = new StraightenSynchronizationLine();
+
+            processing.Process(cmpScan);
+
+            Assert.Equal(-1, cmpScan.Data[0][4]);
+            Assert.Equal(-1, cmpScan.Data[1][4]);
+            Assert.Equal(-1, cmpScan.Data[2][4]);
+        }
+
+        [Fact]
+        public void AscansMoveFlat()
+        {
+            var cmpScan = GetSimpleCmpScanFlat();
+            cmpScan.CopyRawDataToProcessed();
+            var processing = new StraightenSynchronizationLine();
+
+            processing.Process(cmpScan);
+
+            Assert.Equal(1, cmpScan.Data[0][3]);
+            Assert.Equal(1, cmpScan.Data[1][3]);
+            Assert.Equal(1, cmpScan.Data[2][3]);
         }
     }
 }

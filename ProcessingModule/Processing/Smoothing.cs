@@ -11,7 +11,7 @@ namespace ProcessingModule.Processing
 
         public void Process(ICmpScan cmpScan)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

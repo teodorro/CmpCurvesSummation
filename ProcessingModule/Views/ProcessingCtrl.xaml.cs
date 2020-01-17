@@ -33,14 +33,28 @@ namespace ProcessingModule.Views
 
             _viewModel = new ProcessingViewModel(DiContainer.Instance.Container.GetInstance<IRawDataProcessor>());
             DataContext = _viewModel;
+
         }
 
         private void ProcessingListDataGrid_DoubleClick(object sender, MouseButtonEventArgs e)
         {
             var dataRow = ((DataGridRow) e.Source).Item as ProcessingDataRow;
-            if (dataRow != null && dataRow.Processing is ClearAppearanceAscans)
+            if (dataRow == null)
+                return;
+            if (dataRow.Processing is ClearAppearanceAscans)
             {
-                new ClearAppearanceAscansCtrl().Show();
+                var сlearAppearanceAscans = dataRow.Processing as ClearAppearanceAscans;
+                var dialog = new ClearAppearanceAscansWindow(сlearAppearanceAscans.NumberOfAscans);
+                if (dialog.ShowDialog() == true)
+                    сlearAppearanceAscans.NumberOfAscans = dialog.NumberOfAppearanceAscans;
+            }
+            else if (dataRow.Processing is StraightenSynchronizationLine)
+            {
+                var straightenSynchronizationLine = dataRow.Processing as StraightenSynchronizationLine;
+                var dialog = new StraightenSynchronizationLineWindow(straightenSynchronizationLine.MinAmplitudeToCheck);
+                if (dialog.ShowDialog() == true)
+                    straightenSynchronizationLine.MinAmplitudeToCheck = dialog.MinAmplitudeToCheck;
+
             }
         }
 
@@ -57,35 +71,35 @@ namespace ProcessingModule.Views
                 e.Column.Width = DataGridLength.Auto;
         }
 
-        //        private void DataGrid_GotFocus(object sender, RoutedEventArgs e)
-        //        {
-        //            // Lookup for the source to be DataGridCell
-        //            if (e.OriginalSource.GetType() == typeof(DataGridCell))
-        //            {
-        //                // Starts the Edit on the row;
-        //                DataGrid grd = (DataGrid)sender;
-        //                grd.BeginEdit(e);
-        ////                ((ProcessingModule.ViewModels.ProcessingDataRow)((System.Windows.Controls.Primitives.Selector)e.Source).SelectedItem).Enabled
-        //            }
-        //        }
+        /// <summary>
+        /// TODO: what a perversion? :((
+        /// </summary>
+        private void ProcessingListDataGrid_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 1)
+            {
+                if (e.OriginalSource as Decorator != null
+                    && ((Decorator)e.OriginalSource).Child as ContentPresenter != null
+                    && ((ContentPresenter)((Decorator)e.OriginalSource).Child).Content as CheckBox != null)
+                {
+                    CheckBoxChange(e);
+                }
+                else if (e.OriginalSource as CheckBox != null)
+                {
+                    CheckBoxChange(e);
+                }
+                else if (e.OriginalSource as Rectangle != null
+                         && ((FrameworkElement)e.OriginalSource).TemplatedParent as CheckBox != null)
+                {
+                    CheckBoxChange(e);
+                }
+            }
+        }
 
-
-        //        private void ListViewProcessing_PreviewMouseMove(object sender, MouseEventArgs e)
-        //        {
-        //            //            if (e.LeftButton == MouseButtonState.Pressed &&
-        //            //                (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
-        //            //                 Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
-        //            if (e.LeftButton == MouseButtonState.Pressed)
-        //            {
-        //                var a = e.Source;
-        //                DragDrop.DoDragDrop(ListViewChoose, a, DragDropEffects.Copy);
-        //            }
-        //        }
-        //
-        //        private void ListViewChoose_Drop(object sender, DragEventArgs e)
-        //        {
-        //            // TODO: it looks somehow strange 
-        ////            this._viewModel.ProcessingList.Add(ListViewProcessing.SelectedItem as IRawDataProcessing);
-        //        }
+        private void CheckBoxChange(MouseButtonEventArgs e)
+        {
+            var row = (ProcessingDataRow) ((System.Windows.Controls.Primitives.DataGridCellsPresenter) e.Source).Item;
+            row.Enabled = !row.Enabled;
+        }
     }
 }

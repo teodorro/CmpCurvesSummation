@@ -17,18 +17,29 @@ using ProcessingModule.ViewModels;
 namespace ProcessingModule.Views
 {
     /// <summary>
-    /// Interaction logic for ClearAppearanceAscansCtrl.xaml
+    /// Interaction logic for ClearAppearanceAscansWindow.xaml
     /// </summary>
-    public partial class ClearAppearanceAscansCtrl : Window
+    public partial class ClearAppearanceAscansWindow : Window
     {
         private ClearAppearanceAscansViewModel _viewModel;
+        public int NumberOfAppearanceAscans => _viewModel.NumberOfAppearanceAscans;
 
-        public ClearAppearanceAscansCtrl()
+        public ClearAppearanceAscansWindow(int numberOfAppearanceAscans = 5)
         {
             InitializeComponent();
 
-            _viewModel = new ClearAppearanceAscansViewModel();
+            _viewModel = new ClearAppearanceAscansViewModel(numberOfAppearanceAscans);
             DataContext = _viewModel;
+        }
+
+        private void ButtonOk_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+        }
+
+        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
         }
     }
 }

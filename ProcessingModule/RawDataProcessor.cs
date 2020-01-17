@@ -37,6 +37,8 @@ namespace ProcessingModule
 
         public void Process(ICmpScan cmpScan)
         {
+            if (cmpScan == null)
+                return;
             cmpScan.CopyRawDataToProcessed();
             foreach (var operation in OperationsToProcess)
                 operation.Process(cmpScan);

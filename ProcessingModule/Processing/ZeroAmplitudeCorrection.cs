@@ -37,7 +37,7 @@ namespace ProcessingModule.Processing
             }
             else
             {
-                ConvertLinearAmplitudes();
+                throw new System.NotImplementedException();
             }
         }
 
@@ -52,12 +52,10 @@ namespace ProcessingModule.Processing
         // TODO: Узнать у Меркулова, где там ноль, и что за амплитуды вообще
         private void Convert6000()
         {
-            throw new System.NotImplementedException();
-        }
-
-        private void ConvertLinearAmplitudes()
-        {
-            throw new System.NotImplementedException();
+            var zeroAmp = 2515;
+            foreach (var ascan in _data)
+                for (int i = 0; i < ascan.Length; i++)
+                    ascan[i] = ascan[i] - zeroAmp;
         }
     }
 }

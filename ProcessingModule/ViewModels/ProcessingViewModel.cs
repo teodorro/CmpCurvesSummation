@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using CmpCurvesSummation.Core;
+using ProcessingModule.Annotations;
 using ProcessingModule.Processing;
 
 namespace ProcessingModule.ViewModels
 {
-
     public delegate void RawCmpProcessedHandler(object obj, RawCmpProcessedEventArgs e);
 
 
-    public class ProcessingViewModel
+    public class ProcessingViewModel : INotifyPropertyChanged
     {
         private ICmpScan _cmpScan;
         public event RawCmpProcessedHandler RawCmpDataProcessed;
@@ -70,6 +71,14 @@ namespace ProcessingModule.ViewModels
             Processor.Process(_cmpScan);
             RawCmpDataProcessed.Invoke(this, new RawCmpProcessedEventArgs(_cmpScan));
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
 
@@ -83,7 +92,7 @@ namespace ProcessingModule.ViewModels
 
 
 
-    public class ProcessingDataRow //: INotifyPropertyChanged
+    public class ProcessingDataRow : INotifyPropertyChanged
     {
         public ProcessingDataRow(bool enabled, IRawDataProcessing processing)
         {
@@ -110,7 +119,7 @@ namespace ProcessingModule.ViewModels
                     Processing = _processing,
                     Enabled = _enabled
                 });
-//                OnPropertyChanged(nameof(Enabled));
+                OnPropertyChanged(nameof(Enabled));
             }
         }
 
@@ -125,5 +134,12 @@ namespace ProcessingModule.ViewModels
 //        {
 //            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 //        }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
