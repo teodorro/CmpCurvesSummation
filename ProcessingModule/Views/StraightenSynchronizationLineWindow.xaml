@@ -9,7 +9,7 @@
     <Grid>
         <Button x:Name="ButtonOk" Content="ОК" HorizontalAlignment="Left" Margin="198,133,0,0" VerticalAlignment="Top" Width="75" Click="ButtonOk_Click"/>
         <Button x:Name="ButtonCancel" Content="Отмена" HorizontalAlignment="Left" Margin="278,133,0,0" VerticalAlignment="Top" Width="75" Click="ButtonCancel_Click"/>
-        <Label Content="Минимальное амплитуда для проверки" HorizontalAlignment="Left" Margin="23,54,0,0" VerticalAlignment="Top"/>
+        <Label Content="Минимальная амплитуда для проверки" HorizontalAlignment="Left" Margin="23,54,0,0" VerticalAlignment="Top"/>
 
         <TextBox HorizontalAlignment="Left" Height="23" Margin="256,58,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
                  Text="{Binding MinAmplitudeToCheck}"/>

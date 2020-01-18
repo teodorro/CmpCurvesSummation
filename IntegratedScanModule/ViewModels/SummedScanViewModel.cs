@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using CmpCurvesSummation.Core;
 using OxyPlot;
 using OxyPlot.Annotations;
@@ -9,6 +10,8 @@ using OxyPlot.Series;
 namespace SummedScanModule.ViewModels
 {
     public delegate void HodographDrawClickHander(object obj, HodographDrawVTClickEventArgs e);
+    public delegate void EndSummationHandler(object obj, SummationFinishedEventArgs e);
+
 
     public class SummedScanViewModel
     {
@@ -22,7 +25,7 @@ namespace SummedScanModule.ViewModels
         internal bool AutoSummation { get; set; }
 
         public event HodographDrawClickHander HodographDrawClick;
-
+        public event EndSummationHandler SummationFinished;
 
 
         public SummedScanViewModel()
@@ -43,10 +46,17 @@ namespace SummedScanModule.ViewModels
                 Sum();
         }
 
-        private void Sum()
+        private async void Sum()
         {
             _summedScan = new SummedScanVT(_cmpScan);
-            LoadSummedScan();
+            await Task.Run(() =>
+            {
+                _summedScan.Sum(_cmpScan);
+            }).ContinueWith(task =>
+            {
+                LoadSummedScan();
+            });
+            SummationFinished?.Invoke(this, new SummationFinishedEventArgs());
         }
 
 
@@ -224,7 +234,7 @@ namespace SummedScanModule.ViewModels
             AutoSummation = e.Auto;
         }
 
-        public void OnSummationClick(object obj, EventArgs e)
+        public void OnSummationStarted(object obj, EventArgs e)
         {
             Sum();
         }
@@ -238,6 +248,14 @@ namespace SummedScanModule.ViewModels
                 Plot.Axes.Remove(Plot.Axes.First(x => x is LinearColorAxis));
             if (!Plot.Axes.Any(x => x is LinearColorAxis))
                 AddPalette(_palette);
+            Plot.InvalidatePlot(true);
+        }
+
+        public void OnFileLoaded(object sender, FileLoadedEventArgs e)
+        {
+            Plot.Series.Clear();
+            Plot.Axes.Clear();
+            Plot.Annotations.Clear();
             Plot.InvalidatePlot(true);
         }
 

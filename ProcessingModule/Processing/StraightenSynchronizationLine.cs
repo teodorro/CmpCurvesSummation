@@ -86,7 +86,7 @@ namespace ProcessingModule.Processing
                     for (int j = i + 1; j < ascan.Length; j++)
                     {
                         if (Math.Abs(ascan[j]) < Math.Abs(ascan[i]))
-                            return i + (j - i / 2);
+                            return i + (j - i) / 2;
                         if (Math.Abs(ascan[j]) > Math.Abs(ascan[i]))
                             break;
                     }
@@ -100,7 +100,7 @@ namespace ProcessingModule.Processing
                     for (int j = i + 1; j < ascan.Length; j++)
                     {
                         if (Math.Abs(ascan[j]) > Math.Abs(ascan[i]))
-                            return i + (j - i / 2);
+                            return i + (j - i) / 2;
                         if (Math.Abs(ascan[j]) < Math.Abs(ascan[i]))
                             break;
                     }

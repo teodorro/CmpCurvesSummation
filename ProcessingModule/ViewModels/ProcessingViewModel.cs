@@ -46,7 +46,10 @@ namespace ProcessingModule.ViewModels
         // TODO: should be placed in config or something
         private bool IsOperationEnabled(IRawDataProcessing operation)
         {
-            if (operation is Smoothing || operation is LogarithmProcessing || operation is ZeroAmplitudeCorrection || operation is ClearAppearanceAscans)
+            if (operation is Smoothing 
+                || operation is LogarithmProcessing 
+                || operation is ZeroAmplitudeCorrection 
+                || operation is ClearAppearanceAscans)
                 return false;
             return false;
         }
@@ -127,13 +130,6 @@ namespace ProcessingModule.ViewModels
         public IRawDataProcessing Processing => _processing;
 
 
-//        public event PropertyChangedEventHandler PropertyChanged;
-//
-//        [NotifyPropertyChangedInvocator]
-//        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-//        {
-//            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-//        }
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

@@ -19,6 +19,7 @@ namespace CmpCurvesSummation.Core
         int AscanLengthDimensionless { get; }
         double AscanLength { get; }
         double[,] GetDataArray();
+        void Sum(ICmpScan cmpScan);
     }
 
 
@@ -46,11 +47,11 @@ namespace CmpCurvesSummation.Core
             AscanLengthDimensionless = cmpScan.AscanLengthDimensionless;
             MinTime = cmpScan.MinTime;
 
-            Sum(cmpScan);
+//            Sum(cmpScan);
         }
         
 
-        private void Sum(ICmpScan cmpScan)
+        public void Sum(ICmpScan cmpScan)
         {
             double v;
             double h;
@@ -58,6 +59,7 @@ namespace CmpCurvesSummation.Core
 
             for (int p = 0; p < _vLengthDimensionless; p++)
             {
+                CmpProgressBar.Instance.ProgressValue = p;
                 v = vStep * p + MinVelocity;
                 Data.Add(new double[AscanLengthDimensionless]);
                 for (int j = 0; j < AscanLengthDimensionless; j++)

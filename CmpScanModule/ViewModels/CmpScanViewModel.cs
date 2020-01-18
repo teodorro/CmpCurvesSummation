@@ -31,6 +31,12 @@ namespace CmpScanModule.ViewModels
         private Axis DistanceAxis => Plot.Axes.FirstOrDefault(x => x.Position == AxisPosition.Top);
         private HeatMapSeries HeatMap => Plot.Series.First() as HeatMapSeries;
 
+
+        public void OnFileLoaded(object sender, FileLoadedEventArgs e)
+        {
+            Plot.Annotations.Clear();
+        }
+
         public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args)
         {
             _cmpScan = args.CmpScan;

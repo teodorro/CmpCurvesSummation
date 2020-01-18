@@ -1,18 +1,25 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using CmpCurvesSummation.Core;
 using CmpScanModule.Annotations;
 
 namespace CmpCurvesSummation.ViewModels
 {
     public delegate void AutoSummationCheckHander(object obj, AutoSummationCheckEventArgs e);
-    public delegate void SummationHander(object obj, SummationClickEventArgs e);
+    public delegate void SummationStartedHander(object obj, SummationStartedClickEventArgs e);
     public delegate void PaletteChangedHander(object obj, PaletteChangedEventArgs e);
     public delegate void StepDistanceChangedHandler(object obj, StepDistanceEventArgs e);
     public delegate void StepTimeChangedHandler(object obj, StepTimeEventArgs e);
 
 
+
+    // TODO: 3 states
+    // 1. nothing is loaded
+    // 2. the process of summation
+    // 3. file loaded, waiting for user actions
 
     public class OptionsViewModel : INotifyPropertyChanged
     {
@@ -27,7 +34,7 @@ namespace CmpCurvesSummation.ViewModels
 //        public string Black = Colors.Black.ToString();
 
         public event AutoSummationCheckHander AutoSumCheckEvent;
-        public event SummationHander SummationClick;
+        public event SummationStartedHander SummationStarted;
         public event PaletteChangedHander PaletteChanged;
         public event StepDistanceChangedHandler StepDistanceChanged;
         public event StepTimeChangedHandler StepTimeChanged;
@@ -79,18 +86,18 @@ namespace CmpCurvesSummation.ViewModels
         }
         public ObservableCollection<double> StepsDistance { get; set; } = new ObservableCollection<double>();
 
-        private bool _autoSummation;
-        public bool AutoSummation
-        {
-            get => _autoSummation;
-            set
-            {
-                _autoSummation = value;
-                ManualSummationPossible = !_autoSummation && _cmpScanLoaded;
-                OnPropertyChanged(nameof(AutoSummation));
-                AutoSumCheckEvent?.Invoke(this, new AutoSummationCheckEventArgs(value));
-            }
-        }
+//        private bool _autoSummation;
+//        public bool AutoSummation
+//        {
+//            get => _autoSummation;
+//            set
+//            {
+//                _autoSummation = value;
+//                ManualSummationPossible = !_autoSummation && _cmpScanLoaded;
+//                OnPropertyChanged(nameof(AutoSummation));
+//                AutoSumCheckEvent?.Invoke(this, new AutoSummationCheckEventArgs(value));
+//            }
+//        }
 
         public ObservableCollection<string> Palettes { get; set; } = new ObservableCollection<string>();
 
@@ -118,7 +125,29 @@ namespace CmpCurvesSummation.ViewModels
                 PaletteChanged?.Invoke(this, new PaletteChangedEventArgs(palette));
             }
         }
-        
+
+        private bool _progressBarVisible = false;
+        public Visibility ProgressBarVisible
+        {
+            get => _progressBarVisible ? Visibility.Visible : Visibility.Hidden;
+            set
+            {
+                _progressBarVisible = value == Visibility.Visible;
+                OnPropertyChanged(nameof(ProgressBarVisible));
+            }
+        }
+
+        private int _progressValue;
+        public int ProgressValue
+        {
+            get => _progressValue;
+            set
+            {
+                _progressValue = value;
+                OnPropertyChanged(nameof(ProgressValue));
+            }
+        }
+
 
         public OptionsViewModel()
         {
@@ -131,8 +160,8 @@ namespace CmpCurvesSummation.ViewModels
         public void LaunchSummation()
         {
             ManualSummationPossible = false;
-            SummationClick?.Invoke(this, new SummationClickEventArgs());
-            ManualSummationPossible = true;
+            ProgressBarVisible = Visibility.Visible;
+            SummationStarted?.Invoke(this, new SummationStartedClickEventArgs());
         }
 
 
@@ -175,7 +204,14 @@ namespace CmpCurvesSummation.ViewModels
         public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args)
         {
             _cmpScanLoaded = true;
-            ManualSummationPossible = !_autoSummation && _cmpScanLoaded;
+            ManualSummationPossible = _cmpScanLoaded;
+        }
+
+        public void OnSummationFinished(object obj, SummationFinishedEventArgs e)
+        {
+            ManualSummationPossible = true;
+            ProgressBarVisible = Visibility.Hidden;
+            ProgressValue = 0;
         }
 
 
@@ -186,5 +222,15 @@ namespace CmpCurvesSummation.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void OnSummationInProcess(object obj, SummationInProcessEventArgs e)
+        {
+            ProgressValue = e.Percent;
+        }
     }
+
+
+
+
+    
 }

@@ -92,7 +92,21 @@ namespace CmpCurvesSummation.Core
     }
 
 
-    public class SummationClickEventArgs : EventArgs
+    public class SummationStartedClickEventArgs : EventArgs
+    {
+    }
+
+    public class SummationInProcessEventArgs : EventArgs
+    {
+        public SummationInProcessEventArgs(int percent)
+        {
+            Percent = percent;
+        }
+
+        public int Percent { get; }
+    }
+
+    public class SummationFinishedEventArgs : EventArgs
     {
     }
 
@@ -136,7 +150,26 @@ namespace CmpCurvesSummation.Core
 
 
 
+    public delegate void SummationInProcessHandler(object obj, SummationInProcessEventArgs e);
 
+    public class CmpProgressBar
+    {
+        private static Lazy<CmpProgressBar> _instance = new Lazy<CmpProgressBar>(() => new CmpProgressBar());
+        public static CmpProgressBar Instance => _instance.Value;
+
+        public event SummationInProcessHandler SummationInProcess;
+
+        private int _progressValue;
+        public int ProgressValue
+        {
+            get => _progressValue;
+            set
+            {
+                _progressValue = value;
+                SummationInProcess.Invoke(this, new SummationInProcessEventArgs(value));
+            }
+        }
+    }
 
 
 

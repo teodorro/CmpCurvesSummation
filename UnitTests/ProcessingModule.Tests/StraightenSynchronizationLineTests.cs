@@ -88,7 +88,7 @@ namespace ProcessingModule.Tests
             var processing = new StraightenSynchronizationLine();
 
             processing.Process(cmpScan);
-
+            
             Assert.Equal(1, cmpScan.Data[0][3]);
             Assert.Equal(1, cmpScan.Data[1][3]);
             Assert.Equal(1, cmpScan.Data[2][3]);

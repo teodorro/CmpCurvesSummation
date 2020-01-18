@@ -41,6 +41,11 @@ namespace LayersInfoModule.ViewModels
             DeleteClick?.Invoke(sender, e);
         }
 
+        public void OnFileLoaded(object sender, FileLoadedEventArgs e)
+        {
+            Layers.Clear();
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

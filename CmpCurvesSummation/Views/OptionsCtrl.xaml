@@ -20,6 +20,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label x:Name="StepDistanceLabel" Content="Шаг измерений, м" Grid.Row="1" Margin="15,5"/>
@@ -37,9 +38,11 @@
         <Label x:Name="HodographLabel" Content="Цвет годографов" Margin="15,5" Grid.Row="5"/>
         <ComboBox x:Name="HodographComboBox" Margin="5,5,15,10" Grid.Row="5" Grid.Column="1"
                   />
-        <CheckBox x:Name="AutoSummationCheckBox" Content="Автоматически суммировать" Margin="20,0,15,15" Grid.Row="6" Grid.ColumnSpan="2" VerticalAlignment="Bottom" 
-                  IsChecked="{Binding AutoSummation}"/>
+<!--        <CheckBox x:Name="AutoSummationCheckBox" Content="Автоматически суммировать" Margin="20,0,15,15" Grid.Row="6" Grid.ColumnSpan="2" VerticalAlignment="Bottom" -->
+<!--                  IsEnabled="False" IsChecked="{Binding AutoSummation}"/>-->
         <Button x:Name="ButtonSummation" Content="Запустить суммирование" HorizontalAlignment="Left"  Grid.Row="7" Margin="20,0,15,15" Width="150" Grid.ColumnSpan="2" VerticalAlignment="Bottom" 
                 IsEnabled="{Binding ManualSummationPossible}" Click="ButtonSummation_Click" />
+        <ProgressBar x:Name="progressBar" Grid.Row="8" Grid.ColumnSpan="2" Margin="20,10,15,10"
+                     Visibility="{Binding ProgressBarVisible}" Value="{Binding ProgressValue}"/>
     </Grid>
 </UserControl>
