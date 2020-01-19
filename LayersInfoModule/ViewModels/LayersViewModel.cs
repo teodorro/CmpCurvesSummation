@@ -9,19 +9,28 @@ using LayersInfoModule.Annotations;
 
 namespace LayersInfoModule.ViewModels
 {
-    public delegate void DeleteLayerHander(object obj, DeleteLayerEventArgs e);
-
-
     public class LayersViewModel : INotifyPropertyChanged
     {
         public event DeleteLayerHander DeleteClick;
+        public event AutoCorrectionCheckHander AutoCorrection;
 
         public ObservableCollection<LayerInfo> Layers { get; } = new ObservableCollection<LayerInfo>();
-        
-        
+
+        private bool _autoSummation;
+        public bool AutoSummation
+        {
+            get => _autoSummation;
+            set
+            {
+                _autoSummation = value;
+                OnPropertyChanged(nameof(AutoSummation));
+                AutoCorrection?.Invoke(this, new AutoCorrectionCheckEventArgs(_autoSummation));
+            }
+        }
+
+
         public void OnHodographDrawClick(object sender, HodographDrawVTClickEventArgs e)
         {
-
             var newLayer = new LayerInfo(e.Time, e.Velocity, Layers.LastOrDefault(x => x.Time < e.Time));
             Layers.Add(newLayer);
             SortLayers();
@@ -39,6 +48,11 @@ namespace LayersInfoModule.ViewModels
         {
             Layers.Remove(Layers.First(x => x.Time == e.Time && x.AvgVelocity == e.Velocity));
             DeleteClick?.Invoke(sender, e);
+        }
+
+        public void OnDeletePointClick(object sender, DeleteLayerEventArgs e)
+        {
+            Layers.Remove(Layers.First(x => x.Time == e.Time && x.AvgVelocity == e.Velocity));
         }
 
         public void OnFileLoaded(object sender, FileLoadedEventArgs e)

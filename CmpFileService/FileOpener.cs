@@ -45,7 +45,7 @@ namespace GprFileService
             foreach (var piece in krotFileData)
             {
                 var curAscanNum = Convert.ToInt32(piece[0]);
-                if (curAscanNum == cmpScan.LengthDimensionless)
+                if (curAscanNum == cmpScan.RawData.Count)
                 {
                     var ascanLengthDimensionless = krotFileData.Count(x => x[0] == curAscanNum);
                     cmpScan.RawData.Add(new double[ascanLengthDimensionless]);

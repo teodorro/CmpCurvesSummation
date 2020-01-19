@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CmpCurvesSummation.Core;
@@ -9,10 +10,6 @@ using OxyPlot.Series;
 
 namespace SummedScanModule.ViewModels
 {
-    public delegate void HodographDrawClickHander(object obj, HodographDrawVTClickEventArgs e);
-    public delegate void EndSummationHandler(object obj, SummationFinishedEventArgs e);
-
-
     public class SummedScanViewModel
     {
         private const int colorsCount = 1024;
@@ -20,12 +17,16 @@ namespace SummedScanModule.ViewModels
         private ICmpScan _cmpScan;
         private ISummedScanVT _summedScan;
         private PaletteType _palette = PaletteType.Jet;
+        
 
         public PlotModel Plot { get; }
-        internal bool AutoSummation { get; set; }
+        public bool AutoSummation { get; set; }
+        private bool _autoCorrection { get; set; }
+
 
         public event HodographDrawClickHander HodographDrawClick;
         public event EndSummationHandler SummationFinished;
+        public event DeleteLayerHander DeleteClick;
 
 
         public SummedScanViewModel()
@@ -40,10 +41,8 @@ namespace SummedScanModule.ViewModels
 
         public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args)
         {
+            Clear();
             _cmpScan = args.CmpScan;
-
-            if (AutoSummation)
-                Sum();
         }
 
         private async void Sum()
@@ -65,7 +64,7 @@ namespace SummedScanModule.ViewModels
             LoadSeries();
             UpdateAxes();
             
-            Plot.InvalidatePlot(true); // refresh plot?
+            Plot.InvalidatePlot(true); 
         }
 
         private void PlotOnMouseDown(object sender, OxyMouseDownEventArgs e)
@@ -86,12 +85,49 @@ namespace SummedScanModule.ViewModels
                 }
 
                 var point = Axis.InverseTransform(e.Position, X_Axis, Y_Axis);
+                if (!IsPointOnPlot(point))
+                    return;
 
-                if (IsPointOnPlot(point) && NoPointWithSameTime(point))
+                if (_autoCorrection)
                 {
+                    // FindMax
+                    // RemoveClosePoints
+                    // AddPoint
+                    var correctedPoint = CorrectPoint(point);
+                }
+                else
+                {
+                    RemovePointsWithCloseTime(point);
                     var velocity = Math.Round(point.X, 3);
                     var time = Math.Round(point.Y, 2);
                     AddHodographToPlot(velocity, time);
+                }
+            }
+        }
+
+        private DataPoint CorrectPoint(DataPoint point)
+        {
+            var velocity = Math.Round(point.X, 3);
+            var time = Math.Round(point.Y, 2);
+            var correctedPoint = _summedScan.CorrectPoint(velocity, time);
+            return new DataPoint(correctedPoint.Item1, correctedPoint.Item2);
+        }
+
+        private void RemovePointsWithCloseTime(DataPoint newPoint)
+        {
+            var points = Plot.Annotations.OfType<PointAnnotation>();
+            if (points == null || !points.Any())
+                return;
+            var pointsToRemove = new List<PointAnnotation>();
+            foreach (var point in points)
+                if (Math.Abs(Math.Abs(point.Y) - Math.Abs(newPoint.Y)) < _summedScan.CheckRadius)
+                    pointsToRemove.Add(point);
+            if (pointsToRemove.Any())
+            {
+                foreach (var point in pointsToRemove)
+                {
+                    Plot.Annotations.Remove(point);
+                    DeleteClick?.Invoke(this, new DeleteLayerEventArgs(point.X, point.Y));
                 }
             }
         }
@@ -253,82 +289,25 @@ namespace SummedScanModule.ViewModels
 
         public void OnFileLoaded(object sender, FileLoadedEventArgs e)
         {
+            Clear();
+        }
+
+        private void Clear()
+        {
             Plot.Series.Clear();
             Plot.Axes.Clear();
             Plot.Annotations.Clear();
             Plot.InvalidatePlot(true);
         }
 
-
-
-
-
-        private void TestScan()
+        public void OnAutoCorrectionChange(object sender, AutoCorrectionCheckEventArgs e)
         {
-            Plot.Series.Clear();
-
-            // generate 1d normal distribution
-            var singleData = new double[100];
-            for (int x = 0; x < 100; ++x)
-            {
-                singleData[x] = Math.Exp((-1.0 / 2.0) * Math.Pow(((double)x - 50.0) / 20.0, 2.0));
-            }
-
-            // generate 2d normal distribution
-            var data = new double[100, 100];
-            for (int x = 0; x < 100; ++x)
-            {
-                for (int y = 0; y < 100; ++y)
-                {
-                    data[y, x] = singleData[x] * singleData[(y + 30) % 100] * 100;
-                }
-            }
-
-            var heatMapSeries = new HeatMapSeries
-            {
-                X0 = 0,
-                X1 = 99,
-                Y0 = 0,
-                Y1 = 99,
-                Interpolate = true,
-                RenderMethod = HeatMapRenderMethod.Bitmap,
-                Data = data
-            };
-
-
-            Plot.Series.Add(heatMapSeries);
+            _autoCorrection = e.Auto;
         }
 
-        private void TestAnnotations()
-        {
-            var annotation = new TextAnnotation
-            {
-                Text = "hodograph",
-                TextPosition = new DataPoint(0, 22)
-            };
-            Plot.Annotations.Add(annotation);
 
-            var a2 = new EllipseAnnotation()
-            {
-                Fill = OxyColor.FromArgb(100, 255, 255, 255),
 
-                X = 43,
-                Y = 55,
-                Height = 10,
-                Width = 10
-            };
 
-            Plot.Annotations.Add(a2);
 
-            var a4 = new PolylineAnnotation();
-            a4.Points.Add(new DataPoint(10, 22));
-            a4.Points.Add(new DataPoint(13, 27));
-            a4.Points.Add(new DataPoint(30, 42));
-            a4.Points.Add(new DataPoint(22, 68));
-            a4.Points.Add(new DataPoint(20, 72));
-            a4.Color = OxyColor.FromRgb(255, 255, 255);
-            a4.InterpolationAlgorithm = new CanonicalSpline(0.5);
-            Plot.Annotations.Add(a4);
-        }
     }
 }

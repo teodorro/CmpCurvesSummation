@@ -73,6 +73,10 @@
       <Project>{EFA91824-72EE-429D-94BF-78A3E064C467}</Project>
       <Name>CmpCurvesSummation.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LayersInfoModule\LayersInfoModule.csproj">
+      <Project>{990E3E7F-7B5C-48E4-99D5-F968B7C08664}</Project>
+      <Name>LayersInfoModule</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

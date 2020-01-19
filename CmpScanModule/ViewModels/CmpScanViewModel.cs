@@ -147,7 +147,8 @@ namespace CmpScanModule.ViewModels
             var h = CmpMath.Instance.Depth(e.Velocity, e.Time);
             var t = Math.Round(CmpMath.Instance.HodographLineLoza(0, h, e.Velocity), 2);
             var annotation = Plot.Annotations.FirstOrDefault(x => (x as PolylineAnnotation)?.Points[0].Y == t);
-            Plot.Annotations.Remove(annotation);
+            if (annotation != null)
+                Plot.Annotations.Remove(annotation);
             Plot.InvalidatePlot(true);
         }
 

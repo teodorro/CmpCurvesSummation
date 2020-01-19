@@ -8,11 +8,6 @@ using CmpScanModule.Annotations;
 
 namespace CmpCurvesSummation.ViewModels
 {
-    public delegate void AutoSummationCheckHander(object obj, AutoSummationCheckEventArgs e);
-    public delegate void SummationStartedHander(object obj, SummationStartedClickEventArgs e);
-    public delegate void PaletteChangedHander(object obj, PaletteChangedEventArgs e);
-    public delegate void StepDistanceChangedHandler(object obj, StepDistanceEventArgs e);
-    public delegate void StepTimeChangedHandler(object obj, StepTimeEventArgs e);
 
 
 

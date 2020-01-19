@@ -11,6 +11,21 @@ namespace CmpCurvesSummation.Core
     }
 
 
+    public delegate void HodographDrawClickHander(object obj, HodographDrawVTClickEventArgs e);
+    public delegate void EndSummationHandler(object obj, SummationFinishedEventArgs e);
+    public delegate void AutoSummationCheckHander(object obj, AutoSummationCheckEventArgs e);
+    public delegate void SummationStartedHander(object obj, SummationStartedClickEventArgs e);
+    public delegate void PaletteChangedHander(object obj, PaletteChangedEventArgs e);
+    public delegate void StepDistanceChangedHandler(object obj, StepDistanceEventArgs e);
+    public delegate void StepTimeChangedHandler(object obj, StepTimeEventArgs e);
+    public delegate void FileOpenHandler(object obj, FileLoadedEventArgs e);
+    public delegate void DeleteLayerHander(object obj, DeleteLayerEventArgs e);
+    public delegate void RawCmpProcessedHandler(object obj, RawCmpProcessedEventArgs e);
+    public delegate void SummationInProcessHandler(object obj, SummationInProcessEventArgs e);
+    public delegate void AutoCorrectionCheckHander(object obj, AutoCorrectionCheckEventArgs e);
+
+
+
 
     public class FileLoadedEventArgs : EventArgs
     {
@@ -148,9 +163,19 @@ namespace CmpCurvesSummation.Core
     }
 
 
+    public class AutoCorrectionCheckEventArgs : EventArgs
+    {
+        public AutoCorrectionCheckEventArgs(bool auto)
+        {
+            Auto = auto;
+        }
+
+        public bool Auto { get; }
+    }
 
 
-    public delegate void SummationInProcessHandler(object obj, SummationInProcessEventArgs e);
+
+
 
     public class CmpProgressBar
     {

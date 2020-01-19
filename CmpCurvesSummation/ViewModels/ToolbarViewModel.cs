@@ -5,7 +5,6 @@ using Microsoft.Win32;
 namespace CmpCurvesSummation.ViewModels
 {
 
-    public delegate void FileOpenHandler(object obj, FileLoadedEventArgs e);
 
     public interface IToolbarViewModel
     {

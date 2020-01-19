@@ -8,7 +8,6 @@ using ProcessingModule.Processing;
 
 namespace ProcessingModule.ViewModels
 {
-    public delegate void RawCmpProcessedHandler(object obj, RawCmpProcessedEventArgs e);
 
 
     public class ProcessingViewModel : INotifyPropertyChanged
