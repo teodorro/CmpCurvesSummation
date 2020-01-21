@@ -36,28 +36,40 @@ namespace ProcessingModule.Views
         }
 
 
-        private void ProcessingListDataGrid_DoubleClick(object sender, MouseButtonEventArgs e)
+        private void RemoveIrrelevantCtrls()
         {
-            var dataRow = ((DataGridRow) e.Source).Item as ProcessingDataRow;
+            if (UiElementsStack.Children.Count > 2)
+                UiElementsStack.Children.RemoveAt(2);
+        }
+
+        private void EventSetter_OnHandler(object sender, RoutedEventArgs e)
+        {
+            RemoveIrrelevantCtrls();
+
+            var dataRow = ((DataGridRow)e.Source).Item as ProcessingDataRow;
             if (dataRow == null)
                 return;
-            if (dataRow.Processing is ClearOffsetAscans)
-            {
-                dataRow.Enabled = true;
-                var сlearAppearanceAscans = dataRow.Processing as ClearOffsetAscans;
-                var dialog = new ClearOffsetAscansWindow(сlearAppearanceAscans.NumberOfAscans, ViewModel.OnProcessingListChanged);
-                if (dialog.ShowDialog() == true)
-                    сlearAppearanceAscans.NumberOfAscans = dialog.NumberOfOffsetAscans;
-            }
-            else if (dataRow.Processing is StraightenSynchronizationLine)
-            {
-                dataRow.Enabled = true;
-                var straightenSynchronizationLine = dataRow.Processing as StraightenSynchronizationLine;
-                var dialog = new StraightenSynchronizationLineWindow(straightenSynchronizationLine.MinAmplitudeToCheck);
-                if (dialog.ShowDialog() == true)
-                    straightenSynchronizationLine.MinAmplitudeToCheck = dialog.MinAmplitudeToCheck;
 
+            if (dataRow.Processing is ClearOffsetAscans clearOffsetAscans)
+                ManageClearOffsetAscans(clearOffsetAscans);
+            else if (dataRow.Processing is StraightenSynchronizationLine straightenSynchronizationLine)
+            {
+                ManageStraightenSynchronizationLine(straightenSynchronizationLine);
             }
+            else
+            {
+                
+            }
+        }
+
+        private void ManageStraightenSynchronizationLine(StraightenSynchronizationLine processing)
+        {
+            UiElementsStack.Children.Add(new StraightenSynchronizationLineCtrl(ViewModel.OnProcessingListChanged, processing));
+        }
+
+        private void ManageClearOffsetAscans(ClearOffsetAscans processing)
+        {
+            UiElementsStack.Children.Add(new ClearOffsetAscansCtrl(ViewModel.OnProcessingListChanged, processing));
         }
     }
 }

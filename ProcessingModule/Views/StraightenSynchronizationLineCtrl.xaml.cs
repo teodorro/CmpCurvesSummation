@@ -12,34 +12,26 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ProcessingModule.Processing;
 using ProcessingModule.ViewModels;
 
 namespace ProcessingModule.Views
 {
     /// <summary>
-    /// Interaction logic for StraightenSynchronizationLineWindow.xaml
+    /// Interaction logic for StraightenSynchronizationLineCtrl.xaml
     /// </summary>
-    public partial class StraightenSynchronizationLineWindow : Window
+    public partial class StraightenSynchronizationLineCtrl : UserControl
     {
         private StraightenSynchronizationLineViewModel _viewModel;
         public double MinAmplitudeToCheck => _viewModel.MinAmplitudeToCheck;
 
-        public StraightenSynchronizationLineWindow(double minAmplitudeToCheck)
+        public StraightenSynchronizationLineCtrl(ProcessingListChangedHandler onProcessingListChanged, StraightenSynchronizationLine processing)
         {
             InitializeComponent();
 
-            _viewModel = new StraightenSynchronizationLineViewModel(minAmplitudeToCheck);
+            _viewModel = new StraightenSynchronizationLineViewModel(processing);
+            _viewModel.ProcessingListChanged += onProcessingListChanged;
             DataContext = _viewModel;
-        }
-
-        private void ButtonOk_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-        }
-
-        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
         }
     }
 }

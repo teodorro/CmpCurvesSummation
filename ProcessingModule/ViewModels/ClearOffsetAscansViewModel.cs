@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using ProcessingModule.Annotations;
+using ProcessingModule.Processing;
 
 namespace ProcessingModule.ViewModels
 {
@@ -9,23 +10,22 @@ namespace ProcessingModule.ViewModels
     {
         public event ProcessingListChangedHandler ProcessingListChanged;
 
-        private int _numberOfOffsetAscans = 5;
+        private ClearOffsetAscans _processing;
+
         public int NumberOfOffsetAscans {
-            get => _numberOfOffsetAscans;
+            get => _processing.NumberOfAscans;
             set
             {
-                _numberOfOffsetAscans = value;
+                _processing.NumberOfAscans = value;
                 OnPropertyChanged(nameof(NumberOfOffsetAscans));
-                ProcessingListChanged(this, new ProcessingListChangedEventArgs());
+                ProcessingListChanged(this, new ProcessingListChangedEventArgs(){Enabled = true, Processing = _processing});
             }
         }
 
-        public ObservableCollection<int> Numbers { get; set; } = new ObservableCollection<int>();
 
-
-        public ClearOffsetAscansViewModel(int numberOfOffsetAscans)
+        public ClearOffsetAscansViewModel(ClearOffsetAscans processing)
         {
-            _numberOfOffsetAscans = numberOfOffsetAscans;
+            _processing = processing;
         }
 
 

@@ -13,36 +13,27 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CmpCurvesSummation.Core;
+using ProcessingModule.Processing;
 using ProcessingModule.ViewModels;
 
 namespace ProcessingModule.Views
 {
     /// <summary>
-    /// Interaction logic for ClearOffsetAscansWindow.xaml
+    /// Interaction logic for ClearOffsetAscansCtrl.xaml
     /// </summary>
-    public partial class ClearOffsetAscansWindow : Window
+    public partial class ClearOffsetAscansCtrl : UserControl
     {
         private ClearOffsetAscansViewModel _viewModel;
         public int NumberOfOffsetAscans => _viewModel.NumberOfOffsetAscans;
 
 
-        public ClearOffsetAscansWindow(int numberOfOffsetAscans, ProcessingListChangedHandler onProcessingListChanged)
+        public ClearOffsetAscansCtrl(ProcessingListChangedHandler onProcessingListChanged, ClearOffsetAscans processing)
         {
             InitializeComponent();
 
-            _viewModel = new ClearOffsetAscansViewModel(numberOfOffsetAscans);
+            _viewModel = new ClearOffsetAscansViewModel(processing);
             _viewModel.ProcessingListChanged += onProcessingListChanged;
             DataContext = _viewModel;
-        }
-
-        private void ButtonOk_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-        }
-
-        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
         }
     }
 }

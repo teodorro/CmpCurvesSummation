@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using CmpCurvesSummation.Core;
 using ProcessingModule.Annotations;
@@ -62,7 +63,7 @@ namespace ProcessingModule.ViewModels
 
         internal void OnProcessingListChanged(object sender, ProcessingListChangedEventArgs e)
         {
-            if (e.Enabled == true)
+            if (e.Enabled == true && !Processor.OperationsToProcess.Contains(e.Processing))
                 Processor.OperationsToProcess.Add(e.Processing);
             else if (e.Enabled == false) 
                 Processor.OperationsToProcess.Remove(e.Processing);

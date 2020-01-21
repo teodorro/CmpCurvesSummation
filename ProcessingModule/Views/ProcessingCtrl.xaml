@@ -5,15 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ProcessingModule.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="400">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+             d:DesignHeight="450" d:DesignWidth="270">
+    <Grid >
 
+        <StackPanel Name="UiElementsStack">
         <Label Content="Текущая последовательность обработок" VerticalAlignment="Bottom" FontWeight="Bold" />
-        <DataGrid x:Name="ProcessingListDataGrid" Grid.Row="1" CanUserAddRows="False" CanUserSortColumns="False" CanUserDeleteRows="False"
+        <DataGrid x:Name="ProcessingListDataGrid" CanUserAddRows="False" CanUserSortColumns="False" CanUserDeleteRows="False"
                   AutoGenerateColumns="False" IsReadOnly="True"
                   ItemsSource="{Binding ProcessingRowList}" ColumnWidth="*" 
                   >
@@ -29,12 +26,12 @@
             </DataGrid.Columns>
             <DataGrid.ItemContainerStyle>
                 <Style TargetType="DataGridRow">
-                    <EventSetter Event="MouseDoubleClick" Handler="ProcessingListDataGrid_DoubleClick"></EventSetter>
-<!--                    <EventSetter Event="PreviewMouseUp"  Handler="ProcessingListDataGrid_PreviewMouseUp"></EventSetter>-->
+                    <EventSetter Event="Selected" Handler="EventSetter_OnHandler"></EventSetter>
                 </Style>
 
             </DataGrid.ItemContainerStyle>
         </DataGrid>
+        </StackPanel>
     </Grid>
 </UserControl>
 

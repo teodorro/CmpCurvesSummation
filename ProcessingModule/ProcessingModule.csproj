@@ -56,8 +56,8 @@
     <Compile Include="ViewModels\ClearOffsetAscansViewModel.cs" />
     <Compile Include="ViewModels\ProcessingViewModel.cs" />
     <Compile Include="ViewModels\StraightenSynchronizationLineViewModel.cs" />
-    <Compile Include="Views\ClearOffsetAscansWindow.xaml.cs">
-      <DependentUpon>ClearOffsetAscansWindow.xaml</DependentUpon>
+    <Compile Include="Views\ClearOffsetAscansCtrl.xaml.cs">
+      <DependentUpon>ClearOffsetAscansCtrl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProcessingCtrl.xaml.cs">
       <DependentUpon>ProcessingCtrl.xaml</DependentUpon>
@@ -68,12 +68,12 @@
     <Compile Include="Processing\StraightenSynchronizationLine.cs" />
     <Compile Include="Processing\ZeroAmplitudeCorrection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\StraightenSynchronizationLineWindow.xaml.cs">
-      <DependentUpon>StraightenSynchronizationLineWindow.xaml</DependentUpon>
+    <Compile Include="Views\StraightenSynchronizationLineCtrl.xaml.cs">
+      <DependentUpon>StraightenSynchronizationLineCtrl.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\ClearOffsetAscansWindow.xaml">
+    <Page Include="Views\ClearOffsetAscansCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -81,7 +81,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StraightenSynchronizationLineWindow.xaml">
+    <Page Include="Views\StraightenSynchronizationLineCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
