@@ -7,6 +7,7 @@
             MinAmplitudeToCheck = minAmplitudeToCheck;
         }
 
+
         public double MinAmplitudeToCheck { get; set; } = 1;
     }
 }

@@ -4,7 +4,7 @@ using Xunit;
 
 namespace ProcessingModule.Tests
 {
-    public class ClearAppearanceAscansTests
+    public class ClearOffsetAscansTests
     {
         public ICmpScan GetSimpleCmpScan()
         {
@@ -25,7 +25,7 @@ namespace ProcessingModule.Tests
         {
             var cmpScan = GetSimpleCmpScan();
             cmpScan.CopyRawDataToProcessed();
-            var processing = new ClearAppearanceAscans();
+            var processing = new ClearOffsetAscans();
             processing.NumberOfAscans = 2;
 
             processing.Process(cmpScan);

@@ -14,15 +14,27 @@
 
         <Label Content="Текущая последовательность обработок" VerticalAlignment="Bottom" FontWeight="Bold" />
         <DataGrid x:Name="ProcessingListDataGrid" Grid.Row="1" CanUserAddRows="False" CanUserSortColumns="False" CanUserDeleteRows="False"
-                  ItemsSource="{Binding ProcessingRowList}" AutoGeneratingColumn="ProcessingListDataGrid_AutoGeneratingColumn" ColumnWidth="*" 
+                  AutoGenerateColumns="False" IsReadOnly="True"
+                  ItemsSource="{Binding ProcessingRowList}" ColumnWidth="*" 
                   >
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Name}" ClipboardContentBinding="{x:Null}" Header="Название"/>
+                <DataGridTemplateColumn Header="Вкл." Width="40">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding Path=Enabled, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,0,0"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
             <DataGrid.ItemContainerStyle>
                 <Style TargetType="DataGridRow">
                     <EventSetter Event="MouseDoubleClick" Handler="ProcessingListDataGrid_DoubleClick"></EventSetter>
-                    <EventSetter Event="PreviewMouseUp"  Handler="ProcessingListDataGrid_PreviewMouseUp"></EventSetter>
+<!--                    <EventSetter Event="PreviewMouseUp"  Handler="ProcessingListDataGrid_PreviewMouseUp"></EventSetter>-->
                 </Style>
 
             </DataGrid.ItemContainerStyle>
         </DataGrid>
     </Grid>
 </UserControl>
+

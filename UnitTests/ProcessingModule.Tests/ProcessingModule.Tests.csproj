@@ -56,7 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClearAppearanceAscansTests.cs" />
+    <Compile Include="ClearOffsetAscansTests.cs" />
     <Compile Include="StraightenSynchronizationLineTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

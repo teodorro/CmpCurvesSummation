@@ -9,14 +9,13 @@ using ProcessingModule.Processing;
 namespace ProcessingModule.ViewModels
 {
 
-
     public class ProcessingViewModel : INotifyPropertyChanged
     {
         private ICmpScan _cmpScan;
+
         public event RawCmpProcessedHandler RawCmpDataProcessed;
 
         public ObservableCollection<ProcessingDataRow> ProcessingRowList { get; } = new ObservableCollection<ProcessingDataRow>();
-
         public IRawDataProcessor Processor { get; }
 
 
@@ -26,6 +25,7 @@ namespace ProcessingModule.ViewModels
             processor.InitOperationList();
             InitOperationsList();
         }
+
 
         private void InitOperationsList()
         {
@@ -48,7 +48,7 @@ namespace ProcessingModule.ViewModels
             if (operation is Smoothing 
                 || operation is LogarithmProcessing 
                 || operation is ZeroAmplitudeCorrection 
-                || operation is ClearAppearanceAscans)
+                || operation is ClearOffsetAscans)
                 return false;
             return false;
         }
@@ -57,21 +57,17 @@ namespace ProcessingModule.ViewModels
         {
             _cmpScan = e.CmpScan;
             Processor.Process(_cmpScan);
-            RawCmpDataProcessed.Invoke(this, new RawCmpProcessedEventArgs(_cmpScan));
+            RawCmpDataProcessed?.Invoke(this, new RawCmpProcessedEventArgs(_cmpScan));
         }
 
-        public void OnProcessingListChanged(object sender, ProcessingListChangedEventArgs e)
+        internal void OnProcessingListChanged(object sender, ProcessingListChangedEventArgs e)
         {
-            if (e.Enabled)
-            {
+            if (e.Enabled == true)
                 Processor.OperationsToProcess.Add(e.Processing);
-            }
-            else
-            {
+            else if (e.Enabled == false) 
                 Processor.OperationsToProcess.Remove(e.Processing);
-            }
             Processor.Process(_cmpScan);
-            RawCmpDataProcessed.Invoke(this, new RawCmpProcessedEventArgs(_cmpScan));
+            RawCmpDataProcessed?.Invoke(this, new RawCmpProcessedEventArgs(_cmpScan));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -89,7 +85,7 @@ namespace ProcessingModule.ViewModels
     public class ProcessingListChangedEventArgs : EventArgs
     {
         public IRawDataProcessing Processing { get; set; }
-        public bool Enabled { get; set; }
+        public bool? Enabled { get; set; }
     }
 
 
@@ -104,12 +100,9 @@ namespace ProcessingModule.ViewModels
 
         public event ProcessingListChangedHandler ProcessingListChanged;
 
-        [DisplayName("Обработка")]
         public string Name => Processing.ToString();
 
         private bool _enabled;
-
-        [DisplayName("Вкл.")]
         public bool Enabled
         {
             get => _enabled;

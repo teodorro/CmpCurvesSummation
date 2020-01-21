@@ -3,9 +3,9 @@ using CmpCurvesSummation.Core;
 
 namespace ProcessingModule.Processing
 {
-    public class ClearAppearanceAscans : IRawDataProcessing
+    public class ClearOffsetAscans : IRawDataProcessing
     {
-        public string Name { get; } = "Очистить измерения для галочки";
+        public string Name { get; } = "Очистить измерения отступа";
         public override string ToString() => Name;
 
         public int NumberOfAscans { get; set; } = 5;

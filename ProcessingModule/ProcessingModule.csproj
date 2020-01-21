@@ -50,13 +50,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Processing\ClearAppearanceAscans.cs" />
+    <Compile Include="Processing\AddOffsetAscans.cs" />
+    <Compile Include="Processing\ClearOffsetAscans.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="ViewModels\ClearAppearanceAscansViewModel.cs" />
+    <Compile Include="ViewModels\ClearOffsetAscansViewModel.cs" />
     <Compile Include="ViewModels\ProcessingViewModel.cs" />
     <Compile Include="ViewModels\StraightenSynchronizationLineViewModel.cs" />
-    <Compile Include="Views\ClearAppearanceAscansWindow.xaml.cs">
-      <DependentUpon>ClearAppearanceAscansWindow.xaml</DependentUpon>
+    <Compile Include="Views\ClearOffsetAscansWindow.xaml.cs">
+      <DependentUpon>ClearOffsetAscansWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProcessingCtrl.xaml.cs">
       <DependentUpon>ProcessingCtrl.xaml</DependentUpon>
@@ -72,7 +73,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\ClearAppearanceAscansWindow.xaml">
+    <Page Include="Views\ClearOffsetAscansWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
