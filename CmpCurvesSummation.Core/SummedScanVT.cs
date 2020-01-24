@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace CmpCurvesSummation.Core
 {
@@ -76,15 +77,6 @@ namespace CmpCurvesSummation.Core
             }
         }
 
-        //TODO:!!
-        public Tuple<double, double> CorrectPoint(double v, double t)
-        {
-            var indV = Math.Round((v - MinVelocity) / StepVelocity);
-            var indT = Math.Round(t / StepTime);
-
-            return null;
-        }
-
 
         private double CalcSumForVelocityAndDepth(ICmpScan cmpScan, double h, double v)
         {
@@ -114,96 +106,79 @@ namespace CmpCurvesSummation.Core
             return res;
         }
 
-        private double[,] CheckOrderMatrix()
+
+        public Tuple<double, double> CorrectPoint(double v, double t)
         {
-            var matrix = new double[CheckRadius * 2 + 1, CheckRadius * 2 + 1];
-            var middle = CheckRadius;
-            for (int i = 0; i < CheckRadius + 1; i++)
-            for (int j = 0; j < CheckRadius + 1; j++)
+            var indV = (int)Math.Round((v - MinVelocity) / StepVelocity);
+            var indT = (int)Math.Round(t / StepTime);
+
+            var extremums = FindExtremums(indV, indT);
+
+            foreach (var unit in _checkOrderDict)
             {
-                var x = middle - i;
-                var y = middle - j;
-                matrix[x, y] = (x == 0 && y == 0) ? 2 : 1 / Math.Sqrt(x * x + y * y);
-                x = middle + i;
-                y = middle - j;
-                matrix[x, y] = (x == 0 && y == 0) ? 2 : 1 / Math.Sqrt(x * x + y * y);
-                x = middle - i;
-                y = middle + j;
-                matrix[x, y] = (x == 0 && y == 0) ? 2 : 1 / Math.Sqrt(x * x + y * y);
-                x = middle + i;
-                y = middle + j;
-                matrix[x, y] = (x == 0 && y == 0) ? 2 : 1 / Math.Sqrt(x * x + y * y);
+                if (extremums.Any(x => x.Item1 == (unit.Value.Item1 + indV) && (x.Item2 == unit.Value.Item2 + indT)))
+                {
+                    var ex = extremums.First(x => x.Item1 == (unit.Value.Item1 + indV) && (x.Item2 == unit.Value.Item2 + indT));
+                    return new Tuple<double, double>(
+                        ex.Item1 * StepVelocity + MinVelocity,
+                        ex.Item2 * StepTime);
+                }
             }
 
-            return matrix;
+            return null;
         }
-
+        
+        /// <summary>
+        /// Create dictionary of points, according to their closeness to the center
+        /// The function of closeness is 1/(x^2+y^2)
+        /// </summary>
         private void FillCheckOrderDict()
         {
-            var middle = CheckRadius;
-            var littleVal = 0.00001;
             var key = 0.0;
             for (int i = 0; i < CheckRadius + 1; i++)
-            for (int j = 0; j < CheckRadius + 1; j++)
-            {
-                var x = middle - i;
-                var y = middle - j;
-                key = (x == 0 && y == 0) ? 2 : 1 / Math.Sqrt(x * x + y * y);
-                for(;;)
-                    if (_checkOrderDict.ContainsKey(key))
-                        key -= littleVal;
-                    else
-                        break;
-                _checkOrderDict.Add(key, new Tuple<int, int>(x, y));
-                x = middle + i;
-                y = middle - j;
-                key = (x == 0 && y == 0) ? 2 : 1 / Math.Sqrt(x * x + y * y);
-                for (; ; )
-                    if (_checkOrderDict.ContainsKey(key))
-                        key -= littleVal;
-                    else
-                        break;
-                    _checkOrderDict.Add(key, new Tuple<int, int>(x, y));
-                x = middle - i;
-                y = middle + j;
-                key = (x == 0 && y == 0) ? 2 : 1 / Math.Sqrt(x * x + y * y);
-                for (; ; )
-                    if (_checkOrderDict.ContainsKey(key))
-                        key -= littleVal;
-                    else
-                        break;
-                    _checkOrderDict.Add(key, new Tuple<int, int>(x, y));
-                    x = middle + i;
-                y = middle + j;
-                key = (x == 0 && y == 0) ? 2 : 1 / Math.Sqrt(x * x + y * y);
-                for (; ; )
-                    if (_checkOrderDict.ContainsKey(key))
-                        key -= littleVal;
-                    else
-                        break;
-                    _checkOrderDict.Add(key, new Tuple<int, int>(x, y));
-            }
+                for (int j = 0; j < CheckRadius + 1; j++)
+                {
+                    AddToCheckOrderDict(i, -j);
+                    AddToCheckOrderDict(-i, j);
+                    AddToCheckOrderDict(i, j);
+                    AddToCheckOrderDict(-i, -j);
+                }
 
-            _checkOrderDict = _checkOrderDict.OrderBy(x => x.Key).ToDictionary(x => x.Key, y => y.Value);
+            _checkOrderDict = _checkOrderDict.OrderByDescending(x => x.Key).ToDictionary(x => x.Key, y => y.Value);
+        }
+
+        private void AddToCheckOrderDict(int x, int y)
+        {
+            var littleVal = 0.00001;
+            var key = (x == 0 && y == 0) ? 2 : 1 / Math.Sqrt(x * x + y * y);
+            for (; ; )
+                if (_checkOrderDict.ContainsKey(key))
+                    key -= littleVal;
+                else
+                    break;
+            if (_checkOrderDict.Values.All(t => t.Item1 != x || t.Item2 != y))
+                _checkOrderDict.Add(key, new Tuple<int, int>(x, y));
         }
 
         private List<Tuple<int, int>> FindExtremums(int x, int y)
         {
             var extremums = new List<Tuple<int, int>>();
 
-            var middle = CheckRadius;
-            for (int i = 0; i < CheckRadius + 1; i++)
-            for (int j = 0; j < CheckRadius + 1; j++)
+            for (int i = -CheckRadius; i < CheckRadius + 1; i++)
+            for (int j = -CheckRadius; j < CheckRadius + 1; j++)
             {
-                var x1 = x + middle - i;
-                var y1 = y + middle - j;
-                if (CheckIfExtremum(x1, y1))
+                var x1 = x + i;
+                var y1 = y + j;
+                if (CheckIfExtremum(x1, y1) && !extremums.Any(t => t.Item1 == x1 && t.Item2 == y1))
                     extremums.Add(new Tuple<int, int>(x1, y1));
             }
 
             return extremums;
         }
 
+        /// <summary>
+        /// True - is a case when values of all points around the one in arguments (dist = 1 step) are same or greater than for the one in argument
+        /// </summary>
         private bool CheckIfExtremum(int x, int y)
         {
             for (int i = -1; i < 2; i++)

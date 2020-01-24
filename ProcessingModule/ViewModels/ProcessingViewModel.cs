@@ -63,12 +63,23 @@ namespace ProcessingModule.ViewModels
 
         internal void OnProcessingListChanged(object sender, ProcessingListChangedEventArgs e)
         {
-            if (e.Enabled == true && !Processor.OperationsToProcess.Contains(e.Processing))
-                Processor.OperationsToProcess.Add(e.Processing);
-            else if (e.Enabled == false) 
-                Processor.OperationsToProcess.Remove(e.Processing);
+            UpdateProcessingList(e);
             Processor.Process(_cmpScan);
             RawCmpDataProcessed?.Invoke(this, new RawCmpProcessedEventArgs(_cmpScan));
+        }
+
+        private void UpdateProcessingList(ProcessingListChangedEventArgs e)
+        {
+            foreach (var row in ProcessingRowList)
+            {
+                if (row.Processing == e.Processing && e.Enabled != null && row.Enabled != (bool)e.Enabled)
+                    row.Enabled = (bool)e.Enabled;
+            }
+            if (e.Enabled == true && !Processor.OperationsToProcess.Contains(e.Processing))
+                Processor.OperationsToProcess.Add(e.Processing);
+            else if (e.Enabled == false)
+                Processor.OperationsToProcess.Remove(e.Processing);
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

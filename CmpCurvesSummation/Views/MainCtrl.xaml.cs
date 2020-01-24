@@ -51,6 +51,7 @@ namespace CmpCurvesSummation.Views
             SummedOverCurveScanControl.ViewModel.DeleteClick += LayersInfoControl.ViewModel.OnDeletePointClick;
             LayersInfoControl.ViewModel.DeleteClick += CmpScanControl.ViewModel.OnDeleteClick;
             LayersInfoControl.ViewModel.DeleteClick += SummedOverCurveScanControl.ViewModel.OnDeleteClick;
+            LayersInfoControl.ViewModel.AutoCorrectionClick += SummedOverCurveScanControl.ViewModel.OnAutoCorrectionChange;
             OptionsControl.ViewModel.SummationStarted += SummedOverCurveScanControl.ViewModel.OnSummationStarted;
             OptionsControl.ViewModel.AutoSumCheckEvent += SummedOverCurveScanControl.ViewModel.OnAutoSummationChange;
             OptionsControl.ViewModel.PaletteChanged += CmpScanControl.ViewModel.OnPaletteChanged;

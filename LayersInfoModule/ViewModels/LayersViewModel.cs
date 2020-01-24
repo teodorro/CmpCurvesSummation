@@ -12,19 +12,19 @@ namespace LayersInfoModule.ViewModels
     public class LayersViewModel : INotifyPropertyChanged
     {
         public event DeleteLayerHander DeleteClick;
-        public event AutoCorrectionCheckHander AutoCorrection;
+        public event AutoCorrectionCheckHander AutoCorrectionClick;
 
         public ObservableCollection<LayerInfo> Layers { get; } = new ObservableCollection<LayerInfo>();
 
-        private bool _autoSummation;
-        public bool AutoSummation
+        private bool _autoCorrection;
+        public bool AutoCorrection
         {
-            get => _autoSummation;
+            get => _autoCorrection;
             set
             {
-                _autoSummation = value;
-                OnPropertyChanged(nameof(AutoSummation));
-                AutoCorrection?.Invoke(this, new AutoCorrectionCheckEventArgs(_autoSummation));
+                _autoCorrection = value;
+                OnPropertyChanged(nameof(AutoCorrection));
+                AutoCorrectionClick?.Invoke(this, new AutoCorrectionCheckEventArgs(_autoCorrection));
             }
         }
 

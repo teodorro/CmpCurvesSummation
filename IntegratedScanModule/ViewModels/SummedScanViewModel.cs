@@ -88,20 +88,24 @@ namespace SummedScanModule.ViewModels
                 if (!IsPointOnPlot(point))
                     return;
 
-                if (_autoCorrection)
-                {
-                    // FindMax
-                    // RemoveClosePoints
-                    // AddPoint
-                    var correctedPoint = CorrectPoint(point);
-                }
-                else
-                {
-                    RemovePointsWithCloseTime(point);
-                    var velocity = Math.Round(point.X, 3);
-                    var time = Math.Round(point.Y, 2);
-                    AddHodographToPlot(velocity, time);
-                }
+                SelectHodograph(point);
+            }
+        }
+
+        private void SelectHodograph(DataPoint point)
+        {
+            if (_autoCorrection)
+            {
+                var correctedPoint = CorrectPoint(point);
+                RemovePointsWithCloseTime(point);
+                AddHodographToPlot(correctedPoint.X, correctedPoint.Y);
+            }
+            else
+            {
+                RemovePointsWithCloseTime(point);
+                var velocity = Math.Round(point.X, 3);
+                var time = Math.Round(point.Y, 2);
+                AddHodographToPlot(velocity, time);
             }
         }
 
@@ -110,7 +114,9 @@ namespace SummedScanModule.ViewModels
             var velocity = Math.Round(point.X, 3);
             var time = Math.Round(point.Y, 2);
             var correctedPoint = _summedScan.CorrectPoint(velocity, time);
-            return new DataPoint(correctedPoint.Item1, correctedPoint.Item2);
+            return correctedPoint != null 
+                ? new DataPoint(correctedPoint.Item1, correctedPoint.Item2) 
+                : point;
         }
 
         private void RemovePointsWithCloseTime(DataPoint newPoint)
@@ -131,29 +137,7 @@ namespace SummedScanModule.ViewModels
                 }
             }
         }
-
-        private bool NoPointWithSameTime(DataPoint point)
-        {
-            var points = Plot.Annotations.OfType<PointAnnotation>();
-            return (points != null || points.Any(x => x.Y == point.Y));
-        }
-
-        private void ChangeTimeOffset(double time)
-        {
-            TimeAxis.AbsoluteMinimum += time - TimeAxis.AbsoluteMinimum;
-            TimeAxis.AbsoluteMaximum += time - TimeAxis.AbsoluteMinimum;
-
-            Plot.InvalidatePlot(true);
-        }
-
-        private bool IsTimeOffsetChangeArea(DataPoint point)
-        {
-            var v = Math.Round(point.X, 3);
-            if (v < CmpMath.Instance.WaterVelocity || v >= CmpMath.SpeedOfLight / 2)
-                return true;
-            return false;
-        }
-
+        
         private void AddHodographToPlot(double velocity, double time)
         {
             var point = new PointAnnotation()
