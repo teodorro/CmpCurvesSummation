@@ -98,7 +98,9 @@ namespace SummedScanModule.ViewModels
             {
                 var correctedPoint = CorrectPoint(point);
                 RemovePointsWithCloseTime(point);
-                AddHodographToPlot(correctedPoint.X, correctedPoint.Y);
+                var velocity = Math.Round(correctedPoint.X, 2);
+                var time = Math.Round(correctedPoint.Y, 2);
+                AddHodographToPlot(velocity, time);
             }
             else
             {

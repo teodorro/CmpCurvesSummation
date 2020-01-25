@@ -27,7 +27,7 @@ namespace LayersInfoModule.ViewModels
                 AutoCorrectionClick?.Invoke(this, new AutoCorrectionCheckEventArgs(_autoCorrection));
             }
         }
-
+        
 
         public void OnHodographDrawClick(object sender, HodographDrawVTClickEventArgs e)
         {
@@ -41,7 +41,7 @@ namespace LayersInfoModule.ViewModels
             var sorted = Layers.OrderBy(x => x.Time).ToList();
             Layers.Clear();
             foreach (var layer in sorted)
-                Layers.Add(layer);
+                Layers.Add(new LayerInfo(layer.Time, layer.AvgVelocity, sorted.LastOrDefault(x => x.Time < layer.Time)));
         }
 
         public void OnDeleteRowClick(object sender, DeleteLayerEventArgs e)
@@ -90,7 +90,6 @@ namespace LayersInfoModule.ViewModels
                 var depth = CmpMath.Instance.Depth(avgVelocity, time);
                 Thickness = Math.Round(CmpMath.Instance.LayerThickness(depth, prevLayer.Depth), 2);
                 LayerVelocity = Math.Round(CmpMath.Instance.LayerVelocity(time, 0, depth, avgVelocity, prevLayer.Depth, prevLayer.AvgVelocity), 3);
-
             }
         }
 

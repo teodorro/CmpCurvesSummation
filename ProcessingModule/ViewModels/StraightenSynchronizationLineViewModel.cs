@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using ProcessingModule.Annotations;
 using ProcessingModule.Processing;
@@ -21,6 +22,29 @@ namespace ProcessingModule.ViewModels
                 ProcessingListChanged(this, new ProcessingListChangedEventArgs() { Enabled = true, Processing = _processing });
             }
         }
+
+        private double _minAmplitude = 0;
+        public double MinAmplitude
+        {
+            get => Math.Round(_minAmplitude, 2);
+            set
+            {
+                _minAmplitude = value;
+                OnPropertyChanged(nameof(MinAmplitude));
+            }
+        }
+
+        private double _maxAmplitude = 128;
+        public double MaxAmplitude
+        {
+            get => Math.Round(_maxAmplitude, 2);
+            set
+            {
+                _maxAmplitude = value;
+                OnPropertyChanged(nameof(MaxAmplitude));
+            }
+        }
+
 
         public StraightenSynchronizationLineViewModel(StraightenSynchronizationLine processing)
         {

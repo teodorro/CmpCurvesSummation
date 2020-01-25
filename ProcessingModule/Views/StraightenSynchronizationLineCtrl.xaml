@@ -17,7 +17,7 @@
                Grid.Row="1"/>
         <Label x:Name="MinAmpToCheckLabel"  HorizontalAlignment="Left" Margin="200,10,0,5" VerticalAlignment="Bottom"
                Content="{Binding MinAmplitudeToCheck}" Grid.Row="1"/>
-        <Slider  Margin="10,12,10,0" VerticalAlignment="Top" Maximum="20" 
+        <Slider  Margin="10,12,10,0" VerticalAlignment="Top" Maximum="{Binding MaxAmplitude}" Minimum="{Binding MinAmplitude}" 
                  Value="{Binding MinAmplitudeToCheck}" Grid.Row="2"/>
     </Grid>
 </UserControl>
