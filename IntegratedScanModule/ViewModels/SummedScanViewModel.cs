@@ -20,7 +20,6 @@ namespace SummedScanModule.ViewModels
         
 
         public PlotModel Plot { get; }
-        public bool AutoSummation { get; set; }
         private bool _autoCorrection { get; set; }
 
 
@@ -95,20 +94,12 @@ namespace SummedScanModule.ViewModels
         private void SelectHodograph(DataPoint point)
         {
             if (_autoCorrection)
-            {
-                var correctedPoint = CorrectPoint(point);
-                RemovePointsWithCloseTime(point);
-                var velocity = Math.Round(correctedPoint.X, 2);
-                var time = Math.Round(correctedPoint.Y, 2);
-                AddHodographToPlot(velocity, time);
-            }
-            else
-            {
-                RemovePointsWithCloseTime(point);
-                var velocity = Math.Round(point.X, 3);
-                var time = Math.Round(point.Y, 2);
-                AddHodographToPlot(velocity, time);
-            }
+                point = CorrectPoint(point);
+            
+            RemovePointsWithCloseTime(point);
+            var velocity = Math.Round(point.X, 3);
+            var time = Math.Round(point.Y, 2);
+            AddHodographToPlot(velocity, time);
         }
 
         private DataPoint CorrectPoint(DataPoint point)
@@ -126,25 +117,25 @@ namespace SummedScanModule.ViewModels
             var points = Plot.Annotations.OfType<PointAnnotation>();
             if (points == null || !points.Any())
                 return;
+
             var pointsToRemove = new List<PointAnnotation>();
             foreach (var point in points)
                 if (Math.Abs(Math.Abs(point.Y) - Math.Abs(newPoint.Y)) < _summedScan.CheckRadius)
                     pointsToRemove.Add(point);
+
             if (pointsToRemove.Any())
-            {
                 foreach (var point in pointsToRemove)
                 {
                     Plot.Annotations.Remove(point);
                     DeleteClick?.Invoke(this, new DeleteLayerEventArgs(point.X, point.Y));
                 }
-            }
         }
         
         private void AddHodographToPlot(double velocity, double time)
         {
             var point = new PointAnnotation()
             {
-                Fill = OxyColor.FromRgb(0, 0, 0),
+                Fill = OxyColor.FromRgb(255, 255, 255),
                 X = velocity,
                 Y = time
             };
@@ -247,15 +238,11 @@ namespace SummedScanModule.ViewModels
         {
             var annotation = Plot.Annotations.FirstOrDefault(
                 x => (x as PointAnnotation)?.Y == e.Time && (x as PointAnnotation)?.X == e.Velocity);
-            Plot.Annotations.Remove(annotation);
+            if (annotation != null)
+                Plot.Annotations.Remove(annotation);
             Plot.InvalidatePlot(true);
         }
-
-        public void OnAutoSummationChange(object sender, AutoSummationCheckEventArgs e)
-        {
-            AutoSummation = e.Auto;
-        }
-
+        
         public void OnSummationStarted(object obj, EventArgs e)
         {
             Sum();

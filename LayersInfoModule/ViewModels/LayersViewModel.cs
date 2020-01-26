@@ -68,6 +68,11 @@ namespace LayersInfoModule.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs e)
+        {
+            Layers.Clear();
+        }
     }
 
 

@@ -40,6 +40,7 @@ namespace CmpScanModule.ViewModels
         public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args)
         {
             _cmpScan = args.CmpScan;
+            Plot.Annotations.Clear();
             LoadSeries();
             UpdateAxes();
         }
@@ -55,7 +56,8 @@ namespace CmpScanModule.ViewModels
                 return;
 
             TuneHorizontalAxis();
-            TuneVerticalAxis(0, _cmpScan.AscanLength);
+            TuneVerticalAxis(_cmpScan.MinTime, _cmpScan.MaxTime);
+
 
             Plot.InvalidatePlot(true); // to update axes in UI
         }
@@ -85,8 +87,8 @@ namespace CmpScanModule.ViewModels
             {
                 X0 = 0,
                 X1 = _cmpScan.Length,
-                Y0 = 0,
-                Y1 = _cmpScan.AscanLength,
+                Y0 = _cmpScan.MinTime,
+                Y1 = _cmpScan.MaxTime,
                 Interpolate = true,
                 RenderMethod = HeatMapRenderMethod.Bitmap,
                 Data = GetDataArray()
@@ -134,7 +136,7 @@ namespace CmpScanModule.ViewModels
                 hodographCurve.Points.Add(new DataPoint(d, hodograph[i]));
             }
 
-            hodographCurve.Color = OxyColor.FromRgb(0, 0, 0);
+            hodographCurve.Color = OxyColor.FromRgb(255, 255, 255);
             hodographCurve.InterpolationAlgorithm = new CanonicalSpline(0.5);
             hodographCurve.LineStyle = LineStyle.Solid;
             Plot.Annotations.Add(hodographCurve);

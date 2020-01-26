@@ -112,8 +112,16 @@ namespace CmpCurvesSummation.Core
             var indV = (int)Math.Round((v - MinVelocity) / StepVelocity);
             var indT = (int)Math.Round(t / StepTime);
 
-            var extremums = FindExtremums(indV, indT);
+            var signMinus = Data[indV][indT] < 0;
+            var extremums = signMinus 
+                ? FindExtremums(indV, indT, CheckIfMin)
+                : FindExtremums(indV, indT, CheckIfMax);
 
+            return GetClosestExtremum(extremums, indV, indT);
+        }
+
+        private Tuple<double, double> GetClosestExtremum(List<Tuple<int, int>> extremums, int indV, int indT)
+        {
             foreach (var unit in _checkOrderDict)
             {
                 if (extremums.Any(x => x.Item1 == (unit.Value.Item1 + indV) && (x.Item2 == unit.Value.Item2 + indT)))
@@ -127,7 +135,7 @@ namespace CmpCurvesSummation.Core
 
             return null;
         }
-        
+
         /// <summary>
         /// Create dictionary of points, according to their closeness to the center
         /// The function of closeness is 1/(x^2+y^2)
@@ -159,17 +167,17 @@ namespace CmpCurvesSummation.Core
             if (_checkOrderDict.Values.All(t => t.Item1 != x || t.Item2 != y))
                 _checkOrderDict.Add(key, new Tuple<int, int>(x, y));
         }
-
-        private List<Tuple<int, int>> FindExtremums(int x, int y)
+        
+        private List<Tuple<int, int>> FindExtremums(int x, int y, Func<int, int, bool> checkFunc)
         {
             var extremums = new List<Tuple<int, int>>();
-
+            
             for (int i = -CheckRadius; i < CheckRadius + 1; i++)
             for (int j = -CheckRadius; j < CheckRadius + 1; j++)
             {
                 var x1 = x + i;
                 var y1 = y + j;
-                if (CheckIfExtremum(x1, y1) && !extremums.Any(t => t.Item1 == x1 && t.Item2 == y1))
+                if (checkFunc(x1, y1) && !extremums.Any(t => t.Item1 == x1 && t.Item2 == y1))
                     extremums.Add(new Tuple<int, int>(x1, y1));
             }
 
@@ -179,7 +187,7 @@ namespace CmpCurvesSummation.Core
         /// <summary>
         /// True - is a case when values of all points around the one in arguments (dist = 1 step) are same or greater than for the one in argument
         /// </summary>
-        private bool CheckIfExtremum(int x, int y)
+        private bool CheckIf(int x, int y, Func<double, double, bool> condition)
         {
             for (int i = -1; i < 2; i++)
             for (int j = -1; j < 2; j++)
@@ -188,11 +196,21 @@ namespace CmpCurvesSummation.Core
                     return false;
                 if (i == 0 && j == 0)
                     continue;
-                if (Data[x + i][y + j] > Data[x][y])
+                if (!condition(Data[x][y], Data[x + i][y + j]))
                     return false;
             }
 
             return true;
+        }
+
+        private bool CheckIfMax(int x, int y)
+        {
+            return CheckIf(x, y, (i, j) => i >= j);
+        }
+
+        private bool CheckIfMin(int x, int y)
+        {
+            return CheckIf(x, y, (i, j) => i <= j);
         }
     }
 }
