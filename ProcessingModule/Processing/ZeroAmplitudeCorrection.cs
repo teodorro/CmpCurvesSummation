@@ -24,8 +24,8 @@ namespace ProcessingModule.Processing
         public void Process(ICmpScan cmpScan)
         {
             _data = cmpScan.Data;
-            var max = _data.Select(x => x.Where(y => y != 0).Max()).Max();
-            var min = _data.Select(x => x.Where(y => y != 0).Min()).Min();
+            var max = _data.Select(x => x.Any(y => y != 0) ? x.Where(y => y != 0).Max() : 0).Max();
+            var min = _data.Select(x => x.Any(y => y != 0) ? x.Where(y => y != 0).Min() : 0).Min();
 
             if (max < 128)
             {

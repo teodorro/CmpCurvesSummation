@@ -18,19 +18,18 @@ using ProcessingModule.ViewModels;
 namespace ProcessingModule.Views
 {
     /// <summary>
-    /// Interaction logic for ClearOffsetAscansCtrl.xaml
+    /// Interaction logic for AddOffsetAscansCtrl.xaml
     /// </summary>
-    public partial class ClearOffsetAscansCtrl : UserControl
+    public partial class AddOffsetAscansCtrl : UserControl
     {
-        private ClearOffsetAscansViewModel _viewModel;
+        private AddOffsetAscansViewModel _viewModel;
         public int NumberOfOffsetAscans => _viewModel.NumberOfOffsetAscans;
 
-
-        public ClearOffsetAscansCtrl(ProcessingListChangedHandler onProcessingListChanged, ClearOffsetAscans processing)
+        public AddOffsetAscansCtrl(ProcessingListChangedHandler onProcessingListChanged, AddOffsetAscans processing)
         {
             InitializeComponent();
 
-            _viewModel = new ClearOffsetAscansViewModel(processing);
+            _viewModel = new AddOffsetAscansViewModel(processing);
             _viewModel.ProcessingListChanged += onProcessingListChanged;
             DataContext = _viewModel;
         }

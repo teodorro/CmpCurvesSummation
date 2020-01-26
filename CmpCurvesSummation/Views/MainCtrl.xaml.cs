@@ -48,6 +48,8 @@ namespace CmpCurvesSummation.Views
             SummedOverCurveScanControl.ViewModel.HodographDrawClick += CmpScanControl.ViewModel.OnHodographDrawClick;
             SummedOverCurveScanControl.ViewModel.HodographDrawClick += LayersInfoControl.ViewModel.OnHodographDrawClick;
             SummedOverCurveScanControl.ViewModel.SummationFinished += OptionsControl.ViewModel.OnSummationFinished;
+            SummedOverCurveScanControl.ViewModel.SummationFinished += LayersInfoControl.ViewModel.OnSummationFinished;
+            SummedOverCurveScanControl.ViewModel.SummationFinished += CmpScanControl.ViewModel.OnSummationFinished;
             SummedOverCurveScanControl.ViewModel.DeleteClick += CmpScanControl.ViewModel.OnDeleteClick;
             SummedOverCurveScanControl.ViewModel.DeleteClick += LayersInfoControl.ViewModel.OnDeletePointClick;
             LayersInfoControl.ViewModel.DeleteClick += CmpScanControl.ViewModel.OnDeleteClick;
@@ -57,7 +59,11 @@ namespace CmpCurvesSummation.Views
             OptionsControl.ViewModel.PaletteChanged += CmpScanControl.ViewModel.OnPaletteChanged;
             OptionsControl.ViewModel.PaletteChanged += SummedOverCurveScanControl.ViewModel.OnPaletteChanged;
             OptionsControl.ViewModel.StepDistanceChanged += CmpScanControl.ViewModel.OnStepDistanceChanged;
+            OptionsControl.ViewModel.StepDistanceChanged += SummedOverCurveScanControl.ViewModel.OnStepDistanceChanged;
+            OptionsControl.ViewModel.StepDistanceChanged += LayersInfoControl.ViewModel.OnStepDistanceChanged;
             OptionsControl.ViewModel.StepTimeChanged += CmpScanControl.ViewModel.OnStepTimeChanged;
+            OptionsControl.ViewModel.StepTimeChanged += SummedOverCurveScanControl.ViewModel.OnStepTimeChanged;
+            OptionsControl.ViewModel.StepTimeChanged += LayersInfoControl.ViewModel.OnStepTimeChanged;
             CmpProgressBar.Instance.SummationInProcess += OptionsControl.ViewModel.OnSummationInProcess;
         }
 

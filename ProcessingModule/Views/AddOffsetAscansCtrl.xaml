@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ProcessingModule.Views.ClearOffsetAscansCtrl"
+﻿<UserControl x:Class="ProcessingModule.Views.AddOffsetAscansCtrl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -18,6 +18,5 @@
                Content="{Binding NumberOfOffsetAscans}" Grid.Row="1"/>
         <Slider  Margin="10,12,10,0" VerticalAlignment="Top" Maximum="20" 
                  Value="{Binding NumberOfOffsetAscans}" Grid.Row="2"/>
-
     </Grid>
 </UserControl>

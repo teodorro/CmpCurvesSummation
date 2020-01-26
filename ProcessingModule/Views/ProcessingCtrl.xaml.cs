@@ -53,13 +53,18 @@ namespace ProcessingModule.Views
             if (dataRow.Processing is ClearOffsetAscans clearOffsetAscans)
                 ManageClearOffsetAscans(clearOffsetAscans);
             else if (dataRow.Processing is StraightenSynchronizationLine straightenSynchronizationLine)
-            {
                 ManageStraightenSynchronizationLine(straightenSynchronizationLine);
-            }
+            else if (dataRow.Processing is AddOffsetAscans addOffsetAscans)
+                ManageAddOffsetAscans(addOffsetAscans);
             else
             {
                 
             }
+        }
+
+        private void ManageAddOffsetAscans(AddOffsetAscans processing)
+        {
+            UiElementsStack.Children.Add(new AddOffsetAscansCtrl(ViewModel.OnProcessingListChanged, processing));
         }
 
         private void ManageStraightenSynchronizationLine(StraightenSynchronizationLine processing)

@@ -3,14 +3,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Data;
+using System.Windows.Media;
 using CmpCurvesSummation.Core;
 using CmpScanModule.Annotations;
 
 namespace CmpCurvesSummation.ViewModels
 {
-
-
-
     // TODO: 3 states
     // 1. nothing is loaded
     // 2. the process of summation
@@ -21,14 +20,7 @@ namespace CmpCurvesSummation.ViewModels
         public const string Jet = "Jet";
         public const string Gray = "Gray";
         public const string BW = "B&W";
-
-//        public string Black = Colors.Black.ToString();
-//        public string White = Colors.White.ToString();
-//        public string Red = Colors.Red.ToString();
-//        public string Black = Colors.Black.ToString();
-//        public string Black = Colors.Black.ToString();
-
-        public event AutoSummationCheckHander AutoSumCheckEvent;
+        
         public event SummationStartedHander SummationStarted;
         public event PaletteChangedHander PaletteChanged;
         public event StepDistanceChangedHandler StepDistanceChanged;
@@ -59,7 +51,7 @@ namespace CmpCurvesSummation.ViewModels
                 if (CmpScan != null)
                     CmpScan.StepTime = value;
                 OnPropertyChanged(nameof(StepTime));
-                StepTimeChanged?.Invoke(this, new StepTimeEventArgs(_stepTime, oldStepTime));
+                StepTimeChanged?.Invoke(this, new StepTimeEventArgs(_stepTime, oldStepTime, CmpScan));
             }
         }
 
@@ -76,24 +68,11 @@ namespace CmpCurvesSummation.ViewModels
                 if (CmpScan != null)
                     CmpScan.StepDistance = value;
                 OnPropertyChanged(nameof(StepDistance));
-                StepDistanceChanged?.Invoke(this, new StepDistanceEventArgs(_stepDistance, oldStepDistance));
+                StepDistanceChanged?.Invoke(this, new StepDistanceEventArgs(_stepDistance, oldStepDistance, CmpScan));
             }
         }
         public ObservableCollection<double> StepsDistance { get; set; } = new ObservableCollection<double>();
-
-//        private bool _autoSummation;
-//        public bool AutoSummation
-//        {
-//            get => _autoSummation;
-//            set
-//            {
-//                _autoSummation = value;
-//                ManualSummationPossible = !_autoSummation && _cmpScanLoaded;
-//                OnPropertyChanged(nameof(AutoSummation));
-//                AutoSumCheckEvent?.Invoke(this, new AutoSummationCheckEventArgs(value));
-//            }
-//        }
-
+        
         public ObservableCollection<string> Palettes { get; set; } = new ObservableCollection<string>();
 
         private string _palette = Jet;
@@ -191,7 +170,6 @@ namespace CmpCurvesSummation.ViewModels
         {
             CmpScan = e.CmpScan;
 
-            // TODO: should not be like this. More likely vice versa
             CmpScan.StepTime = _stepTime;
             CmpScan.StepDistance = _stepDistance;
         }
@@ -225,7 +203,21 @@ namespace CmpCurvesSummation.ViewModels
     }
 
 
+    public class ColorToSolidBrushConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return new SolidColorBrush((Color)value);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 
-    
+
+
+
 }

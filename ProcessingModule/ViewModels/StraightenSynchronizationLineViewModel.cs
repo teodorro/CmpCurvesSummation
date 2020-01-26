@@ -34,7 +34,7 @@ namespace ProcessingModule.ViewModels
             }
         }
 
-        private double _maxAmplitude = 128;
+        private double _maxAmplitude = 20;
         public double MaxAmplitude
         {
             get => Math.Round(_maxAmplitude, 2);

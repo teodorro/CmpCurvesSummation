@@ -204,6 +204,7 @@ namespace CmpScanModule.ViewModels
         
         public void OnStepDistanceChanged(object sender, StepDistanceEventArgs e)
         {
+            Plot.Annotations.Clear();
             var factor = e.NewStepDistance / e.OldStepDistance;
             DistanceAxis.AbsoluteMinimum *= factor;
             DistanceAxis.AbsoluteMaximum *= factor;
@@ -214,6 +215,7 @@ namespace CmpScanModule.ViewModels
 
         public void OnStepTimeChanged(object sender, StepTimeEventArgs e)
         {
+            Plot.Annotations.Clear();
             var factor = e.NewStepTime / e.OldStepTime;
             TimeAxis.AbsoluteMinimum *= factor;
             TimeAxis.AbsoluteMaximum *= factor;
@@ -222,5 +224,10 @@ namespace CmpScanModule.ViewModels
             Plot.InvalidatePlot(true);
         }
 
+        public void OnSummationFinished(object obj, SummationFinishedEventArgs e)
+        {
+            Plot.Annotations.Clear();
+            Plot.InvalidatePlot(true);
+        }
     }
 }

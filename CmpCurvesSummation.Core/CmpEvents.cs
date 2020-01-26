@@ -139,27 +139,31 @@ namespace CmpCurvesSummation.Core
 
     public class StepDistanceEventArgs : EventArgs
     {
-        public StepDistanceEventArgs(double newStepDistance, double oldStepDistance)
+        public StepDistanceEventArgs(double newStepDistance, double oldStepDistance, ICmpScan cmpScan)
         {
             NewStepDistance = newStepDistance;
             OldStepDistance = oldStepDistance;
+            CmpScan = cmpScan;
         }
 
         public double NewStepDistance { get; }
         public double OldStepDistance { get; }
+        public ICmpScan CmpScan { get; }
     }
 
 
     public class StepTimeEventArgs : EventArgs
     {
-        public StepTimeEventArgs(double newStepTime, double oldStepTime)
+        public StepTimeEventArgs(double newStepTime, double oldStepTime, ICmpScan cmpScan)
         {
             NewStepTime = newStepTime;
             OldStepTime = oldStepTime;
+            CmpScan = cmpScan;
         }
 
         public double NewStepTime { get; }
         public double OldStepTime { get; }
+        public ICmpScan CmpScan { get; }
     }
 
 

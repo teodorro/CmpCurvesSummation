@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CmpCurvesSummation.Views"
+             xmlns:viewModels="clr-namespace:CmpCurvesSummation.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="350">
     <Grid>
@@ -34,7 +35,20 @@
                   ItemsSource="{Binding Palettes}" SelectedItem="{Binding Palette}"/>
         <Label x:Name="PointColorLabel" Content="Цвет точек" Margin="15,5" Grid.Row="4"/>
         <ComboBox x:Name="PointColorComboBox" Margin="5,5,15,10" Grid.Row="4" Grid.Column="1"
-                  />
+                  ItemsSource="{Binding NamedColors}">
+            <ComboBox.Resources>
+                <viewModels:ColorToSolidBrushConverter x:Key="ColorToBrush"/>
+            </ComboBox.Resources>
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Border BorderThickness="0" Height="20" Width="20" 
+                                Background="{Binding Value, Converter={StaticResource ColorToBrush}}"/>
+                        <TextBlock Text="{Binding Key}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         <Label x:Name="HodographLabel" Content="Цвет годографов" Margin="15,5" Grid.Row="5"/>
         <ComboBox x:Name="HodographComboBox" Margin="5,5,15,10" Grid.Row="5" Grid.Column="1"
                   />

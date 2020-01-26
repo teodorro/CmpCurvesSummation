@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace CmpCurvesSummation.Core
 {
@@ -187,6 +186,8 @@ namespace CmpCurvesSummation.Core
         /// </summary>
         private bool CheckIf(int x, int y, Func<double, double, bool> condition)
         {
+            if (x < 0 || x >= Data.Count || y < 0 || y >= AscanLength)
+                return false;
             for (int i = -1; i < 2; i++)
             for (int j = -1; j < 2; j++)
             {

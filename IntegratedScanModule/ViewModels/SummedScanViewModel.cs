@@ -277,10 +277,17 @@ namespace SummedScanModule.ViewModels
         {
             _autoCorrection = e.Auto;
         }
+        
+        public void OnStepDistanceChanged(object obj, StepDistanceEventArgs e)
+        {
+            Clear();
+            _cmpScan = e.CmpScan;
+        }
 
-
-
-
-
+        public void OnStepTimeChanged(object obj, StepTimeEventArgs e)
+        {
+            Clear();
+            _cmpScan = e.CmpScan;
+        }
     }
 }

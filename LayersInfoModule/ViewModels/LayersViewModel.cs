@@ -33,10 +33,10 @@ namespace LayersInfoModule.ViewModels
         {
             var newLayer = new LayerInfo(e.Time, e.Velocity, Layers.LastOrDefault(x => x.Time < e.Time));
             Layers.Add(newLayer);
-            SortLayers();
+            RefreshLayers();
         }
 
-        private void SortLayers()
+        private void RefreshLayers()
         {
             var sorted = Layers.OrderBy(x => x.Time).ToList();
             Layers.Clear();
@@ -47,12 +47,14 @@ namespace LayersInfoModule.ViewModels
         public void OnDeleteRowClick(object sender, DeleteLayerEventArgs e)
         {
             Layers.Remove(Layers.First(x => x.Time == e.Time && x.AvgVelocity == e.Velocity));
+            RefreshLayers();
             DeleteClick?.Invoke(sender, e);
         }
 
         public void OnDeletePointClick(object sender, DeleteLayerEventArgs e)
         {
             Layers.Remove(Layers.First(x => x.Time == e.Time && x.AvgVelocity == e.Velocity));
+            RefreshLayers();
         }
 
         public void OnFileLoaded(object sender, FileLoadedEventArgs e)
@@ -70,6 +72,21 @@ namespace LayersInfoModule.ViewModels
         }
 
         public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs e)
+        {
+            Layers.Clear();
+        }
+
+        public void OnStepDistanceChanged(object obj, StepDistanceEventArgs e)
+        {
+            Layers.Clear();
+        }
+
+        public void OnStepTimeChanged(object obj, StepTimeEventArgs e)
+        {
+            Layers.Clear();
+        }
+
+        public void OnSummationFinished(object obj, SummationFinishedEventArgs e)
         {
             Layers.Clear();
         }

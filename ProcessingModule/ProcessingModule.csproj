@@ -53,9 +53,13 @@
     <Compile Include="Processing\AddOffsetAscans.cs" />
     <Compile Include="Processing\ClearOffsetAscans.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ViewModels\AddOffsetAscansViewModel.cs" />
     <Compile Include="ViewModels\ClearOffsetAscansViewModel.cs" />
     <Compile Include="ViewModels\ProcessingViewModel.cs" />
     <Compile Include="ViewModels\StraightenSynchronizationLineViewModel.cs" />
+    <Compile Include="Views\AddOffsetAscansCtrl.xaml.cs">
+      <DependentUpon>AddOffsetAscansCtrl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ClearOffsetAscansCtrl.xaml.cs">
       <DependentUpon>ClearOffsetAscansCtrl.xaml</DependentUpon>
     </Compile>
@@ -73,6 +77,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\AddOffsetAscansCtrl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ClearOffsetAscansCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
