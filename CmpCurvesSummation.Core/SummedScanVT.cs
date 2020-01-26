@@ -70,7 +70,7 @@ namespace CmpCurvesSummation.Core
                 Data.Add(new double[AscanLengthDimensionless]);
                 for (int j = 0; j < AscanLengthDimensionless; j++)
                 {
-                    var t = j * StepTime + MinTime;
+                    var t = Time(j);
                     h = v * t / 2;
                     Data[p][j] = CalcSumForVelocityAndDepth(cmpScan, h, v);
                 }
@@ -87,7 +87,7 @@ namespace CmpCurvesSummation.Core
                 if (double.IsNaN(h) || h < 0)
                     continue;
                 var t = CmpMath.Instance.HodographLineLoza(d, h, v);
-                var tIndex = Convert.ToInt32(Math.Round(t / StepTime - cmpScan.MinTime));
+                var tIndex = IndexTime(t);
                 if (tIndex >= cmpScan.MinTime && tIndex < cmpScan.MaxTime)
                     sum += cmpScan.Data[i][tIndex];
             }
@@ -109,8 +109,8 @@ namespace CmpCurvesSummation.Core
 
         public Tuple<double, double> CorrectPoint(double v, double t)
         {
-            var indV = (int)Math.Round((v - MinVelocity) / StepVelocity);
-            var indT = (int)Math.Round(t / StepTime);
+            var indV = IndexVelocity(v);
+            var indT = IndexTime(t);
 
             var signMinus = Data[indV][indT] < 0;
             var extremums = signMinus 
@@ -123,15 +123,13 @@ namespace CmpCurvesSummation.Core
         private Tuple<double, double> GetClosestExtremum(List<Tuple<int, int>> extremums, int indV, int indT)
         {
             foreach (var unit in _checkOrderDict)
-            {
                 if (extremums.Any(x => x.Item1 == (unit.Value.Item1 + indV) && (x.Item2 == unit.Value.Item2 + indT)))
                 {
                     var ex = extremums.First(x => x.Item1 == (unit.Value.Item1 + indV) && (x.Item2 == unit.Value.Item2 + indT));
                     return new Tuple<double, double>(
-                        ex.Item1 * StepVelocity + MinVelocity,
-                        ex.Item2 * StepTime);
+                        Velocity(ex.Item1),
+                        Time(ex.Item2));
                 }
-            }
 
             return null;
         }
@@ -203,14 +201,16 @@ namespace CmpCurvesSummation.Core
             return true;
         }
 
-        private bool CheckIfMax(int x, int y)
-        {
-            return CheckIf(x, y, (i, j) => i >= j);
-        }
+        private bool CheckIfMax(int x, int y) => CheckIf(x, y, (i, j) => i >= j);
 
-        private bool CheckIfMin(int x, int y)
-        {
-            return CheckIf(x, y, (i, j) => i <= j);
-        }
+        private bool CheckIfMin(int x, int y) => CheckIf(x, y, (i, j) => i <= j);
+
+        private int IndexVelocity(double velocity) => (int) Math.Round((velocity - MinVelocity) / StepVelocity);
+
+        private int IndexTime(double time) => (int) Math.Round((time - MinTime) / StepTime);
+
+        private double Time(int indexTime) => indexTime * StepTime + MinTime;
+
+        private double Velocity(int indexVelocity) => indexVelocity * StepVelocity + MinVelocity;
     }
 }
