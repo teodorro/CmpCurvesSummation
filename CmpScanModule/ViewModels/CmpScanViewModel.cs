@@ -18,7 +18,18 @@ namespace CmpScanModule.ViewModels
 
         public PlotModel Plot { get; private set; }
 
-        
+        private OxyColor _hodographColor = OxyColor.FromRgb(255, 255, 255);
+        public OxyColor HodographColor
+        {
+            get => _hodographColor;
+            set
+            {
+                _hodographColor = value;
+                RepaintHodographs();
+            }
+        }
+
+
         public CmpScanViewModel()
         {
             Plot = new PlotModel { Title = "Годограф" };
@@ -136,7 +147,7 @@ namespace CmpScanModule.ViewModels
                 hodographCurve.Points.Add(new DataPoint(d, hodograph[i]));
             }
 
-            hodographCurve.Color = OxyColor.FromRgb(255, 255, 255);
+            hodographCurve.Color = HodographColor;
             hodographCurve.InterpolationAlgorithm = new CanonicalSpline(0.5);
             hodographCurve.LineStyle = LineStyle.Solid;
             Plot.Annotations.Add(hodographCurve);
@@ -228,6 +239,23 @@ namespace CmpScanModule.ViewModels
         {
             Plot.Annotations.Clear();
             Plot.InvalidatePlot(true);
+        }
+
+        private void RepaintHodographs()
+        {
+            if (!Plot.Annotations.Any(x => x is PolylineAnnotation))
+                return;
+            foreach (var hodograph in Plot.Annotations.Where(x => x is PolylineAnnotation))
+            {
+                (hodograph as PolylineAnnotation).Color = HodographColor;
+            }
+
+            Plot.InvalidatePlot(true);
+        }
+
+        public void OnHodographColorChanged(object obj, HodographColorChangedEventArgs e)
+        {
+            HodographColor = OxyColor.FromArgb(e.NewColor.A, e.NewColor.R, e.NewColor.G, e.NewColor.B);
         }
     }
 }

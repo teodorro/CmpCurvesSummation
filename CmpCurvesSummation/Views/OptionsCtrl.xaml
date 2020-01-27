@@ -9,8 +9,8 @@
              d:DesignHeight="400" d:DesignWidth="350">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="19*"/>
+            <ColumnDefinition Width="16*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -24,37 +24,53 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label x:Name="StepDistanceLabel" Content="Шаг измерений, м" Grid.Row="1" Margin="15,5"/>
-        <ComboBox x:Name="StepDistanceComboBox" Grid.Column="1" Grid.Row="1" Margin="5,5,15,10" 
+        <Label x:Name="StepDistanceLabel" Content="Шаг измерений, м" Grid.Row="1" Margin="10,5"/>
+        <ComboBox x:Name="StepDistanceComboBox" Grid.Column="1" Grid.Row="1" Margin="5,5,5,10" 
                   SelectedItem="{Binding StepDistance}" ItemsSource="{Binding StepsDistance}"/>
-        <Label x:Name="StepTimeLabel" Content="Шаг по времени, нс" Grid.Row="2"  Margin="15,5"/>
-        <ComboBox x:Name="StepTimeComboBox" Grid.Column="1" Grid.Row="2" Margin="5,5,15,10" 
+        <Label x:Name="StepTimeLabel" Content="Шаг по времени, нс" Grid.Row="2"  Margin="10,5"/>
+        <ComboBox x:Name="StepTimeComboBox" Grid.Column="1" Grid.Row="2" Margin="5,5,5,10" 
                   SelectedItem="{Binding StepTime}"  ItemsSource="{Binding StepsTime}"/>
-        <Label x:Name="PaletteLabel" Content="Палитра" Margin="15,5" Grid.Row="3"/>
-        <ComboBox x:Name="PaletteComboBox" Margin="5,5,15,10" Grid.Row="3" Grid.Column="1"
+        <Label x:Name="PaletteLabel" Content="Палитра" Margin="10,5" Grid.Row="3"/>
+        <ComboBox x:Name="PaletteComboBox" Margin="5,5,5,10" Grid.Row="3" Grid.Column="1"
                   ItemsSource="{Binding Palettes}" SelectedItem="{Binding Palette}"/>
-        <Label x:Name="PointColorLabel" Content="Цвет точек" Margin="15,5" Grid.Row="4"/>
-        <ComboBox x:Name="PointColorComboBox" Margin="5,5,15,10" Grid.Row="4" Grid.Column="1"
-                  ItemsSource="{Binding NamedColors}">
+        <Label x:Name="PointColorLabel" Content="Цвет точек" Margin="10,5" Grid.Row="4"/>
+        <ComboBox x:Name="PointColorComboBox" Margin="5,5,5,10" Grid.Row="4" Grid.Column="1"
+                  ItemsSource="{Binding PointColors}" SelectedItem="{Binding SelectedPointColor}">
             <ComboBox.Resources>
                 <viewModels:ColorToSolidBrushConverter x:Key="ColorToBrush"/>
             </ComboBox.Resources>
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Border BorderThickness="0" Height="20" Width="20" 
+                        <Border BorderThickness="2" Height="20" Width="20" 
                                 Background="{Binding Value, Converter={StaticResource ColorToBrush}}"/>
                         <TextBlock Text="{Binding Key}"/>
                     </StackPanel>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <Label x:Name="HodographLabel" Content="Цвет годографов" Margin="15,5" Grid.Row="5"/>
-        <ComboBox x:Name="HodographComboBox" Margin="5,5,15,10" Grid.Row="5" Grid.Column="1"
-                  />
-        <Button x:Name="ButtonSummation" Content="Запустить суммирование" HorizontalAlignment="Left"  Grid.Row="7" Margin="20,0,15,15" Width="150" Grid.ColumnSpan="2" VerticalAlignment="Bottom" 
-                IsEnabled="{Binding ManualSummationPossible}" Click="ButtonSummation_Click" />
+        <Label x:Name="HodographLabel" Content="Цвет годографов" Margin="10,5" Grid.Row="5"/>
+        <ComboBox x:Name="HodographComboBox" Margin="5,5,5,10" Grid.Row="5" Grid.Column="1"
+                  ItemsSource="{Binding ItemsHodographColor}" SelectedItem="{Binding SelectedItemHodographColor}">
+            <ComboBox.Resources>
+                <viewModels:ColorToSolidBrushConverter x:Key="ColorToBrush"/>
+            </ComboBox.Resources>
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Border BorderThickness="2" Height="20" Width="20" 
+                                Background="{Binding Value, Converter={StaticResource ColorToBrush}}"/>
+                        <TextBlock Text="{Binding Key}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button x:Name="ButtonSummation" Content="Запустить суммирование" HorizontalAlignment="Left"  Grid.Row="7" Margin="20,0,0,15" Width="150" VerticalAlignment="Bottom" Grid.ColumnSpan="2"
+                IsEnabled="{Binding ManualSummationPossible}" Click="ButtonSummation_Click" Height="20" />
         <ProgressBar x:Name="progressBar" Grid.Row="8" Grid.ColumnSpan="2" Margin="20,10,15,10"
                      Visibility="{Binding ProgressBarVisible}" Value="{Binding ProgressValue}"/>
     </Grid>
 </UserControl>
+
+
+

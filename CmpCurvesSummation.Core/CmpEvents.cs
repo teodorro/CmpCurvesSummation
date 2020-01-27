@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Media;
 
 namespace CmpCurvesSummation.Core
 {
@@ -23,10 +24,11 @@ namespace CmpCurvesSummation.Core
     public delegate void RawCmpProcessedHandler(object obj, RawCmpProcessedEventArgs e);
     public delegate void SummationInProcessHandler(object obj, SummationInProcessEventArgs e);
     public delegate void AutoCorrectionCheckHander(object obj, AutoCorrectionCheckEventArgs e);
+    public delegate void HodographColorChangedHandler(object obj, HodographColorChangedEventArgs e);
+    public delegate void PointColorChangedHandler(object obj, PointColorChangedEventArgs e);
 
 
-
-
+    
     public class FileLoadedEventArgs : EventArgs
     {
         public ICmpScan CmpScan { get; }
@@ -180,6 +182,26 @@ namespace CmpCurvesSummation.Core
         public bool Auto { get; }
     }
 
+
+    public class HodographColorChangedEventArgs : EventArgs
+    {
+        public Color NewColor { get; }
+
+        public HodographColorChangedEventArgs(Color newColor)
+        {
+            NewColor = newColor;
+        }
+    }
+
+    public class PointColorChangedEventArgs : EventArgs
+    {
+        public Color NewColor { get; }
+
+        public PointColorChangedEventArgs(Color newColor)
+        {
+            NewColor = newColor;
+        }
+    }
 
 
 

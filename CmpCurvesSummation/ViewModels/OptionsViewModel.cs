@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
@@ -25,6 +27,23 @@ namespace CmpCurvesSummation.ViewModels
         public event PaletteChangedHander PaletteChanged;
         public event StepDistanceChangedHandler StepDistanceChanged;
         public event StepTimeChangedHandler StepTimeChanged;
+        public event HodographColorChangedHandler HodographColorChanged;
+        public event PointColorChangedHandler PointColorChanged;
+
+
+        public OptionsViewModel()
+        {
+            InitStepsTime();
+            InitStepsDistance();
+            InitPalettes();
+
+            PointColors = GetColors();
+            SelectedPointColor = PointColors.First(x => x.Value == Colors.Black);
+
+            ItemsHodographColor = GetColors();
+            SelectedItemHodographColor = ItemsHodographColor.First(x => x.Value == Colors.Purple);
+        }
+
 
         public ICmpScan CmpScan { get; private set; }
 
@@ -40,7 +59,7 @@ namespace CmpCurvesSummation.ViewModels
         }
         private bool _cmpScanLoaded;
 
-        private double _stepTime = CmpCurvesSummation.Core.CmpScan.DefaultStepTime;
+        private double _stepTime = Core.CmpScan.DefaultStepTime;
         public double StepTime
         {
             get => _stepTime;
@@ -57,7 +76,7 @@ namespace CmpCurvesSummation.ViewModels
 
         public ObservableCollection<double> StepsTime { get; set; } = new ObservableCollection<double>();
 
-        private double _stepDistance = CmpCurvesSummation.Core.CmpScan.DefaultStepDistance;
+        private double _stepDistance = Core.CmpScan.DefaultStepDistance;
         public double StepDistance
         {
             get => _stepDistance;
@@ -122,12 +141,50 @@ namespace CmpCurvesSummation.ViewModels
             }
         }
 
-
-        public OptionsViewModel()
+        private IEnumerable<KeyValuePair<String, Color>> _pointColors;
+        public IEnumerable<KeyValuePair<String, Color>> PointColors
         {
-            InitStepsTime();
-            InitStepsDistance();
-            InitPalettes();
+            get => _pointColors;
+            set
+            {
+                _pointColors = value;
+                OnPropertyChanged(nameof(PointColors));
+            }
+        }
+
+        private KeyValuePair<String, Color> _selectedPointColor;
+        public KeyValuePair<String, Color> SelectedPointColor
+        {
+            get => _selectedPointColor;
+            set
+            {
+                _selectedPointColor = value;
+                PointColorChanged?.Invoke(this, new PointColorChangedEventArgs(SelectedPointColor.Value));
+                OnPropertyChanged(nameof(SelectedPointColor));
+            }
+        }
+        
+        private IEnumerable<KeyValuePair<String, Color>> _itemsHodographColor;
+        public IEnumerable<KeyValuePair<String, Color>> ItemsHodographColor
+        {
+            get => _itemsHodographColor;
+            set
+            {
+                _itemsHodographColor = value;
+                OnPropertyChanged(nameof(ItemsHodographColor));
+            }
+        }
+
+        private KeyValuePair<String, Color> _selectedItemItemHodographColor;
+        public KeyValuePair<String, Color> SelectedItemHodographColor
+        {
+            get => _selectedItemItemHodographColor;
+            set
+            {
+                _selectedItemItemHodographColor = value;
+                HodographColorChanged?.Invoke(this, new HodographColorChangedEventArgs(SelectedItemHodographColor.Value));
+                OnPropertyChanged(nameof(SelectedItemHodographColor));
+            }
         }
 
 
@@ -187,6 +244,14 @@ namespace CmpCurvesSummation.ViewModels
             ProgressValue = 0;
         }
 
+        private IEnumerable<KeyValuePair<String, Color>> GetColors()
+        {
+            return typeof(Colors)
+                .GetProperties()
+                .Where(prop => typeof(Color).IsAssignableFrom(prop.PropertyType))
+                .Select(prop => new KeyValuePair<String, Color>(prop.Name, (Color)prop.GetValue(null)));
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -201,6 +266,7 @@ namespace CmpCurvesSummation.ViewModels
             ProgressValue = e.Percent;
         }
     }
+
 
 
     public class ColorToSolidBrushConverter : IValueConverter

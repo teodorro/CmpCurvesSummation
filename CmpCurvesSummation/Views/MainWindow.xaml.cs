@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using CmpCurvesSummation.Core;
 using CmpCurvesSummation.ViewModels;
 

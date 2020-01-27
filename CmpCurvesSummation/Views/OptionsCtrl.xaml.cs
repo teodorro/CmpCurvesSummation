@@ -16,35 +16,18 @@ namespace CmpCurvesSummation.Views
         private OptionsViewModel _viewModel;
         public OptionsViewModel ViewModel => _viewModel;
 
-        public IEnumerable<KeyValuePair<String, Color>> NamedColors
-        {
-            get;
-            private set;
-        }
-
         public OptionsCtrl()
         {
             InitializeComponent();
 
-            this.NamedColors = this.GetColors();
-
             _viewModel = new OptionsViewModel();
             DataContext = _viewModel;
+            
         }
 
         private void ButtonSummation_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.LaunchSummation();
-        }
-
-        private IEnumerable<KeyValuePair<String, Color>> GetColors()
-        {
-            return typeof(Colors)
-                .GetProperties()
-                .Where(prop =>
-                    typeof(Color).IsAssignableFrom(prop.PropertyType))
-                .Select(prop =>
-                    new KeyValuePair<String, Color>(prop.Name, (Color)prop.GetValue(null)));
         }
     }
 

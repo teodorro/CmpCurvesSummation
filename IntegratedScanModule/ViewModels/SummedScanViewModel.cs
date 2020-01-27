@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CmpCurvesSummation.Core;
+using LayersInfoModule.Annotations;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
@@ -10,7 +13,7 @@ using OxyPlot.Series;
 
 namespace SummedScanModule.ViewModels
 {
-    public class SummedScanViewModel
+    public class SummedScanViewModel : INotifyPropertyChanged
     {
         private const int colorsCount = 1024;
 
@@ -20,7 +23,20 @@ namespace SummedScanModule.ViewModels
         
 
         public PlotModel Plot { get; }
-        private bool _autoCorrection { get; set; }
+
+        private bool _autoCorrection;
+        
+        private OxyColor _pointColor = OxyColor.FromRgb(255, 255, 255);
+        public OxyColor PointColor
+        {
+            get => _pointColor;
+            set
+            {
+                _pointColor = value;
+                RepaintPoints();
+                OnPropertyChanged(nameof(PointColor));
+            }
+        }
 
 
         public event HodographDrawClickHander HodographDrawClick;
@@ -135,7 +151,7 @@ namespace SummedScanModule.ViewModels
         {
             var point = new PointAnnotation()
             {
-                Fill = OxyColor.FromRgb(255, 255, 255),
+                Fill = PointColor,
                 X = velocity,
                 Y = time
             };
@@ -160,7 +176,7 @@ namespace SummedScanModule.ViewModels
 
         private void UpdateAxes()
         {
-            Plot.InvalidatePlot(true); // to make axes be created
+            Plot.InvalidatePlot(true); // to create axes
 
             if (!Plot.Axes.Any(x => x is LinearColorAxis))
                 AddPalette(_palette);
@@ -288,6 +304,31 @@ namespace SummedScanModule.ViewModels
         {
             Clear();
             _cmpScan = e.CmpScan;
+        }
+
+        public void OnPointColorChanged(object obj, PointColorChangedEventArgs e)
+        {
+            PointColor = OxyColor.FromArgb(e.NewColor.A, e.NewColor.R, e.NewColor.G, e.NewColor.B);
+        }
+        
+        private void RepaintPoints()
+        {
+            if (!Plot.Annotations.Any(x => x is PointAnnotation))
+                return;
+            foreach (var point in Plot.Annotations.Where(x => x is PointAnnotation))
+            {
+                (point as PointAnnotation).Fill = PointColor;
+            }
+
+            Plot.InvalidatePlot(true);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

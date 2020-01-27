@@ -32,6 +32,15 @@ namespace CmpCurvesSummation.Views
             DataContext = _viewModel;
 
             SetUpEvents();
+            CrossCuttingInit();
+        }
+
+        private void CrossCuttingInit()
+        {
+            OptionsControl.ViewModel.SelectedPointColor =
+                OptionsControl.ViewModel.PointColors.First(x => x.Value == Colors.White);
+            OptionsControl.ViewModel.SelectedItemHodographColor =
+                OptionsControl.ViewModel.ItemsHodographColor.First(x => x.Value == Colors.Black);
         }
 
         private void SetUpEvents()
@@ -64,6 +73,8 @@ namespace CmpCurvesSummation.Views
             OptionsControl.ViewModel.StepTimeChanged += CmpScanControl.ViewModel.OnStepTimeChanged;
             OptionsControl.ViewModel.StepTimeChanged += SummedOverCurveScanControl.ViewModel.OnStepTimeChanged;
             OptionsControl.ViewModel.StepTimeChanged += LayersInfoControl.ViewModel.OnStepTimeChanged;
+            OptionsControl.ViewModel.PointColorChanged += SummedOverCurveScanControl.ViewModel.OnPointColorChanged;
+            OptionsControl.ViewModel.HodographColorChanged += CmpScanControl.ViewModel.OnHodographColorChanged;
             CmpProgressBar.Instance.SummationInProcess += OptionsControl.ViewModel.OnSummationInProcess;
         }
 
