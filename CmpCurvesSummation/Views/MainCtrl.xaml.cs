@@ -67,5 +67,9 @@ namespace CmpCurvesSummation.Views
             CmpProgressBar.Instance.SummationInProcess += OptionsControl.ViewModel.OnSummationInProcess;
         }
 
+        public void AddFileOpenedEventHandler(FileOpenHandler fileOpenHandler)
+        {
+            ToolbarControl.ViewModel.FileOpened += fileOpenHandler;
+        }
     }
 }

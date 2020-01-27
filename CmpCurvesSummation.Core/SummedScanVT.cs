@@ -30,6 +30,8 @@ namespace CmpCurvesSummation.Core
     {
         private const int _vLengthDimensionless = 100;
 
+        private Dictionary<double, Tuple<int, int>> _checkOrderDict = new Dictionary<double, Tuple<int, int>>();
+
         public List<double[]> Data { get; } = new List<double[]>();
         public double StepVelocity => (MaxVelocity - MinVelocity) / _vLengthDimensionless;
         public double StepTime { get; }
@@ -41,9 +43,6 @@ namespace CmpCurvesSummation.Core
         public int AscanLengthDimensionless { get; }
         public double AscanLength => AscanLengthDimensionless * StepTime;
         public int CheckRadius { get; } = 10;
-
-        private Dictionary<double, Tuple<int, int>> _checkOrderDict = new Dictionary<double, Tuple<int, int>>();
-
 
 
         public SummedScanVT(ICmpScan cmpScan)
@@ -76,7 +75,6 @@ namespace CmpCurvesSummation.Core
             }
         }
 
-
         private double CalcSumForVelocityAndDepth(ICmpScan cmpScan, double h, double v)
         {
             double sum = 0;
@@ -104,7 +102,6 @@ namespace CmpCurvesSummation.Core
 
             return res;
         }
-
 
         public Tuple<double, double> CorrectPoint(double v, double t)
         {

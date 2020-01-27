@@ -15,10 +15,16 @@ namespace CmpCurvesSummation.Views
         {
             InitializeComponent();
 
+            this.mainCtrl.AddFileOpenedEventHandler(OnFileLoaded);
+
             _viewModel = new MainWindowViewModel();
             DataContext = _viewModel;
 
-            //ToolbarControl.ViewModel.FileOpened += CmpScanControl.ViewModel.DataLoaded;
+        }
+
+        public void OnFileLoaded(object sender, FileLoadedEventArgs e)
+        {
+            _viewModel.Title = e.Filename;
         }
     }
 }

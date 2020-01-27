@@ -30,9 +30,12 @@ namespace CmpCurvesSummation.Core
     public class FileLoadedEventArgs : EventArgs
     {
         public ICmpScan CmpScan { get; }
-        public FileLoadedEventArgs(ICmpScan cmpScan)
+        public string Filename { get; }
+
+        public FileLoadedEventArgs(ICmpScan cmpScan, string filename)
         {
             CmpScan = cmpScan;
+            Filename = filename;
         }
     }
 

@@ -23,7 +23,6 @@ namespace CmpCurvesSummation.ViewModels
         public ToolbarViewModel(IFileOpener fileOpener)
         {
             _fileOpener = fileOpener;
-            //CommandManager.InvalidateRequerySuggested();
         }
 
 
@@ -33,7 +32,7 @@ namespace CmpCurvesSummation.ViewModels
             if (fileDialog.ShowDialog() == true)
             {
                 var data = _fileOpener.OpenKrotTxt(fileDialog.FileName);
-                FileOpened.Invoke(this, new FileLoadedEventArgs(data));
+                FileOpened?.Invoke(this, new FileLoadedEventArgs(data, fileDialog.FileName));
             }
         }
     }
