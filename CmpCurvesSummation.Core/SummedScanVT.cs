@@ -18,10 +18,17 @@ namespace CmpCurvesSummation.Core
         double MaxTime { get; }
         int AscanLengthDimensionless { get; }
         double AscanLength { get; }
+        int CheckRadius { get; }
+        List<Tuple<double, double>> Layers { get; }
+        int MinimalTimeBetweenLayers { get; }
+
         double[,] GetDataArray();
         void Sum(ICmpScan cmpScan);
-        Tuple<double, double> CorrectPoint(double v, double t);
-        int CheckRadius { get; }
+        Tuple<double, double> CorrectPoint(double velocity, double time);
+        void AddLayer(double velocity, double time);
+        void RemoveLayersAround(double velocity, double time);
+
+        event RefreshLayersHandler RefreshLayers;
     }
 
 
@@ -43,6 +50,10 @@ namespace CmpCurvesSummation.Core
         public int AscanLengthDimensionless { get; }
         public double AscanLength => AscanLengthDimensionless * StepTime;
         public int CheckRadius { get; } = 10;
+        public List<Tuple<double, double>> Layers { get; } = new List<Tuple<double, double>>();
+        public int MinimalTimeBetweenLayers { get; } = 10;
+
+        public event RefreshLayersHandler RefreshLayers;
 
 
         public SummedScanVT(ICmpScan cmpScan)
@@ -199,6 +210,28 @@ namespace CmpCurvesSummation.Core
             return true;
         }
 
+        public void AddLayer(double velocity, double time)
+        {
+            RemoveLayersAround(velocity, time);
+            Layers.Add(new Tuple<double, double>(velocity, time));
+            Layers.Sort(new TimeComparer());
+            RefreshLayers?.Invoke(this, new RefreshLayersEventArgs(Layers));
+        }
+
+        public void RemoveLayersAround(double velocity, double time)
+        {
+            var correctedLayers = new List<Tuple<double, double>>();
+            foreach (var point in Layers)
+                if (Math.Abs(point.Item2 - time) > MinimalTimeBetweenLayers)
+                    correctedLayers.Add(point);
+
+            Layers.Clear();
+            foreach (var point in correctedLayers)
+                Layers.Add(point);
+
+            RefreshLayers?.Invoke(this, new RefreshLayersEventArgs(Layers));
+        }
+
         private bool CheckIfMax(int x, int y) => CheckIf(x, y, (i, j) => i >= j);
 
         private bool CheckIfMin(int x, int y) => CheckIf(x, y, (i, j) => i <= j);
@@ -210,5 +243,15 @@ namespace CmpCurvesSummation.Core
         private double Time(int indexTime) => indexTime * StepTime + MinTime;
 
         private double Velocity(int indexVelocity) => indexVelocity * StepVelocity + MinVelocity;
+    }
+
+
+
+    public class TimeComparer : IComparer<Tuple<double, double>>
+    {
+        public int Compare(Tuple<double, double> x, Tuple<double, double> y)
+        {
+            return Convert.ToInt32(10 * (x.Item2 - y.Item2));
+        }
     }
 }

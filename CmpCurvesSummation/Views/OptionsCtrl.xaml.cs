@@ -16,6 +16,7 @@ namespace CmpCurvesSummation.Views
         private OptionsViewModel _viewModel;
         public OptionsViewModel ViewModel => _viewModel;
 
+
         public OptionsCtrl()
         {
             InitializeComponent();
@@ -24,6 +25,7 @@ namespace CmpCurvesSummation.Views
             DataContext = _viewModel;
             
         }
+
 
         private void ButtonSummation_Click(object sender, RoutedEventArgs e)
         {

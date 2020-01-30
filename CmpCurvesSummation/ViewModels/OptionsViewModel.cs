@@ -38,10 +38,8 @@ namespace CmpCurvesSummation.ViewModels
             InitPalettes();
 
             PointColors = GetColors();
-            SelectedPointColor = PointColors.First(x => x.Value == Colors.Black);
 
             ItemsHodographColor = GetColors();
-            SelectedItemHodographColor = ItemsHodographColor.First(x => x.Value == Colors.Purple);
         }
 
 
@@ -195,7 +193,7 @@ namespace CmpCurvesSummation.ViewModels
             SummationStarted?.Invoke(this, new SummationStartedClickEventArgs());
         }
 
-
+        
         private void InitStepsDistance()
         {
             StepsDistance.Add(0.05);

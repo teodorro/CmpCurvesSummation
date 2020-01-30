@@ -38,7 +38,7 @@ namespace CmpCurvesSummation.Views
         private void CrossCuttingInit()
         {
             OptionsControl.ViewModel.SelectedPointColor =
-                OptionsControl.ViewModel.PointColors.First(x => x.Value == Colors.White);
+                OptionsControl.ViewModel.PointColors.First(x => x.Value == Colors.Black);
             OptionsControl.ViewModel.SelectedItemHodographColor =
                 OptionsControl.ViewModel.ItemsHodographColor.First(x => x.Value == Colors.Black);
         }
@@ -54,15 +54,9 @@ namespace CmpCurvesSummation.Views
             ProcessingControl.ViewModel.RawCmpDataProcessed += SummedOverCurveScanControl.ViewModel.OnRawCmpDataProcessed;
             ProcessingControl.ViewModel.RawCmpDataProcessed += OptionsControl.ViewModel.OnRawCmpDataProcessed;
             ProcessingControl.ViewModel.RawCmpDataProcessed += LayersInfoControl.ViewModel.OnRawCmpDataProcessed;
-            SummedOverCurveScanControl.ViewModel.HodographDrawClick += CmpScanControl.ViewModel.OnHodographDrawClick;
-            SummedOverCurveScanControl.ViewModel.HodographDrawClick += LayersInfoControl.ViewModel.OnHodographDrawClick;
             SummedOverCurveScanControl.ViewModel.SummationFinished += OptionsControl.ViewModel.OnSummationFinished;
             SummedOverCurveScanControl.ViewModel.SummationFinished += LayersInfoControl.ViewModel.OnSummationFinished;
             SummedOverCurveScanControl.ViewModel.SummationFinished += CmpScanControl.ViewModel.OnSummationFinished;
-            SummedOverCurveScanControl.ViewModel.DeleteClick += CmpScanControl.ViewModel.OnDeleteClick;
-            SummedOverCurveScanControl.ViewModel.DeleteClick += LayersInfoControl.ViewModel.OnDeletePointClick;
-            LayersInfoControl.ViewModel.DeleteClick += CmpScanControl.ViewModel.OnDeleteClick;
-            LayersInfoControl.ViewModel.DeleteClick += SummedOverCurveScanControl.ViewModel.OnDeleteClick;
             LayersInfoControl.ViewModel.AutoCorrectionClick += SummedOverCurveScanControl.ViewModel.OnAutoCorrectionChange;
             OptionsControl.ViewModel.SummationStarted += SummedOverCurveScanControl.ViewModel.OnSummationStarted;
             OptionsControl.ViewModel.PaletteChanged += CmpScanControl.ViewModel.OnPaletteChanged;

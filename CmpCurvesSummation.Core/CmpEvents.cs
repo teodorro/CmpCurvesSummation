@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Media;
 
 namespace CmpCurvesSummation.Core
@@ -12,23 +13,21 @@ namespace CmpCurvesSummation.Core
     }
 
 
-    public delegate void HodographDrawClickHander(object obj, HodographDrawVTClickEventArgs e);
     public delegate void EndSummationHandler(object obj, SummationFinishedEventArgs e);
-    public delegate void AutoSummationCheckHander(object obj, AutoSummationCheckEventArgs e);
     public delegate void SummationStartedHander(object obj, SummationStartedClickEventArgs e);
     public delegate void PaletteChangedHander(object obj, PaletteChangedEventArgs e);
     public delegate void StepDistanceChangedHandler(object obj, StepDistanceEventArgs e);
     public delegate void StepTimeChangedHandler(object obj, StepTimeEventArgs e);
     public delegate void FileOpenHandler(object obj, FileLoadedEventArgs e);
-    public delegate void DeleteLayerHander(object obj, DeleteLayerEventArgs e);
     public delegate void RawCmpProcessedHandler(object obj, RawCmpProcessedEventArgs e);
     public delegate void SummationInProcessHandler(object obj, SummationInProcessEventArgs e);
     public delegate void AutoCorrectionCheckHander(object obj, AutoCorrectionCheckEventArgs e);
     public delegate void HodographColorChangedHandler(object obj, HodographColorChangedEventArgs e);
     public delegate void PointColorChangedHandler(object obj, PointColorChangedEventArgs e);
+    public delegate void RefreshLayersHandler(object obj, RefreshLayersEventArgs e);
 
 
-    
+
     public class FileLoadedEventArgs : EventArgs
     {
         public ICmpScan CmpScan { get; }
@@ -128,6 +127,12 @@ namespace CmpCurvesSummation.Core
 
     public class SummationFinishedEventArgs : EventArgs
     {
+        public SummationFinishedEventArgs(ISummedScanVT summedScan)
+        {
+            SummedScan = summedScan;
+        }
+
+        public ISummedScanVT SummedScan { get; }
     }
 
 
@@ -201,6 +206,16 @@ namespace CmpCurvesSummation.Core
         {
             NewColor = newColor;
         }
+    }
+
+    public class RefreshLayersEventArgs : EventArgs
+    {
+        public RefreshLayersEventArgs(IEnumerable<Tuple<double, double>> layers)
+        {
+            Layers = layers;
+        }
+
+        public IEnumerable<Tuple<double, double>> Layers { get; }
     }
 
 

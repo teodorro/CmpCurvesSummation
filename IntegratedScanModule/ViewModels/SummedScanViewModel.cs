@@ -16,6 +16,8 @@ namespace SummedScanModule.ViewModels
     public class SummedScanViewModel : INotifyPropertyChanged
     {
         private const int colorsCount = 1024;
+        private const double _layersStructureStrokeThickness = 0.25;
+        private const int _pointSize = 1;
 
         private ICmpScan _cmpScan;
         private ISummedScanVT _summedScan;
@@ -34,14 +36,13 @@ namespace SummedScanModule.ViewModels
             {
                 _pointColor = value;
                 RepaintPoints();
+                RepaintLine();
                 OnPropertyChanged(nameof(PointColor));
             }
         }
 
 
-        public event HodographDrawClickHander HodographDrawClick;
         public event EndSummationHandler SummationFinished;
-        public event DeleteLayerHander DeleteClick;
 
 
         public SummedScanViewModel()
@@ -60,6 +61,15 @@ namespace SummedScanModule.ViewModels
             _cmpScan = args.CmpScan;
         }
 
+        private void RepaintLine()
+        {
+            var line = Plot.Annotations.FirstOrDefault(x => x is PolylineAnnotation);
+            if (line == null)
+                return;
+            ((PolylineAnnotation)line).Color = PointColor;
+            Plot.InvalidatePlot(true);
+        }
+
         private async void Sum()
         {
             _summedScan = new SummedScanVT(_cmpScan);
@@ -70,9 +80,18 @@ namespace SummedScanModule.ViewModels
             {
                 LoadSummedScan();
             });
-            SummationFinished?.Invoke(this, new SummationFinishedEventArgs());
+            _summedScan.RefreshLayers += OnRefreshLayers;
+            SummationFinished?.Invoke(this, new SummationFinishedEventArgs(_summedScan));
         }
 
+        private void OnRefreshLayers(object o, RefreshLayersEventArgs e)
+        {
+            Plot.Annotations.Clear();
+            RefreshHodographLines();
+            RefreshHodographPoints();
+
+            Plot.InvalidatePlot(true);
+        }
 
         private void LoadSummedScan()
         {
@@ -112,10 +131,81 @@ namespace SummedScanModule.ViewModels
             if (_autoCorrection)
                 point = CorrectPoint(point);
             
-            RemovePointsWithCloseTime(point);
             var velocity = Math.Round(point.X, 3);
             var time = Math.Round(point.Y, 2);
-            AddHodographToPlot(velocity, time);
+            AddHodographPoint(velocity, time);
+
+            Plot.InvalidatePlot(true);
+
+        }
+
+        private void AddHodographPoint(double velocity, double time)
+        {
+            _summedScan.AddLayer(velocity, time);
+        }
+        
+        private void RefreshHodographPoints()
+        {
+            foreach (var layer in _summedScan.Layers)
+            {
+                var velocity = layer.Item1;
+                var time = layer.Item2;
+                var point = new PointAnnotation();
+                point.X = velocity;
+                point.Y = time;
+                point.Size = _pointSize;
+                point.Fill = PointColor;
+                Plot.Annotations.Add(point);
+            }
+        }
+
+        private void RefreshHodographLines()
+        {
+            if (_summedScan.Layers.Count == 0)
+                return;
+            
+            var velocity = _summedScan.Layers[0].Item1;
+            var time = _summedScan.Layers[0].Item2;
+            CreateLayersLine(velocity, time);
+
+            if (_summedScan.Layers.Count > 1)
+            {
+                for (int i = 1; i < _summedScan.Layers.Count; i++)
+                {
+                    velocity = _summedScan.Layers[i].Item1;
+                    time = _summedScan.Layers[i].Item2;
+                    AddPointToLayersLine(velocity, time);
+                }
+            }
+        }
+
+        private void CreateLayersLine(double velocity, double time)
+        {
+            var layersStructure = new PolylineAnnotation();
+            layersStructure.Points.Add(new DataPoint(velocity, _cmpScan.MinTime));
+            layersStructure.Points.Add(new DataPoint(velocity, time));
+            layersStructure.Points.Add(new DataPoint(velocity, _cmpScan.MaxTime));
+
+            layersStructure.Color = PointColor;
+            layersStructure.LineStyle = LineStyle.Solid;
+            layersStructure.StrokeThickness = _layersStructureStrokeThickness;
+            Plot.Annotations.Add(layersStructure);
+        }
+
+        private void AddPointToLayersLine(double velocity, double time)
+        {
+            var layersStructure = Plot.Annotations.FirstOrDefault(x => x is PolylineAnnotation) as PolylineAnnotation;
+            var points = layersStructure.Points;
+
+            points.Remove(points.Last());
+
+            var beforeNewPoint = new DataPoint(velocity, points.Last().Y);
+            var newPoint = new DataPoint(velocity, time);
+            var afterNewPoint = new DataPoint(velocity, _cmpScan.MaxTime);
+
+            points.Add(beforeNewPoint);
+            points.Add(newPoint);
+            points.Add(afterNewPoint);
         }
 
         private DataPoint CorrectPoint(DataPoint point)
@@ -126,41 +216,6 @@ namespace SummedScanModule.ViewModels
             return correctedPoint != null 
                 ? new DataPoint(correctedPoint.Item1, correctedPoint.Item2) 
                 : point;
-        }
-
-        private void RemovePointsWithCloseTime(DataPoint newPoint)
-        {
-            var points = Plot.Annotations.OfType<PointAnnotation>();
-            if (points == null || !points.Any())
-                return;
-
-            var pointsToRemove = new List<PointAnnotation>();
-            foreach (var point in points)
-                if (Math.Abs(Math.Abs(point.Y) - Math.Abs(newPoint.Y)) < _summedScan.CheckRadius)
-                    pointsToRemove.Add(point);
-
-            if (pointsToRemove.Any())
-                foreach (var point in pointsToRemove)
-                {
-                    Plot.Annotations.Remove(point);
-                    DeleteClick?.Invoke(this, new DeleteLayerEventArgs(point.X, point.Y));
-                }
-        }
-        
-        private void AddHodographToPlot(double velocity, double time)
-        {
-            var point = new PointAnnotation()
-            {
-                Fill = PointColor,
-                X = velocity,
-                Y = time
-            };
-            point.Size = 2;
-
-            Plot.Annotations.Add(point);
-            Plot.InvalidatePlot(true);
-
-            HodographDrawClick?.Invoke(this, new HodographDrawVTClickEventArgs(velocity, time));
         }
 
         private bool IsPointOnPlot(DataPoint point)
@@ -250,15 +305,6 @@ namespace SummedScanModule.ViewModels
             }
         }
 
-        public void OnDeleteClick(object obj, DeleteLayerEventArgs e)
-        {
-            var annotation = Plot.Annotations.FirstOrDefault(
-                x => (x as PointAnnotation)?.Y == e.Time && (x as PointAnnotation)?.X == e.Velocity);
-            if (annotation != null)
-                Plot.Annotations.Remove(annotation);
-            Plot.InvalidatePlot(true);
-        }
-        
         public void OnSummationStarted(object obj, EventArgs e)
         {
             Sum();
@@ -329,6 +375,14 @@ namespace SummedScanModule.ViewModels
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    internal class PointsComparer<T> : IComparer<DataPoint>
+    {
+        public int Compare(DataPoint x, DataPoint y)
+        {
+            return Convert.ToInt32(2*(x.Y - y.Y));
         }
     }
 }

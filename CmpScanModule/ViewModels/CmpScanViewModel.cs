@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CmpCurvesSummation.Core;
 using OxyPlot;
@@ -12,6 +13,7 @@ namespace CmpScanModule.ViewModels
     public class CmpScanViewModel 
     {
         private const int colorsCount = 1024;
+        private const int _hodographCurveStrokeThickness = 1;
 
         private ICmpScan _cmpScan;
         private PaletteType _palette = PaletteType.Jet;
@@ -134,37 +136,37 @@ namespace CmpScanModule.ViewModels
             return res;
         }
 
-        public void OnHodographDrawClick(object obj, HodographDrawVTClickEventArgs e)
+        private void OnRefreshLayers(object o, RefreshLayersEventArgs e)
         {
-            var h = CmpMath.Instance.Depth(e.Velocity, e.Time);
-            var v = e.Velocity;
-            var hodograph = new double[_cmpScan.LengthDimensionless];
-            var hodographCurve = new PolylineAnnotation();
-            for (int i = 0; i < _cmpScan.LengthDimensionless; i++)
+            Plot.Annotations.Clear();
+            RefreshHodographCurves(e.Layers);
+            Plot.InvalidatePlot(true);
+        }
+
+        private void RefreshHodographCurves(IEnumerable<Tuple<double, double>> layers)
+        {
+            foreach (var layer in layers)
             {
-                var d = i * _cmpScan.StepTime;
-                hodograph[i] = Math.Round(CmpMath.Instance.HodographLineLoza(d, h, v), 2);
-                hodographCurve.Points.Add(new DataPoint(d, hodograph[i]));
+                var velocity = layer.Item1;
+                var time = layer.Item2;
+                var h = CmpMath.Instance.Depth(velocity, time);
+                var hodograph = new double[_cmpScan.LengthDimensionless];
+                var hodographCurve = new PolylineAnnotation();
+                for (int i = 0; i < _cmpScan.LengthDimensionless; i++)
+                {
+                    var distance = i * _cmpScan.StepTime;
+                    hodograph[i] = Math.Round(CmpMath.Instance.HodographLineLoza(distance, h, velocity), 2);
+                    hodographCurve.Points.Add(new DataPoint(distance, hodograph[i]));
+                }
+
+                hodographCurve.Color = HodographColor;
+                hodographCurve.InterpolationAlgorithm = new CanonicalSpline(0.5);
+                hodographCurve.LineStyle = LineStyle.Solid;
+                hodographCurve.StrokeThickness = _hodographCurveStrokeThickness;
+                Plot.Annotations.Add(hodographCurve);
             }
-
-            hodographCurve.Color = HodographColor;
-            hodographCurve.InterpolationAlgorithm = new CanonicalSpline(0.5);
-            hodographCurve.LineStyle = LineStyle.Solid;
-            Plot.Annotations.Add(hodographCurve);
-
-            Plot.InvalidatePlot(true);
         }
-
-        public void OnDeleteClick(object obj, DeleteLayerEventArgs e)
-        {
-            var h = CmpMath.Instance.Depth(e.Velocity, e.Time);
-            var t = Math.Round(CmpMath.Instance.HodographLineLoza(0, h, e.Velocity), 2);
-            var annotation = Plot.Annotations.FirstOrDefault(x => (x as PolylineAnnotation)?.Points[0].Y == t);
-            if (annotation != null)
-                Plot.Annotations.Remove(annotation);
-            Plot.InvalidatePlot(true);
-        }
-
+        
         public void OnPaletteChanged(object obj, PaletteChangedEventArgs e)
         {
             _palette = e.Palette;
@@ -238,6 +240,7 @@ namespace CmpScanModule.ViewModels
         public void OnSummationFinished(object obj, SummationFinishedEventArgs e)
         {
             Plot.Annotations.Clear();
+            e.SummedScan.RefreshLayers += OnRefreshLayers;
             Plot.InvalidatePlot(true);
         }
 

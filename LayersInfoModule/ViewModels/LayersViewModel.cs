@@ -11,12 +11,13 @@ namespace LayersInfoModule.ViewModels
 {
     public class LayersViewModel : INotifyPropertyChanged
     {
-        public event DeleteLayerHander DeleteClick;
         public event AutoCorrectionCheckHander AutoCorrectionClick;
 
         public ObservableCollection<LayerInfo> Layers { get; } = new ObservableCollection<LayerInfo>();
 
         private bool _autoCorrection;
+        private ISummedScanVT _summedScan;
+
         public bool AutoCorrection
         {
             get => _autoCorrection;
@@ -27,34 +28,11 @@ namespace LayersInfoModule.ViewModels
                 AutoCorrectionClick?.Invoke(this, new AutoCorrectionCheckEventArgs(_autoCorrection));
             }
         }
-        
 
-        public void OnHodographDrawClick(object sender, HodographDrawVTClickEventArgs e)
-        {
-            var newLayer = new LayerInfo(e.Time, e.Velocity, Layers.LastOrDefault(x => x.Time < e.Time));
-            Layers.Add(newLayer);
-            RefreshLayers();
-        }
-
-        private void RefreshLayers()
-        {
-            var sorted = Layers.OrderBy(x => x.Time).ToList();
-            Layers.Clear();
-            foreach (var layer in sorted)
-                Layers.Add(new LayerInfo(layer.Time, layer.AvgVelocity, sorted.LastOrDefault(x => x.Time < layer.Time)));
-        }
 
         public void OnDeleteRowClick(object sender, DeleteLayerEventArgs e)
         {
-            Layers.Remove(Layers.First(x => x.Time == e.Time && x.AvgVelocity == e.Velocity));
-            RefreshLayers();
-            DeleteClick?.Invoke(sender, e);
-        }
-
-        public void OnDeletePointClick(object sender, DeleteLayerEventArgs e)
-        {
-            Layers.Remove(Layers.First(x => x.Time == e.Time && x.AvgVelocity == e.Velocity));
-            RefreshLayers();
+            _summedScan.RemoveLayersAround(e.Velocity, e.Time);
         }
 
         public void OnFileLoaded(object sender, FileLoadedEventArgs e)
@@ -88,7 +66,23 @@ namespace LayersInfoModule.ViewModels
 
         public void OnSummationFinished(object obj, SummationFinishedEventArgs e)
         {
+            _summedScan = e.SummedScan;
+            _summedScan.RefreshLayers += OnRefreshLayers;
             Layers.Clear();
+        }
+
+        private void OnRefreshLayers(object o, RefreshLayersEventArgs e)
+        {
+            Layers.Clear();
+            LayerInfo prevLayerInfo = null;
+            foreach (var layer in e.Layers)
+            {
+                var avgVelocity = layer.Item1;
+                var time = layer.Item2;
+                var layerInfo = new LayerInfo(time, avgVelocity, prevLayerInfo);
+                Layers.Add(layerInfo);
+                prevLayerInfo = layerInfo;
+            }
         }
     }
 
