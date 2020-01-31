@@ -43,8 +43,8 @@ namespace CmpCurvesSummation.Core
         public double StepVelocity => (MaxVelocity - MinVelocity) / _vLengthDimensionless;
         public double StepTime { get; }
         public double StepDistance { get; }
-        public double MinVelocity { get; } = CmpMath.Instance.Velocity(CmpMath.WaterPermittivity);
-        public double MaxVelocity { get; } = CmpMath.SpeedOfLight;
+        public double MinVelocity { get; } = CmpMath.Instance.Velocity(CmpMath.WaterPermittivity) / 2;
+        public double MaxVelocity { get; } = CmpMath.SpeedOfLight / 2;
         public double MinTime { get; } = 0;
         public double MaxTime => MinTime + AscanLength;
         public int AscanLengthDimensionless { get; }
@@ -80,7 +80,7 @@ namespace CmpCurvesSummation.Core
                 for (int j = 0; j < AscanLengthDimensionless; j++)
                 {
                     var t = Time(j);
-                    h = v * t / 2;
+                    h = CmpMath.Instance.Depth(v, t);
                     var sum = CalcSumForVelocityAndDepth(cmpScan, h, v);
 //                    Data[p][j] = Math.Sign(sum) * Math.Log(Math.Abs(sum) + 1); // log for sum works not good
                     Data[p][j] = sum;

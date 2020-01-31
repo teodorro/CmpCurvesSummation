@@ -14,23 +14,23 @@ namespace CmpCurvesSummation.Core
         public const double SpeedOfLight = 0.3;
         public const double WaterPermittivity = 81;
 
-        public double Velocity(double permittivity) => SpeedOfLight / (Math.Sqrt(permittivity));
-        public double Permittivity(double velocity) => Math.Pow(SpeedOfLight / velocity, 2);
+        public double Velocity(double permittivity) => SpeedOfLight / (Math.Sqrt(permittivity)) / 2;
+        public double Permittivity(double velocity) => Math.Pow(SpeedOfLight / velocity / 2, 2);
         public double WaterVelocity => Velocity(WaterPermittivity);
 
 
-        public double Depth(double velocity, double time) => velocity * time / 2;
+        public double Depth(double velocity, double time) => velocity * time;
         
         public double HodographLineClassic(double distance, double height, double velocity)
         {
-            var part1 = 1 / velocity;
+            var part1 = 1 / velocity * 2;
             var part2 = Math.Sqrt(Math.Pow(height, 2) + Math.Pow(distance / 2, 2));
             return part1 * part2;
         }
 
         public double HodographLineLoza(double distance, double height, double velocity)
         {
-            double part1 = 1 / velocity;
+            double part1 = 1 / velocity / 2;
             double part2 = Math.Sqrt(Math.Pow(height * 2, 2) + Math.Pow(distance, 2));
             var part3 = distance / SpeedOfLight;
             return part1 * part2 - part3;
