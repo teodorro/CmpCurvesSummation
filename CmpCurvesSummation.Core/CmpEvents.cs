@@ -25,6 +25,7 @@ namespace CmpCurvesSummation.Core
     public delegate void HodographColorChangedHandler(object obj, HodographColorChangedEventArgs e);
     public delegate void PointColorChangedHandler(object obj, PointColorChangedEventArgs e);
     public delegate void RefreshLayersHandler(object obj, RefreshLayersEventArgs e);
+    public delegate void TimeOffsetChangedHandler(object obj, TimeOffsetChangedEventArgs e);
 
 
 
@@ -218,6 +219,17 @@ namespace CmpCurvesSummation.Core
         public IEnumerable<Tuple<double, double>> Layers { get; }
     }
 
+    public class TimeOffsetChangedEventArgs : EventArgs
+    {
+        public TimeOffsetChangedEventArgs(double timeOffset, ICmpScan cmpScan)
+        {
+            TimeOffset = timeOffset;
+            CmpScan = cmpScan;
+        }
+
+        public double TimeOffset { get; }
+        public ICmpScan CmpScan { get; }
+    }
 
 
 

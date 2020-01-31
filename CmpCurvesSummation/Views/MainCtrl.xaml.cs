@@ -69,6 +69,9 @@ namespace CmpCurvesSummation.Views
             OptionsControl.ViewModel.StepTimeChanged += LayersInfoControl.ViewModel.OnStepTimeChanged;
             OptionsControl.ViewModel.PointColorChanged += SummedOverCurveScanControl.ViewModel.OnPointColorChanged;
             OptionsControl.ViewModel.HodographColorChanged += CmpScanControl.ViewModel.OnHodographColorChanged;
+            CmpScanControl.ViewModel.TimeOffsetChanged += SummedOverCurveScanControl.ViewModel.OnTimeOffsetChanged;
+            CmpScanControl.ViewModel.TimeOffsetChanged += LayersInfoControl.ViewModel.OnTimeOffsetChanged;
+
             CmpProgressBar.Instance.SummationInProcess += OptionsControl.ViewModel.OnSummationInProcess;
         }
 

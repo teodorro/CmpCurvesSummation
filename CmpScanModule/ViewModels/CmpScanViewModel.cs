@@ -20,6 +20,8 @@ namespace CmpScanModule.ViewModels
 
         public PlotModel Plot { get; private set; }
 
+        public event TimeOffsetChangedHandler TimeOffsetChanged;
+
         private OxyColor _hodographColor = OxyColor.FromRgb(255, 255, 255);
         public OxyColor HodographColor
         {
@@ -187,13 +189,20 @@ namespace CmpScanModule.ViewModels
                 var point = GetPointFromOxyPosition(e);
 
                 if (point.X < 0)
-                {
-                    var offset = Math.Round(point.Y, 2);
-                    ModifyAxesTimeOffset(offset);
-                    _cmpScan.MinTime -= offset;
-                    Plot.InvalidatePlot(true);
-                }
+                    ChangeTimeOffset(point);
             }
+        }
+
+        private void ChangeTimeOffset(DataPoint point)
+        {
+            var offset = Math.Round(point.Y, 2);
+            ModifyAxesTimeOffset(offset);
+            _cmpScan.MinTime -= offset;
+
+            Plot.Annotations.Clear();
+            Plot.InvalidatePlot(true);
+
+            TimeOffsetChanged?.Invoke(this, new TimeOffsetChangedEventArgs(offset, _cmpScan));
         }
 
         private void ModifyAxesTimeOffset(double offset)

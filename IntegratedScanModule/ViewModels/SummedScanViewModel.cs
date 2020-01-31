@@ -376,6 +376,12 @@ namespace SummedScanModule.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void OnTimeOffsetChanged(object obj, TimeOffsetChangedEventArgs e)
+        {
+            Clear();
+            _cmpScan = e.CmpScan;
+        }
     }
 
     internal class PointsComparer<T> : IComparer<DataPoint>

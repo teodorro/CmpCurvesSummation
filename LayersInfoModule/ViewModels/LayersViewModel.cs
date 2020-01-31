@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 using CmpCurvesSummation.Core;
 using LayersInfoModule.Annotations;
 
@@ -86,6 +87,11 @@ namespace LayersInfoModule.ViewModels
                 Layers.Add(layerInfo);
                 prevLayerInfo = layerInfo;
             }
+        }
+
+        public void OnTimeOffsetChanged(object obj, TimeOffsetChangedEventArgs e)
+        {
+            Layers.Clear();
         }
     }
 
