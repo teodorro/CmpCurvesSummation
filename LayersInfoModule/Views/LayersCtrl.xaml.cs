@@ -51,5 +51,14 @@ namespace LayersInfoModule.Views
             e.Column.Header = ((System.ComponentModel.MemberDescriptor) e.PropertyDescriptor).DisplayName;
         }
 
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            var menuItem = (MenuItem)sender;
+            var contextMenu = (ContextMenu)menuItem.Parent;
+            var item = (DataGridRow)contextMenu.PlacementTarget;
+            var layer = item.DataContext as LayerInfo;
+
+            ViewModel.OnDeleteRowClick(sender, new DeleteLayerEventArgs(layer.AvgVelocity, layer.Time));
+        }
     }
 }

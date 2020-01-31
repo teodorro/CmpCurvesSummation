@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Data;
 using CmpCurvesSummation.Core;
 using LayersInfoModule.Annotations;
 
@@ -124,14 +127,10 @@ namespace LayersInfoModule.ViewModels
     }
 
 
-    /// <summary>
-    /// Compare different layers to make it organized according to the depth
-    /// </summary>
-    public class LayerComparer : IComparer<LayerInfo>
+
+    public class SelectedRowToBoolConverter : IValueConverter
     {
-        public int Compare(LayerInfo x, LayerInfo y)
-        {
-            return Convert.ToInt32((x.Time - y.Time) * 100);
-        }
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => (int)value == 1;
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) { throw new NotImplementedException();}
     }
 }
