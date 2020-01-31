@@ -186,7 +186,7 @@ namespace CmpScanModule.ViewModels
             {
                 var point = GetPointFromOxyPosition(e);
 
-                if (IsTimeOffsetChangeArea(point))
+                if (point.X < 0)
                 {
                     var offset = Math.Round(point.Y, 2);
                     ModifyAxesTimeOffset(offset);
@@ -206,14 +206,6 @@ namespace CmpScanModule.ViewModels
 
         private DataPoint GetPointFromOxyPosition(OxyMouseDownEventArgs e)
             => Axis.InverseTransform(e.Position, DistanceAxis, TimeAxis);
-
-        private bool IsTimeOffsetChangeArea(DataPoint point)
-        {
-            var v = Math.Round(point.X, 3);
-            if (v < CmpMath.Instance.WaterVelocity || v >= CmpMath.SpeedOfLight / 2)
-                return true;
-            return false;
-        }
         
         public void OnStepDistanceChanged(object sender, StepDistanceEventArgs e)
         {
