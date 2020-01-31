@@ -252,6 +252,8 @@ namespace SummedScanModule.ViewModels
             left.EndPosition = 0;
             left.AbsoluteMinimum = min;
             left.AbsoluteMaximum = max;
+            left.Title = "T";
+            left.TitleFontSize = 1;
         }
 
         private void TuneHorizontalAxis()
@@ -261,6 +263,9 @@ namespace SummedScanModule.ViewModels
             var top = Plot.Axes.First(x => x.Position == AxisPosition.Top);
             top.AbsoluteMinimum = _summedScan.MinVelocity;
             top.AbsoluteMaximum = _summedScan.MaxVelocity;
+            top.Title = "V";
+            top.TitleFontSize = 1;
+
         }
 
         public void AddPalette(PaletteType palette)

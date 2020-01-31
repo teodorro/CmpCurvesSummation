@@ -13,7 +13,7 @@ namespace CmpScanModule.ViewModels
     public class CmpScanViewModel 
     {
         private const int colorsCount = 1024;
-        private const int _hodographCurveStrokeThickness = 1;
+        private const double _hodographCurveStrokeThickness = 0.5;
 
         private ICmpScan _cmpScan;
         private PaletteType _palette = PaletteType.Jet;
@@ -84,6 +84,8 @@ namespace CmpScanModule.ViewModels
             left.EndPosition = 0;
             left.AbsoluteMinimum = min;
             left.AbsoluteMaximum = max;
+            left.Title = "T";
+            left.TitleFontSize = 1;
         }
 
         private void TuneHorizontalAxis()
@@ -104,11 +106,10 @@ namespace CmpScanModule.ViewModels
                 X1 = _cmpScan.Length,
                 Y0 = _cmpScan.MinTime,
                 Y1 = _cmpScan.MaxTime,
-                Interpolate = true,
+                Interpolate = false,
                 RenderMethod = HeatMapRenderMethod.Bitmap,
                 Data = GetDataArray()
             };
-            heatMapSeries.Interpolate = false;
             Plot.Series.Add(heatMapSeries);
         }
 
