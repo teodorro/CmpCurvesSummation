@@ -81,7 +81,9 @@ namespace CmpCurvesSummation.Core
                 {
                     var t = Time(j);
                     h = v * t / 2;
-                    Data[p][j] = CalcSumForVelocityAndDepth(cmpScan, h, v);
+                    var sum = CalcSumForVelocityAndDepth(cmpScan, h, v);
+//                    Data[p][j] = Math.Sign(sum) * Math.Log(Math.Abs(sum) + 1); // log for sum works not good
+                    Data[p][j] = sum;
                 }
             }
         }
@@ -96,7 +98,7 @@ namespace CmpCurvesSummation.Core
                     continue;
                 var t = CmpMath.Instance.HodographLineLoza(d, h, v);
                 var tIndex = IndexTime(t);
-                if (tIndex >= cmpScan.MinTime && tIndex < cmpScan.MaxTime)
+                if (tIndex >= 0 && tIndex < cmpScan.AscanLengthDimensionless)
                     sum += cmpScan.Data[i][tIndex];
             }
 

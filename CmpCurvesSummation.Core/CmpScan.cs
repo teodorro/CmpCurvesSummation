@@ -41,7 +41,13 @@ namespace CmpCurvesSummation.Core
         public double Length => Data.Count * StepDistance;
         public int AscanLengthDimensionless => Data.Any() ? Data.Select(x => x.Length).Min() : -1;
         public double AscanLength => AscanLengthDimensionless * StepTime;
-        public double MinTime { get; set; } = 0;
+
+        private double _minTimeDimensionless = 0;
+        public double MinTime
+        {
+            get => _minTimeDimensionless * StepTime;
+            set => _minTimeDimensionless = value / StepTime; 
+        }
         public double MaxTime => MinTime + AscanLength;
 
         public void CopyRawDataToProcessed()
