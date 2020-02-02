@@ -17,6 +17,7 @@ namespace CmpScanModule.ViewModels
 
         private ICmpScan _cmpScan;
         private PaletteType _palette = PaletteType.Jet;
+        private bool _interpolate;
 
         public PlotModel Plot { get; private set; }
 
@@ -95,6 +96,8 @@ namespace CmpScanModule.ViewModels
             var top = Plot.Axes.First(x => x.Position == AxisPosition.Top);
             top.AbsoluteMinimum = 0;
             top.AbsoluteMaximum = _cmpScan.Length;
+            top.Title = "D";
+            top.TitleFontSize = 1;
         }
 
         private void LoadSeries()
@@ -106,7 +109,7 @@ namespace CmpScanModule.ViewModels
                 X1 = _cmpScan.Length,
                 Y0 = _cmpScan.MinTime,
                 Y1 = _cmpScan.MaxTime,
-                Interpolate = false,
+                Interpolate = _interpolate,
                 RenderMethod = HeatMapRenderMethod.Bitmap,
                 Data = GetDataArray()
             };
@@ -121,8 +124,29 @@ namespace CmpScanModule.ViewModels
                 case PaletteType.Gray:
                     oxyPalette = OxyPalettes.Gray(colorsCount);
                     break;
-                case PaletteType.BW:
-                    oxyPalette = OxyPalettes.Gray(2);
+                case PaletteType.Rainbow:
+                    oxyPalette = OxyPalettes.Rainbow(colorsCount);
+                    break;
+                case PaletteType.Hot:
+                    oxyPalette = OxyPalettes.Hot(colorsCount);
+                    break;
+                case PaletteType.HueDistinct:
+                    oxyPalette = OxyPalettes.HueDistinct(colorsCount);
+                    break;
+                case PaletteType.Hue:
+                    oxyPalette = OxyPalettes.Hue(colorsCount);
+                    break;
+                case PaletteType.BlackWhiteRed:
+                    oxyPalette = OxyPalettes.BlackWhiteRed(colorsCount);
+                    break;
+                case PaletteType.BlueWhiteRed:
+                    oxyPalette = OxyPalettes.BlueWhiteRed(colorsCount);
+                    break;
+                case PaletteType.Cool:
+                    oxyPalette = OxyPalettes.Cool(colorsCount);
+                    break;
+                case PaletteType.Jet:
+                    oxyPalette = OxyPalettes.Jet(colorsCount);
                     break;
             }
             Plot.Axes.Add(new LinearColorAxis{ Palette = oxyPalette });
@@ -261,6 +285,15 @@ namespace CmpScanModule.ViewModels
         public void OnHodographColorChanged(object obj, HodographColorChangedEventArgs e)
         {
             HodographColor = OxyColor.FromArgb(e.NewColor.A, e.NewColor.R, e.NewColor.G, e.NewColor.B);
+        }
+
+        public void OnInterpolationChanged(object obj, InterpolationChangedEventArgs e)
+        {
+            if (Plot == null)
+                return;
+            _interpolate = e.Interpolation;
+            HeatMap.Interpolate = e.Interpolation;
+            Plot.InvalidatePlot(true);
         }
     }
 }

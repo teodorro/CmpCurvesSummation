@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:CmpCurvesSummation.Views"
              xmlns:viewModels="clr-namespace:CmpCurvesSummation.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="350">
+             d:DesignHeight="500" d:DesignWidth="350">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="19*"/>
@@ -14,6 +14,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
@@ -65,9 +66,11 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <Button x:Name="ButtonSummation" Content="Запустить суммирование" HorizontalAlignment="Left"  Grid.Row="7" Margin="20,0,0,15" Width="150" VerticalAlignment="Bottom" Grid.ColumnSpan="2"
+        <CheckBox x:Name="checkBoxInterpolation" Grid.Row="6" Grid.ColumnSpan="2" Margin="15,10,5,5" Content="Интерполяция"
+                  IsChecked="{Binding InterpolationEnabled}"></CheckBox>
+        <Button x:Name="ButtonSummation" Content="Запустить суммирование" HorizontalAlignment="Left"  Grid.Row="8" Margin="20,0,0,15" Width="150" VerticalAlignment="Bottom" Grid.ColumnSpan="2"
                 IsEnabled="{Binding ManualSummationPossible}" Click="ButtonSummation_Click" Height="20" />
-        <ProgressBar x:Name="progressBar" Grid.Row="8" Grid.ColumnSpan="2" Margin="20,10,15,10"
+        <ProgressBar x:Name="progressBar" Grid.Row="9" Grid.ColumnSpan="2" Margin="20,10,15,10"
                      Visibility="{Binding ProgressBarVisible}" Value="{Binding ProgressValue}"/>
     </Grid>
 </UserControl>

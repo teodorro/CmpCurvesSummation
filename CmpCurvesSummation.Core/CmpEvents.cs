@@ -9,7 +9,13 @@ namespace CmpCurvesSummation.Core
     {
         Jet,
         Gray,
-        BW
+        Rainbow,
+        Hot,
+        HueDistinct,
+        Hue,
+        BlackWhiteRed,
+        BlueWhiteRed,
+        Cool
     }
 
 
@@ -26,6 +32,7 @@ namespace CmpCurvesSummation.Core
     public delegate void PointColorChangedHandler(object obj, PointColorChangedEventArgs e);
     public delegate void RefreshLayersHandler(object obj, RefreshLayersEventArgs e);
     public delegate void TimeOffsetChangedHandler(object obj, TimeOffsetChangedEventArgs e);
+    public delegate void InterpolationChangedHandler(object obj, InterpolationChangedEventArgs e);
 
 
 
@@ -229,6 +236,16 @@ namespace CmpCurvesSummation.Core
 
         public double TimeOffset { get; }
         public ICmpScan CmpScan { get; }
+    }
+
+    public class InterpolationChangedEventArgs : EventArgs
+    {
+        public bool Interpolation{ get; }
+
+        public InterpolationChangedEventArgs(bool interpolation)
+        {
+            Interpolation = interpolation;
+        }
     }
 
 

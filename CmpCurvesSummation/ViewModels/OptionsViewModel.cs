@@ -21,14 +21,21 @@ namespace CmpCurvesSummation.ViewModels
     {
         public const string Jet = "Jet";
         public const string Gray = "Gray";
-        public const string BW = "B&W";
-        
+        public const string Hot = "Hot";
+        public const string Rainbow = "Rainbow";
+        public const string HueDistinct = "HueDistinct";
+        public const string Hue = "Hue";
+        public const string BlackWhiteRed = "BlackWhiteRed";
+        public const string BlueWhiteRed = "BlueWhiteRed";
+        public const string Cool = "Cool";
+
         public event SummationStartedHander SummationStarted;
         public event PaletteChangedHander PaletteChanged;
         public event StepDistanceChangedHandler StepDistanceChanged;
         public event StepTimeChangedHandler StepTimeChanged;
         public event HodographColorChangedHandler HodographColorChanged;
         public event PointColorChangedHandler PointColorChanged;
+        public event InterpolationChangedHandler InterpolationChanged;
 
 
         public OptionsViewModel()
@@ -106,8 +113,26 @@ namespace CmpCurvesSummation.ViewModels
                     case Gray:
                         palette = PaletteType.Gray;
                         break;
-                    case BW:
-                        palette = PaletteType.BW;
+                    case Rainbow:
+                        palette = PaletteType.Rainbow;
+                        break;
+                    case Hot:
+                        palette = PaletteType.Hot;
+                        break;
+                    case Cool:
+                        palette = PaletteType.Cool;
+                        break;
+                    case HueDistinct:
+                        palette = PaletteType.HueDistinct;
+                        break;
+                    case Hue:
+                        palette = PaletteType.Hue;
+                        break;
+                    case BlackWhiteRed:
+                        palette = PaletteType.BlackWhiteRed;
+                        break;
+                    case BlueWhiteRed:
+                        palette = PaletteType.BlueWhiteRed;
                         break;
                     default:
                         palette = PaletteType.Jet;
@@ -185,6 +210,18 @@ namespace CmpCurvesSummation.ViewModels
             }
         }
 
+        private bool _interpolationEnabled = false;
+        public bool InterpolationEnabled
+        {
+            get => _interpolationEnabled;
+            set
+            {
+                _interpolationEnabled = value;
+                OnPropertyChanged(nameof(InterpolationEnabled));
+                InterpolationChanged?.Invoke(this, new InterpolationChangedEventArgs(_interpolationEnabled));
+            }
+        }
+
 
         public void LaunchSummation()
         {
@@ -217,7 +254,13 @@ namespace CmpCurvesSummation.ViewModels
         {
             Palettes.Add(Jet);
             Palettes.Add(Gray);
-            Palettes.Add(BW);
+            Palettes.Add(Rainbow);
+            Palettes.Add(Hot);
+            Palettes.Add(Cool);
+            Palettes.Add(Hue);
+            Palettes.Add(HueDistinct);
+            Palettes.Add(BlackWhiteRed);
+            Palettes.Add(BlueWhiteRed);
         }
 
 

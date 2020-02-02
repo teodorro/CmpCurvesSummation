@@ -16,8 +16,8 @@ namespace SummedScanModule.ViewModels
     public class SummedScanViewModel : INotifyPropertyChanged
     {
         private const int colorsCount = 1024;
-        private const double _layersStructureStrokeThickness = 0.25;
-        private const int _pointSize = 1;
+        private const double _layersStructureStrokeThickness = 0.5;
+        private const int _pointSize = 2;
 
         private ICmpScan _cmpScan;
         private ISummedScanVT _summedScan;
@@ -29,6 +29,8 @@ namespace SummedScanModule.ViewModels
         private bool _autoCorrection;
         
         private OxyColor _pointColor = OxyColor.FromRgb(255, 255, 255);
+        private bool _interpolation;
+
         public OxyColor PointColor
         {
             get => _pointColor;
@@ -222,7 +224,7 @@ namespace SummedScanModule.ViewModels
         {
             var v = Math.Round(point.X, 3);
             var t = Math.Round(point.Y, 2);
-            if (v < CmpMath.Instance.WaterVelocity || v >= CmpMath.SpeedOfLight)
+            if (v < CmpMath.Instance.WaterVelocity || v >= CmpMath.SpeedOfLight / 2)
                 return false;
             if (t < TimeAxis.AbsoluteMinimum || t >= TimeAxis.AbsoluteMaximum)
                 return false;
@@ -265,7 +267,6 @@ namespace SummedScanModule.ViewModels
             top.AbsoluteMaximum = _summedScan.MaxVelocity;
             top.Title = "V";
             top.TitleFontSize = 1;
-
         }
 
         public void AddPalette(PaletteType palette)
@@ -276,8 +277,26 @@ namespace SummedScanModule.ViewModels
                 case PaletteType.Gray:
                     oxyPalette = OxyPalettes.Gray(colorsCount);
                     break;
-                case PaletteType.BW:
-                    oxyPalette = OxyPalettes.Gray(2);
+                case PaletteType.BlackWhiteRed:
+                    oxyPalette = OxyPalettes.BlackWhiteRed(colorsCount);
+                    break;
+                case PaletteType.BlueWhiteRed:
+                    oxyPalette = OxyPalettes.BlueWhiteRed(colorsCount);
+                    break;
+                case PaletteType.HueDistinct:
+                    oxyPalette = OxyPalettes.HueDistinct(colorsCount);
+                    break;
+                case PaletteType.Hue:
+                    oxyPalette = OxyPalettes.Hue(colorsCount);
+                    break;
+                case PaletteType.Rainbow:
+                    oxyPalette = OxyPalettes.Rainbow(colorsCount);
+                    break;
+                case PaletteType.Cool:
+                    oxyPalette = OxyPalettes.Cool(colorsCount);
+                    break;
+                case PaletteType.Hot:
+                    oxyPalette = OxyPalettes.Hot(colorsCount);
                     break;
             }
             Plot.Axes.Add(new LinearColorAxis { Palette = oxyPalette });
@@ -293,11 +312,9 @@ namespace SummedScanModule.ViewModels
                 {
                     X0 = _summedScan.MinVelocity,
                     X1 = _summedScan.MaxVelocity,
-                    //                Y0 = _summedScan.MinHeight,
-                    //                Y1 = _summedScan.MaxHeight,
                     Y0 = _summedScan.MinTime,
                     Y1 = _summedScan.MaxTime,
-                    Interpolate = false,
+                    Interpolate = _interpolation,
                     RenderMethod = HeatMapRenderMethod.Bitmap,
                     Data = _summedScan.GetDataArray()
                 };
@@ -386,6 +403,18 @@ namespace SummedScanModule.ViewModels
         {
             Clear();
             _cmpScan = e.CmpScan;
+        }
+
+        public void OnInterpolationChanged(object obj, InterpolationChangedEventArgs e)
+        {
+            if (Plot == null)
+                return;
+            var heatmap = Plot.Series.FirstOrDefault(x => x is HeatMapSeries);
+            if (heatmap == null)
+                return;
+            _interpolation = e.Interpolation;
+            (heatmap as HeatMapSeries).Interpolate = e.Interpolation;
+            Plot.InvalidatePlot(true);
         }
     }
 

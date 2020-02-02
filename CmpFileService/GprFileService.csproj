@@ -46,7 +46,10 @@
   <ItemGroup>
     <Compile Include="FileOpener.cs" />
     <Compile Include="FileSaver.cs" />
+    <Compile Include="GeoFileOpener1.cs" />
+    <Compile Include="GeoFileOpener2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TxtKrotFileOpener.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
