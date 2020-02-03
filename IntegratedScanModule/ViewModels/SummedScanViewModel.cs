@@ -418,6 +418,8 @@ namespace SummedScanModule.ViewModels
         }
     }
 
+
+
     internal class PointsComparer<T> : IComparer<DataPoint>
     {
         public int Compare(DataPoint x, DataPoint y)

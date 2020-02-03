@@ -44,6 +44,15 @@ namespace AppWithSimpleTestScan
 
 
         public ICmpScan OpenKrotTxt(string filepath) => GetCmpScan();
+        public ICmpScan OpenGeo1(string filepath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICmpScan OpenGeo2(string filepath)
+        {
+            throw new NotImplementedException();
+        }
 
         public ICmpScan OpenGeo(string filepath) => GetCmpScan();
 

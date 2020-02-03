@@ -53,8 +53,8 @@ namespace ProcessingModule
         {
             OperationsAvailable.Add(new ZeroAmplitudeCorrection());
             OperationsAvailable.Add(new LogarithmProcessing());
-            OperationsAvailable.Add(new StraightenSynchronizationLine());
-            //OperationsAvailable.Add(new Smoothing());
+//            OperationsAvailable.Add(new StraightenSynchronizationLine());
+            OperationsAvailable.Add(new StraightenSynchronizationLine2());
             OperationsAvailable.Add(new AddOffsetAscans());
             OperationsAvailable.Add(new ClearOffsetAscans());
         }

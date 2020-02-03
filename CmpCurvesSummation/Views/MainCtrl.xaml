@@ -23,11 +23,13 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <views:ProcessingCtrl x:Name="ProcessingControl" Grid.Row="2" Grid.Column="0" Margin="10,5,5,10"></views:ProcessingCtrl>
         <views1:CmpScanCtrl x:Name="CmpScanControl" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="0,0,0,5"></views1:CmpScanCtrl>
         <views2:SummedScanCtrl x:Name="SummedOverCurveScanControl" Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" Margin="0,0,0,5"></views2:SummedScanCtrl>
         <views3:LayersCtrl x:Name="LayersInfoControl" Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" Margin="10,5,5,10"></views3:LayersCtrl>
         <local:ToolbarCtrl x:Name="ToolbarControl" Grid.ColumnSpan="5"></local:ToolbarCtrl>
-        <local:OptionsCtrl x:Name="OptionsControl" Grid.Row="1"></local:OptionsCtrl>
+        <StackPanel Grid.Row="1" Grid.RowSpan="2">
+            <local:OptionsCtrl x:Name="OptionsControl"></local:OptionsCtrl>
+            <views:ProcessingCtrl x:Name="ProcessingControl" Margin="10,5,5,10"></views:ProcessingCtrl>
+        </StackPanel>
     </Grid>
 </UserControl>

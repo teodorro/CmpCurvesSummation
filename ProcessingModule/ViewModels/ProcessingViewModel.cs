@@ -46,11 +46,9 @@ namespace ProcessingModule.ViewModels
         // TODO: should be placed in config or something
         private bool IsOperationEnabled(IRawDataProcessing operation)
         {
-            if (operation is Smoothing 
-                || operation is LogarithmProcessing 
-                || operation is ZeroAmplitudeCorrection 
-                || operation is ClearOffsetAscans)
-                return false;
+            if (operation is ZeroAmplitudeCorrection 
+                )
+                return true;
             return false;
         }
 

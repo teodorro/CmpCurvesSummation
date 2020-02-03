@@ -56,6 +56,8 @@ namespace ProcessingModule.Views
                 ManageStraightenSynchronizationLine(straightenSynchronizationLine);
             else if (dataRow.Processing is AddOffsetAscans addOffsetAscans)
                 ManageAddOffsetAscans(addOffsetAscans);
+            else if (dataRow.Processing is StraightenSynchronizationLine2 straightenSynchronizationLine2)
+                ManageStraightenSynchronizationLine2(straightenSynchronizationLine2);
             else
             {
                 
@@ -75,6 +77,11 @@ namespace ProcessingModule.Views
         private void ManageClearOffsetAscans(ClearOffsetAscans processing)
         {
             UiElementsStack.Children.Add(new ClearOffsetAscansCtrl(ViewModel.OnProcessingListChanged, processing));
+        }
+
+        private void ManageStraightenSynchronizationLine2(StraightenSynchronizationLine2 processing)
+        {
+            UiElementsStack.Children.Add(new StraightenSynchronizationLine2Ctrl(ViewModel.OnProcessingListChanged, processing));
         }
     }
 }
