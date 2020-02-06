@@ -56,12 +56,27 @@ namespace ProcessingModule.Views
                 ManageStraightenSynchronizationLine(straightenSynchronizationLine);
             else if (dataRow.Processing is AddOffsetAscans addOffsetAscans)
                 ManageAddOffsetAscans(addOffsetAscans);
+            else if (dataRow.Processing is RemoveLeftAscans removeLeftAscans)
+                ManageRemoveLeftAscans(removeLeftAscans);
+            else if (dataRow.Processing is RemoveRightAscans removeRightAscans)
+                ManageRemoveRightAscans(removeRightAscans);
             else if (dataRow.Processing is StraightenSynchronizationLine2 straightenSynchronizationLine2)
                 ManageStraightenSynchronizationLine2(straightenSynchronizationLine2);
             else
             {
                 
             }
+        }
+
+        private void ManageRemoveRightAscans(RemoveRightAscans processing)
+        {
+            UiElementsStack.Children.Add(new RemoveRightAscansCtrl(ViewModel.OnProcessingListChanged, processing));
+        }
+
+        private void ManageRemoveLeftAscans(RemoveLeftAscans processing)
+        {
+            var removeLeftAscansCtrl = new RemoveLeftAscansCtrl(ViewModel.OnProcessingListChanged, processing);
+            UiElementsStack.Children.Add(removeLeftAscansCtrl);
         }
 
         private void ManageAddOffsetAscans(AddOffsetAscans processing)

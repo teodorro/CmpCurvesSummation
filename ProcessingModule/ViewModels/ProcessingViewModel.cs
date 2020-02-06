@@ -55,6 +55,7 @@ namespace ProcessingModule.ViewModels
         public void OnFileLoaded(object sender, FileLoadedEventArgs e)
         {
             _cmpScan = e.CmpScan;
+            Processor.RefreshOperations(_cmpScan);
             Processor.Process(_cmpScan);
             RawCmpDataProcessed?.Invoke(this, new RawCmpProcessedEventArgs(_cmpScan));
         }

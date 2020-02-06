@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using CmpCurvesSummation.Core;
 using ProcessingModule.Processing;
 
@@ -24,7 +25,8 @@ namespace ProcessingModule
         ObservableCollection<IRawDataProcessing> OperationsAvailable { get; }
         ObservableCollection<IRawDataProcessing> OperationsToProcess { get; }
         void Process(ICmpScan cmpScan);
-        void AutoDetectOperationsNeeded(CmpScan data);
+        void AutoDetectOperationsNeeded(ICmpScan data);
+        void RefreshOperations(ICmpScan cmpScan);
     }
 
 
@@ -41,22 +43,36 @@ namespace ProcessingModule
                 return;
             cmpScan.CopyRawDataToProcessed();
             foreach (var operation in OperationsToProcess)
+            {
                 operation.Process(cmpScan);
+            }
         }
 
-        public void AutoDetectOperationsNeeded(CmpScan data)
+        public void AutoDetectOperationsNeeded(ICmpScan data)
         {
             throw new System.NotImplementedException();
         }
 
         public void InitOperationList()
         {
+            OperationsAvailable.Add(new RemoveLeftAscans());
+            OperationsAvailable.Add(new RemoveRightAscans());
             OperationsAvailable.Add(new ZeroAmplitudeCorrection());
             OperationsAvailable.Add(new LogarithmProcessing());
 //            OperationsAvailable.Add(new StraightenSynchronizationLine());
             OperationsAvailable.Add(new StraightenSynchronizationLine2());
             OperationsAvailable.Add(new AddOffsetAscans());
             OperationsAvailable.Add(new ClearOffsetAscans());
+        }
+
+        public void RefreshOperations(ICmpScan cmpScan)
+        {
+            var removeLeftAscans = OperationsAvailable.FirstOrDefault(x => x is RemoveLeftAscans) as RemoveLeftAscans;
+            if (removeLeftAscans != null)
+                removeLeftAscans.MaximumNumberOfAscans = cmpScan.RawData.Count;
+            var removeRightAscans = OperationsAvailable.FirstOrDefault(x => x is RemoveRightAscans) as RemoveRightAscans;
+            if (removeRightAscans != null)
+                removeRightAscans.MaximumNumberOfAscans = cmpScan.RawData.Count;
         }
     }
 }

@@ -12,6 +12,13 @@ namespace ProcessingModule.ViewModels
 
         private StraightenSynchronizationLine _processing;
 
+
+        public StraightenSynchronizationLineViewModel(StraightenSynchronizationLine processing)
+        {
+            _processing = processing;
+        }
+
+
         public double MinAmplitudeToCheck
         {
             get => _processing.MinAmplitudeToCheck;
@@ -43,12 +50,6 @@ namespace ProcessingModule.ViewModels
                 _maxAmplitude = value;
                 OnPropertyChanged(nameof(MaxAmplitude));
             }
-        }
-
-
-        public StraightenSynchronizationLineViewModel(StraightenSynchronizationLine processing)
-        {
-            _processing = processing;
         }
 
 

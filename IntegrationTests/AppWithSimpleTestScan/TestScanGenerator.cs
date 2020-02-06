@@ -1,5 +1,5 @@
-﻿#define MexicanHatWavelet
-//#define SimpleWavelet
+﻿//#define MexicanHatWavelet
+#define SimpleWavelet
 
 using System;
 using System.Collections.Generic;
@@ -31,10 +31,14 @@ namespace AppWithSimpleTestScan
             _velocities = new double[_numLayers];
             _thicknesses = new double[_numLayers];
 
-            _velocities[0] = 0.3;
-            _velocities[1] = 0.1;
-            _velocities[2] = 0.1;
-            _velocities[3] = 0.05;
+            //            _velocities[0] = 0.3;
+            //            _velocities[1] = 0.1;
+            //            _velocities[2] = 0.1;
+            //            _velocities[3] = 0.05;
+            _velocities[0] = 0.15;
+            _velocities[1] = 0.05;
+            _velocities[2] = 0.05;
+            _velocities[3] = 0.025;
 
             _thicknesses[0] = 0;
             _thicknesses[1] = 0;
@@ -158,9 +162,9 @@ namespace AppWithSimpleTestScan
             double t = 0;
             if (depth != 0)
                 for (int i = 0; i <= index; i++)
-                    t += 2*depths[i] / velocities[i] / Math.Cos(alpha);
+                    t += 2*depths[i] / velocities[i] / 2 / Math.Cos(alpha);
             else
-                t += distance / velocities[index];
+                t += distance / velocities[index] / 2;
 
             t -= distance / CmpMath.SpeedOfLight;
 

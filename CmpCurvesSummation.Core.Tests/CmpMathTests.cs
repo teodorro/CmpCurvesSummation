@@ -41,5 +41,17 @@ namespace CmpCurvesSummation.Core.Tests
 
             Assert.Equal(0.2, Math.Round(v2, 2));
         }
+
+        [Fact]
+        public void TestHodographLineLoza2()
+        {
+            var h = 0.92;
+            var d = 0;
+            var v = 0.0462;
+
+            var t = CmpMath.Instance.HodographLineLoza(d, h, v);
+
+            Assert.Equal(20, Math.Round(t));
+        }
     }
 }

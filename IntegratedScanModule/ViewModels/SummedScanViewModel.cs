@@ -13,6 +13,24 @@ using OxyPlot.Series;
 
 namespace SummedScanModule.ViewModels
 {
+    public interface ISummedScanViewModel
+    {
+        PlotModel Plot { get; }
+        OxyColor PointColor { get; set; }
+        event EndSummationHandler SummationFinished;
+        void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args);
+        void AddPalette(PaletteType palette);
+        void OnSummationStarted(object obj, EventArgs e);
+        void OnPaletteChanged(object obj, PaletteChangedEventArgs e);
+        void OnFileLoaded(object sender, FileLoadedEventArgs e);
+        void OnAutoCorrectionChange(object sender, AutoCorrectionCheckEventArgs e);
+        void OnStepDistanceChanged(object obj, StepDistanceEventArgs e);
+        void OnStepTimeChanged(object obj, StepTimeEventArgs e);
+        void OnPointColorChanged(object obj, PointColorChangedEventArgs e);
+    }
+
+
+
     public class SummedScanViewModel : INotifyPropertyChanged
     {
         private const int colorsCount = 1024;
@@ -89,6 +107,7 @@ namespace SummedScanModule.ViewModels
         private void OnRefreshLayers(object o, RefreshLayersEventArgs e)
         {
             Plot.Annotations.Clear();
+            //AddAlpha();
             RefreshHodographLines();
             RefreshHodographPoints();
 
@@ -99,8 +118,21 @@ namespace SummedScanModule.ViewModels
         {
             LoadSeries();
             UpdateAxes();
+            //AddAlpha();
             
             Plot.InvalidatePlot(true); 
+        }
+
+        private void AddAlpha()
+        {
+            var rect = new RectangleAnnotation();
+            rect.MaximumX = _summedScan.MaxVelocity;
+            rect.MinimumX = _summedScan.MinVelocity;
+            rect.MinimumY = _summedScan.MinTime;
+            rect.MaximumY = _summedScan.MaxTime;
+            var c = OxyColor.FromArgb(150, 255, 255, 255);
+            rect.Fill = c;
+            Plot.Annotations.Add(rect);
         }
 
         private void PlotOnMouseDown(object sender, OxyMouseDownEventArgs e)

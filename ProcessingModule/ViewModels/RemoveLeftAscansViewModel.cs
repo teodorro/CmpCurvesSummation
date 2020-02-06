@@ -5,25 +5,36 @@ using ProcessingModule.Processing;
 
 namespace ProcessingModule.ViewModels
 {
-    public class AddOffsetAscansViewModel : INotifyPropertyChanged
+    public class RemoveLeftAscansViewModel
     {
         public event ProcessingListChangedHandler ProcessingListChanged;
 
-        private AddOffsetAscans _processing;
+        private RemoveLeftAscans _processing;
 
-        public int NumberOfOffsetAscans
+        public int NumberOfAscans
         {
             get => _processing.NumberOfAscans;
             set
             {
                 _processing.NumberOfAscans = value;
-                OnPropertyChanged(nameof(NumberOfOffsetAscans));
+                OnPropertyChanged(nameof(NumberOfAscans));
+                ProcessingListChanged(this, new ProcessingListChangedEventArgs() { Enabled = true, Processing = _processing });
+            }
+        }
+
+        public int MaximumNumberOfAscans
+        {
+            get => _processing.MaximumNumberOfAscans;
+            set
+            {
+                _processing.MaximumNumberOfAscans = value;
+                OnPropertyChanged(nameof(MaximumNumberOfAscans));
                 ProcessingListChanged(this, new ProcessingListChangedEventArgs() { Enabled = true, Processing = _processing });
             }
         }
 
 
-        public AddOffsetAscansViewModel(AddOffsetAscans processing)
+        public RemoveLeftAscansViewModel(RemoveLeftAscans processing)
         {
             _processing = processing;
         }
