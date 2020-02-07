@@ -35,14 +35,16 @@ namespace SummedScanModule.ViewModels
     {
         private const int colorsCount = 1024;
         private const double _layersStructureStrokeThickness = 0.5;
-        private const int _pointSize = 2;
+        private const int _pointSize = 1;
 
         private ICmpScan _cmpScan;
         private ISummedScanVT _summedScan;
         private PaletteType _palette = PaletteType.Jet;
+        private byte _alpha = 0;
+        private int _halfWaveSize = 5;
         
-
         public PlotModel Plot { get; }
+        public double MaxVelocity { get; private set; } = CmpMath.SpeedOfLight / 2;
 
         private bool _autoCorrection;
         
@@ -92,7 +94,7 @@ namespace SummedScanModule.ViewModels
 
         private async void Sum()
         {
-            _summedScan = new SummedScanVT(_cmpScan);
+            _summedScan = new SummedScanVT(_cmpScan, MaxVelocity);
             await Task.Run(() =>
             {
                 _summedScan.Sum(_cmpScan);
@@ -107,7 +109,7 @@ namespace SummedScanModule.ViewModels
         private void OnRefreshLayers(object o, RefreshLayersEventArgs e)
         {
             Plot.Annotations.Clear();
-            //AddAlpha();
+            AddAlpha();
             RefreshHodographLines();
             RefreshHodographPoints();
 
@@ -118,20 +120,22 @@ namespace SummedScanModule.ViewModels
         {
             LoadSeries();
             UpdateAxes();
-            //AddAlpha();
+            AddAlpha();
             
             Plot.InvalidatePlot(true); 
         }
 
         private void AddAlpha()
         {
-            var rect = new RectangleAnnotation();
-            rect.MaximumX = _summedScan.MaxVelocity;
-            rect.MinimumX = _summedScan.MinVelocity;
-            rect.MinimumY = _summedScan.MinTime;
-            rect.MaximumY = _summedScan.MaxTime;
-            var c = OxyColor.FromArgb(150, 255, 255, 255);
-            rect.Fill = c;
+            var c = OxyColor.FromArgb(_alpha, 255, 255, 255);
+            var rect = new RectangleAnnotation
+            {
+                MaximumX = _summedScan.MaxVelocity,
+                MinimumX = _summedScan.MinVelocity,
+                MinimumY = _summedScan.MinTime,
+                MaximumY = _summedScan.MaxTime,
+                Fill = c
+            };
             Plot.Annotations.Add(rect);
         }
 
@@ -447,6 +451,28 @@ namespace SummedScanModule.ViewModels
             _interpolation = e.Interpolation;
             (heatmap as HeatMapSeries).Interpolate = e.Interpolation;
             Plot.InvalidatePlot(true);
+        }
+
+        public void OnAlphaChanged(object obj, AlphaChangedEventArgs e)
+        {
+            _alpha = e.Alpha;
+            OnRefreshLayers(this, null);
+        }
+
+        public void OnHalfWaveSizeChanged(object obj, HalfWaveSizeChangedEventArgs e)
+        {
+            _halfWaveSize = e.HalfWaveSize;
+            if (_summedScan != null)
+                _summedScan.CheckRadius = _halfWaveSize;
+        }
+
+        public void OnMaxVelocityChanged(object obj, MaxVelocityChangedEventArgs e)
+        {
+            MaxVelocity = e.MaxVelocity;
+            _summedScan.RemoveRightAscans(MaxVelocity);
+            Clear();
+            LoadSummedScan();
+            OnRefreshLayers(this, null);
         }
     }
 

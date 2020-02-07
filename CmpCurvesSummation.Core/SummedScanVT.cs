@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace CmpCurvesSummation.Core
 {
@@ -18,15 +19,17 @@ namespace CmpCurvesSummation.Core
         double MaxTime { get; }
         int AscanLengthDimensionless { get; }
         double AscanLength { get; }
-        int CheckRadius { get; }
+        int CheckRadius { get; set; }
         List<Tuple<double, double>> Layers { get; }
-        int MinimalTimeBetweenLayers { get; }
+        List<Tuple<double, double>> AllExtremums { get; }
+        List<Tuple<double, double>> FilteredExtremums { get; }
 
         double[,] GetDataArray();
         void Sum(ICmpScan cmpScan);
         Tuple<double, double> CorrectPoint(double velocity, double time);
         void AddLayer(double velocity, double time);
         void RemoveLayersAround(double velocity, double time);
+        void RemoveRightAscans(double maxVelocity);
 
         event RefreshLayersHandler RefreshLayers;
     }
@@ -35,29 +38,37 @@ namespace CmpCurvesSummation.Core
 
     public class SummedScanVT : ISummedScanVT
     {
-        private const int _vLengthDimensionless = 100;
+        private const int _vLengthDimensionless = 300;
+        public const double AbsoluteMinVelocity = 0.015;
 
         private Dictionary<double, Tuple<int, int>> _checkOrderDict = new Dictionary<double, Tuple<int, int>>();
 
         public List<double[]> Data { get; } = new List<double[]>();
-        public double StepVelocity => (MaxVelocity - MinVelocity) / _vLengthDimensionless;
+        public List<double[]> RawData { get; } = new List<double[]>();
+        public double StepVelocity => (LightRadarVelocity - MinVelocity) / _vLengthDimensionless;
         public double StepTime { get; }
         public double StepDistance { get; }
-        public double MinVelocity { get; } = CmpMath.Instance.Velocity(CmpMath.WaterPermittivity) / 2;
-        public double MaxVelocity { get; } = CmpMath.SpeedOfLight / 2;
+        public double MinVelocity { get; } = AbsoluteMinVelocity; //CmpMath.Instance.Velocity(CmpMath.WaterPermittivity) / 2;
+        public double LightRadarVelocity { get; } = CmpMath.SpeedOfLight / 2;
+        public double MaxVelocity { get; private set; } = CmpMath.SpeedOfLight / 3;
         public double MinTime { get; } = 0;
         public double MaxTime => MinTime + AscanLength;
         public int AscanLengthDimensionless { get; }
         public double AscanLength => AscanLengthDimensionless * StepTime;
-        public int CheckRadius { get; } = 10;
+        public int CheckRadius { get; set; } = 5;
         public List<Tuple<double, double>> Layers { get; } = new List<Tuple<double, double>>();
-        public int MinimalTimeBetweenLayers { get; } = 10;
+
+        public List<Tuple<double, double>> AllExtremums { get; } = new List<Tuple<double, double>>();
+        public List<Tuple<double, double>> FilteredExtremums { get; } = new List<Tuple<double, double>>();
 
         public event RefreshLayersHandler RefreshLayers;
 
 
-        public SummedScanVT(ICmpScan cmpScan)
+        public SummedScanVT(ICmpScan cmpScan, double maxVelocity)
         {
+            if (maxVelocity > LightRadarVelocity || maxVelocity < MinVelocity)
+                throw new ArgumentOutOfRangeException("Недопустимая максимальная скорость");
+            MaxVelocity = maxVelocity;
             StepTime = cmpScan.StepTime;
             StepDistance = cmpScan.StepDistance;
             AscanLengthDimensionless = cmpScan.AscanLengthDimensionless;
@@ -70,22 +81,47 @@ namespace CmpCurvesSummation.Core
         {
             double v;
             double h;
-            var vStep = (MaxVelocity - MinVelocity) / _vLengthDimensionless;
+            var vStep = (LightRadarVelocity - MinVelocity) / _vLengthDimensionless;
 
             for (int p = 0; p < _vLengthDimensionless; p++)
             {
                 CmpProgressBar.Instance.ProgressValue = p;
                 v = vStep * p + MinVelocity;
-                Data.Add(new double[AscanLengthDimensionless]);
+                RawData.Add(new double[AscanLengthDimensionless]);
                 for (int j = 0; j < AscanLengthDimensionless; j++)
                 {
                     var t = Time(j);
                     h = CmpMath.Instance.Depth(v, t);
                     var sum = CalcSumForVelocityAndDepth(cmpScan, h, v);
-//                    Data[p][j] = Math.Sign(sum) * Math.Log(Math.Abs(sum) + 1); // log for sum works not good
-                    Data[p][j] = sum;
+                    //                    Data[p][j] = Math.Sign(sum) * Math.Log(Math.Abs(sum) + 1); // log for sum works not good
+                    //                    Data[p][j] = Math.Sign(sum) * Math.Sqrt(Math.Abs(sum));
+                    RawData[p][j] = sum;
                 }
             }
+
+            CopyRawToActual();
+        }
+
+        private void CopyRawToActual()
+        {
+            Data.Clear();
+            for (int i = 0; i < RawData.Count; i++)
+            {
+                Data.Add(new double[RawData[i].Length]);
+
+                for (int j = 0; j < RawData[i].Length; j++)
+                    Data[i][j] = RawData[i][j];
+            }
+        }
+
+        public void RemoveRightAscans(double maxVelocity)
+        {
+            if (maxVelocity > LightRadarVelocity || maxVelocity < MinVelocity)
+                throw new ArgumentOutOfRangeException("Недопустимая максимальная скорость");
+            MaxVelocity = maxVelocity;
+            var indMaxVelocity = (int)Math.Round((maxVelocity - MinVelocity) / StepVelocity);
+            CopyRawToActual();
+            Data.RemoveRange(indMaxVelocity, RawData.Count - indMaxVelocity);
         }
 
         private double CalcSumForVelocityAndDepth(ICmpScan cmpScan, double h, double v)
@@ -107,9 +143,9 @@ namespace CmpCurvesSummation.Core
 
         public double[,] GetDataArray()
         {
-            var res = new double[_vLengthDimensionless, AscanLengthDimensionless];
+            var res = new double[Data.Count, AscanLengthDimensionless];
 
-            for (int i = 0; i < _vLengthDimensionless; i++)
+            for (int i = 0; i < Data.Count; i++)
             for (int j = 0; j < AscanLengthDimensionless; j++)
                 res[i, j] = Data[i][j];
 
@@ -175,7 +211,7 @@ namespace CmpCurvesSummation.Core
                 _checkOrderDict.Add(key, new Tuple<int, int>(x, y));
         }
         
-        private List<Tuple<int, int>> FindExtremums(int x, int y, Func<int, int, bool> checkFunc)
+        public List<Tuple<int, int>> FindExtremums(int x, int y, Func<int, int, bool> checkFunc)
         {
             var extremums = new List<Tuple<int, int>>();
             
@@ -192,9 +228,9 @@ namespace CmpCurvesSummation.Core
         }
 
         /// <summary>
-        /// True - is a case when values of all points around the one in arguments (dist = 1 step) are same or greater than for the one in argument
+        /// True - is a case when values of all points around the one in arguments (dist = 1 step) are 'condition' than for the one in argument
         /// </summary>
-        private bool CheckIf(int x, int y, Func<double, double, bool> condition)
+        public bool CheckIf(int x, int y, Func<double, double, bool> condition)
         {
             if (x < 0 || x >= Data.Count || y < 0 || y >= AscanLength)
                 return false;
@@ -224,7 +260,7 @@ namespace CmpCurvesSummation.Core
         {
             var correctedLayers = new List<Tuple<double, double>>();
             foreach (var point in Layers)
-                if (Math.Abs(point.Item2 - time) > MinimalTimeBetweenLayers)
+                if (Math.Abs(point.Item2 - time) > CheckRadius)
                     correctedLayers.Add(point);
 
             Layers.Clear();
@@ -245,6 +281,28 @@ namespace CmpCurvesSummation.Core
         private double Time(int indexTime) => indexTime * StepTime + MinTime;
 
         private double Velocity(int indexVelocity) => indexVelocity * StepVelocity + MinVelocity;
+
+        public void GetAllExtremums()
+        {
+            for (int i = 0; i < Data.Count; i++)
+            for (int j = 0; j < AscanLengthDimensionless; j++)
+            {
+                if (Data[i].Length <= j)
+                    continue;
+                if (CheckIfMax(i, j))
+                    AllExtremums.Add(new Tuple<double, double>(Velocity(i), Time(j)));
+                if (CheckIfMin(i, j))
+                    AllExtremums.Add(new Tuple<double, double>(Velocity(i), Time(j)));
+            }
+        }
+
+        public void FilterExtremums()
+        {
+//            CopyAllToFiltered();
+//            RemoveFlatExtremums();
+//            RemoveCloseExtremums();
+        }
+
     }
 
 

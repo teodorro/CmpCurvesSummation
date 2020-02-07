@@ -33,6 +33,9 @@ namespace CmpCurvesSummation.Core
     public delegate void RefreshLayersHandler(object obj, RefreshLayersEventArgs e);
     public delegate void TimeOffsetChangedHandler(object obj, TimeOffsetChangedEventArgs e);
     public delegate void InterpolationChangedHandler(object obj, InterpolationChangedEventArgs e);
+    public delegate void AlphaChangedHandler(object obj, AlphaChangedEventArgs e);
+    public delegate void HalfWaveSizeChangedHandler(object obj, HalfWaveSizeChangedEventArgs e);
+    public delegate void MaxVelocityChangedHandler(object obj, MaxVelocityChangedEventArgs e);
 
 
 
@@ -248,6 +251,35 @@ namespace CmpCurvesSummation.Core
         }
     }
 
+    public class AlphaChangedEventArgs : EventArgs
+    {
+        public byte Alpha { get; }
+
+        public AlphaChangedEventArgs(byte alpha)
+        {
+            Alpha = alpha;
+        }
+    }
+    
+    public class HalfWaveSizeChangedEventArgs : EventArgs
+    {
+        public int HalfWaveSize { get; }
+
+        public HalfWaveSizeChangedEventArgs(int halfWaveSize)
+        {
+            HalfWaveSize = halfWaveSize;
+        }
+    }
+
+    public class MaxVelocityChangedEventArgs : EventArgs
+    {
+        public double MaxVelocity { get; }
+
+        public MaxVelocityChangedEventArgs(double maxVelocity)
+        {
+            MaxVelocity = maxVelocity;
+        }
+    }
 
 
     public class CmpProgressBar

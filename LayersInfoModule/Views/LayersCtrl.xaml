@@ -20,22 +20,105 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <CheckBox x:Name="AutoCorrectionPointClickCheckBox" Content="Автокоррекция клика" Margin="5,0,15,0" Grid.Row="0" VerticalAlignment="Bottom" 
                   IsChecked="{Binding AutoCorrection}"/>
-        <Label Content="Слои" VerticalAlignment="Bottom" FontWeight="Bold" Grid.Row="1" />
-        <DataGrid x:Name="LayersListDataGrid" Grid.Row="2" CanUserAddRows="False" CanUserSortColumns="False" IsReadOnly="True"
-                  ItemsSource="{Binding Layers}" AutoGeneratingColumn="LayersListDataGrid_AutoGeneratingColumn" >
+        <Grid Grid.Row="1"  >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Полупрозрачность" Margin="5,5,5,5" VerticalAlignment="Bottom"></Label>
+            <Slider Maximum="255" SmallChange="1" Margin="5,10,15,10" VerticalAlignment="Bottom" Grid.Column="1" Value="{Binding Alpha}"></Slider>
+        </Grid>
+        <Grid Grid.Row="2"  >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Макс. скорость" VerticalAlignment="Bottom" Margin="5,5,5,5"></Label>
+            <Label Content="{Binding MaxVelocity}" VerticalAlignment="Bottom" Margin="5,5,5,5" Grid.Column="1"></Label>
+            <Slider Maximum="0.15" SmallChange="0.0001" Minimum="0.0151" VerticalAlignment="Bottom" Margin="5,10,15,10" Grid.Column="2" Value="{Binding MaxVelocity}" LargeChange="0.001"></Slider>
+        </Grid>
+        <Grid Grid.Row="3"  >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Размер полуволны" VerticalAlignment="Bottom" Margin="5,5,5,5"></Label>
+            <Label Content="{Binding HalfWaveSize}" VerticalAlignment="Bottom" Margin="5,5,5,5" Grid.Column="1"></Label>
+            <Slider Maximum="100" SmallChange="1" VerticalAlignment="Bottom" Margin="5,10,15,10" Grid.Column="2" Value="{Binding HalfWaveSize}"></Slider>
+        </Grid>
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+<!--            <Button x:Name="ButtGetMax" Margin="5,5,5,5" Content="GetMax" Click="ButtGetMax_Click"></Button>-->
+<!--            <Button x:Name="ButtSortMax" Margin="5,5,5,5" Content="SortMax" Grid.Column="1"></Button>-->
+        </Grid>
+        <Label Content="Слои" VerticalAlignment="Bottom" FontWeight="Bold" Grid.Row="5" />
+        <DataGrid x:Name="LayersListDataGrid" Grid.Row="6" CanUserAddRows="False" CanUserSortColumns="False" IsReadOnly="True"
+                  ItemsSource="{Binding Layers}" AutoGenerateColumns="False">
+            <!--        AutoGeneratingColumn="LayersListDataGrid_AutoGeneratingColumn" >-->
             <DataGrid.RowStyle >
                 <Style TargetType="{x:Type DataGridRow}">
-                    
+
                     <Setter Property="ContextMenu" Value="{StaticResource DataRowContextMenu}" />
                     <Setter Property="BorderThickness" Value="0"/>
                 </Style>
             </DataGrid.RowStyle>
-
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Time}" Header="Время, нс"/>
+                <DataGridTextColumn Binding="{Binding Path=Depth}" Header="Глубина, м"/>
+                <DataGridTextColumn Binding="{Binding Path=AvgVelocity}" Header="Средняя скорость, м/нс"/>
+                <DataGridTextColumn Binding="{Binding Path=Thickness}" Header="Толщина, м">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLayerThicknessOk}" Value="false">
+                                    <Setter Property="Background" Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=LayerVelocity}" Header="Скорость в слое, м/нс">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLayerVelocityOk}" Value="false">
+                                    <Setter Property="Background" Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=LayerPermittivity}" Header="Диэл. пр-ть слоя">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLayerPermittivityOk}" Value="false">
+                                    <Setter Property="Background" Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
         </DataGrid>
+
     </Grid>
 </UserControl>
+
+
+

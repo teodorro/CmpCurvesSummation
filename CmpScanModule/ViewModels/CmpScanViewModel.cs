@@ -13,7 +13,7 @@ namespace CmpScanModule.ViewModels
     public class CmpScanViewModel 
     {
         private const int colorsCount = 1024;
-        private const double _hodographCurveStrokeThickness = 0.5;
+        private const double _hodographCurveStrokeThickness = 1;
 
         private ICmpScan _cmpScan;
         private PaletteType _palette = PaletteType.Jet;

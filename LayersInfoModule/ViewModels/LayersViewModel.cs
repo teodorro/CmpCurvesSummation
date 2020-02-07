@@ -16,12 +16,15 @@ namespace LayersInfoModule.ViewModels
     public class LayersViewModel : INotifyPropertyChanged
     {
         public event AutoCorrectionCheckHander AutoCorrectionClick;
+        public event AlphaChangedHandler AlphaChanged;
+        public event HalfWaveSizeChangedHandler HalfWaveSizeChanged;
+        public event MaxVelocityChangedHandler MaxVelocityChanged;
 
         public ObservableCollection<LayerInfo> Layers { get; } = new ObservableCollection<LayerInfo>();
 
-        private bool _autoCorrection;
         private ISummedScanVT _summedScan;
 
+        private bool _autoCorrection;
         public bool AutoCorrection
         {
             get => _autoCorrection;
@@ -32,6 +35,43 @@ namespace LayersInfoModule.ViewModels
                 AutoCorrectionClick?.Invoke(this, new AutoCorrectionCheckEventArgs(_autoCorrection));
             }
         }
+
+        private byte _alpha;
+        public byte Alpha
+        {
+            get => _alpha;
+            set
+            {
+                _alpha = value;
+                OnPropertyChanged(nameof(Alpha));
+                AlphaChanged?.Invoke(this, new AlphaChangedEventArgs(_alpha));
+            }
+        }
+
+        private double _maxVelocity = 0.15;
+        public double MaxVelocity
+        {
+            get => _maxVelocity;
+            set
+            {
+                _maxVelocity = value;
+                OnPropertyChanged(nameof(MaxVelocity));
+                MaxVelocityChanged?.Invoke(this, new MaxVelocityChangedEventArgs(_maxVelocity));
+            }
+        }
+
+        private int _halfWaveSize = 5;
+        public int HalfWaveSize
+        {
+            get => _halfWaveSize;
+            set
+            {
+                _halfWaveSize = value;
+                OnPropertyChanged(nameof(HalfWaveSize));
+                HalfWaveSizeChanged?.Invoke(this, new HalfWaveSizeChangedEventArgs(_halfWaveSize));
+            }
+        }
+
 
 
         public void OnDeleteRowClick(object sender, DeleteLayerEventArgs e)
@@ -94,44 +134,6 @@ namespace LayersInfoModule.ViewModels
             Layers.Clear();
         }
     }
-
-
-    /// <summary>
-    /// info about layer which is used as a row in the table of layers
-    /// </summary>
-    public class LayerInfo
-    {
-        public LayerInfo(double time, double avgVelocity, LayerInfo prevLayer)
-        {
-            Time = time;
-            AvgVelocity = avgVelocity;
-            if (prevLayer == null)
-            {
-                Thickness = Depth;
-                LayerVelocity = AvgVelocity;
-            }
-            else
-            {
-                var depth = CmpMath.Instance.Depth(avgVelocity, time);
-                Thickness = Math.Round(CmpMath.Instance.LayerThickness(depth, prevLayer.Depth), 2);
-                LayerVelocity = Math.Round(CmpMath.Instance.LayerVelocity(time, 0, depth, avgVelocity, prevLayer.Depth, prevLayer.AvgVelocity), 3);
-            }
-        }
-
-        [DisplayName("Время, нс")]
-        public double Time { get; set; }
-        [DisplayName("Глубина, м")]
-        public double Depth => Math.Round(CmpMath.Instance.Depth(AvgVelocity, Time), 2);
-        [DisplayName("Средняя скорость, м/нс")]
-        public double AvgVelocity { get; }
-        [DisplayName("Толщина, м")]
-        public double Thickness { get; }
-        [DisplayName("Скорость в слое, м/нс")]
-        public double LayerVelocity { get; }
-        [DisplayName("Диэл. пр-ть слоя")]
-        public double Permittivity => Math.Round(CmpMath.Instance.Permittivity(LayerVelocity), 2);
-    }
-
 
 
     public class SelectedRowToBoolConverter : IValueConverter

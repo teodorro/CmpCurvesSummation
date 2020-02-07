@@ -58,6 +58,9 @@ namespace CmpCurvesSummation.Views
             SummedOverCurveScanControl.ViewModel.SummationFinished += LayersInfoControl.ViewModel.OnSummationFinished;
             SummedOverCurveScanControl.ViewModel.SummationFinished += CmpScanControl.ViewModel.OnSummationFinished;
             LayersInfoControl.ViewModel.AutoCorrectionClick += SummedOverCurveScanControl.ViewModel.OnAutoCorrectionChange;
+            LayersInfoControl.ViewModel.AlphaChanged += SummedOverCurveScanControl.ViewModel.OnAlphaChanged;
+            LayersInfoControl.ViewModel.HalfWaveSizeChanged += SummedOverCurveScanControl.ViewModel.OnHalfWaveSizeChanged;
+            LayersInfoControl.ViewModel.MaxVelocityChanged += SummedOverCurveScanControl.ViewModel.OnMaxVelocityChanged;
             OptionsControl.ViewModel.SummationStarted += SummedOverCurveScanControl.ViewModel.OnSummationStarted;
             OptionsControl.ViewModel.PaletteChanged += CmpScanControl.ViewModel.OnPaletteChanged;
             OptionsControl.ViewModel.PaletteChanged += SummedOverCurveScanControl.ViewModel.OnPaletteChanged;
