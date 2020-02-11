@@ -37,6 +37,7 @@ namespace CmpCurvesSummation.Core
     public delegate void HalfWaveSizeChangedHandler(object obj, HalfWaveSizeChangedEventArgs e);
     public delegate void MaxVelocityChangedHandler(object obj, MaxVelocityChangedEventArgs e);
     public delegate void PoweredChangedHandler(object obj, PoweredChangedEventArgs e);
+    public delegate void AbsChangedHandler(object obj, AbsChangedEventArgs e);
 
 
 
@@ -291,6 +292,17 @@ namespace CmpCurvesSummation.Core
             Powered = powered;
         }
     }
+
+    public class AbsChangedEventArgs : EventArgs
+    {
+        public bool Abs { get; }
+
+        public AbsChangedEventArgs(bool abs)
+        {
+            Abs = abs;
+        }
+    }
+
 
 
     public class CmpProgressBar

@@ -1,5 +1,6 @@
 ﻿using CmpCurvesSummation.Core;
 using ProcessingModule.Processing;
+using ProcessingModule.Processing.CmpScan;
 using Xunit;
 
 namespace ProcessingModule.Tests

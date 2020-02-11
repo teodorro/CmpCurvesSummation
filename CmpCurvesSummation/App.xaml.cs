@@ -27,7 +27,7 @@ namespace CmpCurvesSummation
             DiContainer.Instance.Container = new Container(_ =>
             {
                 _.For<IFileOpener>().Use<FileOpener>();
-                _.For<IRawDataProcessor>().Use<RawDataProcessor>();
+                _.For<ICmpScanProcessor>().Use<CmpScanProcessor>();
             });
         }
     }

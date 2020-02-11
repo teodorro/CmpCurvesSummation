@@ -50,73 +50,82 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Processing\AddOffsetAscans.cs" />
-    <Compile Include="Processing\ClearOffsetAscans.cs" />
-    <Compile Include="Processing\RemoveLeftAscans.cs" />
-    <Compile Include="Processing\RemoveRightAscans.cs" />
-    <Compile Include="Processing\StraightenSynchronizationLine2.cs" />
+    <Compile Include="Processing\CmpScan\AddOffsetAscans.cs" />
+    <Compile Include="Processing\CmpScan\ClearOffsetAscans.cs" />
+    <Compile Include="Processing\CmpScan\RemoveLeftAscans.cs" />
+    <Compile Include="Processing\CmpScan\RemoveRightAscans.cs" />
+    <Compile Include="Processing\CmpScan\StraightenSynchronizationLine2.cs" />
+    <Compile Include="Processing\SummedScan\ChangeMaxVelocity.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="ViewModels\AddOffsetAscansViewModel.cs" />
-    <Compile Include="ViewModels\ClearOffsetAscansViewModel.cs" />
-    <Compile Include="ViewModels\ProcessingViewModel.cs" />
-    <Compile Include="ViewModels\RemoveLeftAscansViewModel.cs" />
-    <Compile Include="ViewModels\RemoveRightAscansViewModel.cs" />
-    <Compile Include="ViewModels\StraightenSynchronizationLine2ViewModel.cs" />
-    <Compile Include="ViewModels\StraightenSynchronizationLineViewModel.cs" />
-    <Compile Include="Views\AddOffsetAscansCtrl.xaml.cs">
+    <Compile Include="SummedScanProcessor.cs" />
+    <Compile Include="ViewModels\CmpScan\AddOffsetAscansViewModel.cs" />
+    <Compile Include="ViewModels\CmpScan\ClearOffsetAscansViewModel.cs" />
+    <Compile Include="ViewModels\CmpScanProcessingViewModel.cs" />
+    <Compile Include="ViewModels\CmpScan\RemoveLeftAscansViewModel.cs" />
+    <Compile Include="ViewModels\CmpScan\RemoveRightAscansViewModel.cs" />
+    <Compile Include="ViewModels\CmpScan\StraightenSynchronizationLine2ViewModel.cs" />
+    <Compile Include="ViewModels\CmpScan\StraightenSynchronizationLineViewModel.cs" />
+    <Compile Include="ViewModels\SummedScanProcessingViewModel.cs" />
+    <Compile Include="Views\CmpScan\AddOffsetAscansCtrl.xaml.cs">
       <DependentUpon>AddOffsetAscansCtrl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ClearOffsetAscansCtrl.xaml.cs">
+    <Compile Include="Views\CmpScan\ClearOffsetAscansCtrl.xaml.cs">
       <DependentUpon>ClearOffsetAscansCtrl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ProcessingCtrl.xaml.cs">
-      <DependentUpon>ProcessingCtrl.xaml</DependentUpon>
+    <Compile Include="Views\CmpScanProcessingCtrl.xaml.cs">
+      <DependentUpon>CmpScanProcessingCtrl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Processing\LogarithmProcessing.cs" />
-    <Compile Include="RawDataProcessor.cs" />
-    <Compile Include="Processing\Smoothing.cs" />
-    <Compile Include="Processing\StraightenSynchronizationLine.cs" />
-    <Compile Include="Processing\ZeroAmplitudeCorrection.cs" />
+    <Compile Include="Processing\CmpScan\LogarithmProcessing.cs" />
+    <Compile Include="CmpScanProcessor.cs" />
+    <Compile Include="Processing\CmpScan\StraightenSynchronizationLine.cs" />
+    <Compile Include="Processing\CmpScan\ZeroAmplitudeCorrection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\RemoveLeftAscansCtrl.xaml.cs">
+    <Compile Include="Views\CmpScan\RemoveLeftAscansCtrl.xaml.cs">
       <DependentUpon>RemoveLeftAscansCtrl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RemoveRightAscansCtrl.xaml.cs">
+    <Compile Include="Views\CmpScan\RemoveRightAscansCtrl.xaml.cs">
       <DependentUpon>RemoveRightAscansCtrl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StraightenSynchronizationLine2Ctrl.xaml.cs">
+    <Compile Include="Views\CmpScan\StraightenSynchronizationLine2Ctrl.xaml.cs">
       <DependentUpon>StraightenSynchronizationLine2Ctrl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StraightenSynchronizationLineCtrl.xaml.cs">
+    <Compile Include="Views\CmpScan\StraightenSynchronizationLineCtrl.xaml.cs">
       <DependentUpon>StraightenSynchronizationLineCtrl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SummedScanProcessingCtrl.xaml.cs">
+      <DependentUpon>SummedScanProcessingCtrl.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\AddOffsetAscansCtrl.xaml">
+    <Page Include="Views\CmpScan\AddOffsetAscansCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ClearOffsetAscansCtrl.xaml">
+    <Page Include="Views\CmpScan\ClearOffsetAscansCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ProcessingCtrl.xaml">
+    <Page Include="Views\CmpScanProcessingCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RemoveLeftAscansCtrl.xaml">
+    <Page Include="Views\CmpScan\RemoveLeftAscansCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RemoveRightAscansCtrl.xaml">
+    <Page Include="Views\CmpScan\RemoveRightAscansCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StraightenSynchronizationLine2Ctrl.xaml">
+    <Page Include="Views\CmpScan\StraightenSynchronizationLine2Ctrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StraightenSynchronizationLineCtrl.xaml">
+    <Page Include="Views\CmpScan\StraightenSynchronizationLineCtrl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SummedScanProcessingCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -129,6 +138,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\SummedScan\" />
+    <Folder Include="Views\SummedScan\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -182,7 +182,7 @@ namespace CmpScanModule.ViewModels
                 for (int i = 0; i < _cmpScan.LengthDimensionless; i++)
                 {
                     var distance = i * _cmpScan.StepTime;
-                    hodograph[i] = Math.Round(CmpMath.Instance.HodographLineLoza(distance, h, velocity), 2);
+                    hodograph[i] = CmpMath.Instance.HodographLineLoza(distance, h, velocity);
                     hodographCurve.Points.Add(new DataPoint(distance, hodograph[i]));
                 }
 
@@ -220,7 +220,7 @@ namespace CmpScanModule.ViewModels
 
         private void ChangeTimeOffset(DataPoint point)
         {
-            var offset = Math.Round(point.Y, 2);
+            var offset = point.Y;
             ModifyAxesTimeOffset(offset);
             _cmpScan.MinTime -= offset;
 

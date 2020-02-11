@@ -20,6 +20,8 @@ namespace LayersInfoModule.ViewModels
         public event HalfWaveSizeChangedHandler HalfWaveSizeChanged;
         public event MaxVelocityChangedHandler MaxVelocityChanged;
         public event PoweredChangedHandler PoweredChanged;
+        public event AbsChangedHandler AbsChanged;
+
 
         public ObservableCollection<LayerInfo> Layers { get; } = new ObservableCollection<LayerInfo>();
 
@@ -82,6 +84,18 @@ namespace LayersInfoModule.ViewModels
                 _powered = value;
                 OnPropertyChanged(nameof(Powered));
                 PoweredChanged?.Invoke(this, new PoweredChangedEventArgs(_powered));
+            }
+        }
+
+        private bool _abs = false;
+        public bool Abs
+        {
+            get => _abs;
+            set
+            {
+                _abs = value;
+                OnPropertyChanged(nameof(Abs));
+                AbsChanged?.Invoke(this, new AbsChangedEventArgs(Abs));
             }
         }
 

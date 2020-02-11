@@ -32,7 +32,7 @@ namespace LayersInfoModule.ViewModels
         [DisplayName("Время, нс")]
         public double Time
         {
-            get => _time;
+            get => Math.Round(_time, 1);
             set
             {
                 _time = value;

@@ -29,7 +29,7 @@
         <local:ToolbarCtrl x:Name="ToolbarControl" Grid.ColumnSpan="5"></local:ToolbarCtrl>
         <StackPanel Grid.Row="1" Grid.RowSpan="2">
             <local:OptionsCtrl x:Name="OptionsControl"></local:OptionsCtrl>
-            <views:ProcessingCtrl x:Name="ProcessingControl" Margin="10,5,5,10"></views:ProcessingCtrl>
+            <views:CmpScanProcessingCtrl x:Name="ProcessingControl" Margin="10,5,5,10"></views:CmpScanProcessingCtrl>
         </StackPanel>
     </Grid>
 </UserControl>

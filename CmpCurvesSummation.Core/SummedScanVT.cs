@@ -21,14 +21,16 @@ namespace CmpCurvesSummation.Core
         double AscanLength { get; }
         int CheckRadius { get; set; }
         List<Tuple<double, double>> Layers { get; }
+        bool Abs { get; set; }
 
         double[,] GetDataArray();
         void Sum(ICmpScan cmpScan);
         Tuple<double, double> CorrectPoint(double velocity, double time);
         void AddLayer(double velocity, double time);
         void RemoveLayersAround(double velocity, double time);
-        void RemoveRightAscans(double maxVelocity);
-        void Power(double powered);
+//        void RemoveRightAscans(double maxVelocity);
+//        void Power(double powered);
+        void CopyRawDataToProcessed();
 
         event RefreshLayersHandler RefreshLayers;
     }
@@ -56,6 +58,7 @@ namespace CmpCurvesSummation.Core
         public double AscanLength => AscanLengthDimensionless * StepTime;
         public int CheckRadius { get; set; } = 5;
         public List<Tuple<double, double>> Layers { get; } = new List<Tuple<double, double>>();
+        public bool Abs { get; set; }
 
         public event RefreshLayersHandler RefreshLayers;
 
@@ -95,10 +98,10 @@ namespace CmpCurvesSummation.Core
                 }
             }
 
-            CopyRawToActual();
+            CopyRawDataToProcessed();
         }
 
-        private void CopyRawToActual()
+        public void CopyRawDataToProcessed()
         {
             Data.Clear();
             for (int i = 0; i < RawData.Count; i++)
@@ -110,13 +113,13 @@ namespace CmpCurvesSummation.Core
             }
         }
 
-        public void RemoveRightAscans(double maxVelocity)
+        1public void RemoveRightAscans(double maxVelocity)
         {
             if (maxVelocity > LightRadarVelocity || maxVelocity < MinVelocity)
                 throw new ArgumentOutOfRangeException("Недопустимая максимальная скорость");
             MaxVelocity = maxVelocity;
             var indMaxVelocity = (int)Math.Round((maxVelocity - MinVelocity) / StepVelocity);
-            CopyRawToActual();
+            CopyRawToProcessed();
             Data.RemoveRange(indMaxVelocity, RawData.Count - indMaxVelocity);
         }
 
@@ -278,7 +281,7 @@ namespace CmpCurvesSummation.Core
 
         private double Velocity(int indexVelocity) => indexVelocity * StepVelocity + MinVelocity;
 
-        public void Power(double powered)
+        public void 1Power(double powered)
         {
             RemoveRightAscans(MaxVelocity);
             foreach (var ascan in Data)

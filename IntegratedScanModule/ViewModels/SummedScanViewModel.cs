@@ -128,9 +128,9 @@ namespace SummedScanModule.ViewModels
         {
             if (_autoCorrection)
                 point = CorrectPoint(point);
-            
-            var velocity = Math.Round(point.X, 3);
-            var time = Math.Round(point.Y, 2);
+
+            var velocity = point.X;
+            var time = point.Y;
             _summedScan.AddLayer(velocity, time);
 
             Plot.InvalidatePlot(true);
@@ -138,19 +138,19 @@ namespace SummedScanModule.ViewModels
 
         private bool IsPointOnPlot(DataPoint point)
         {
-            var v = Math.Round(point.X, 3);
-            var t = Math.Round(point.Y, 2);
-            if (v < CmpMath.Instance.WaterVelocity || v >= CmpMath.SpeedOfLight / 2)
+            var velocity = point.X;
+            var time = point.Y;
+            if (velocity < CmpMath.Instance.WaterVelocity || velocity >= CmpMath.SpeedOfLight / 2)
                 return false;
-            if (t < TimeAxis.AbsoluteMinimum || t >= TimeAxis.AbsoluteMaximum)
+            if (time < TimeAxis.AbsoluteMinimum || time >= TimeAxis.AbsoluteMaximum)
                 return false;
             return true;
         }
 
         private DataPoint CorrectPoint(DataPoint point)
         {
-            var velocity = Math.Round(point.X, 3);
-            var time = Math.Round(point.Y, 2);
+            var velocity = point.X;
+            var time = point.Y;
             var correctedPoint = _summedScan.CorrectPoint(velocity, time);
             return correctedPoint != null
                 ? new DataPoint(correctedPoint.Item1, correctedPoint.Item2)

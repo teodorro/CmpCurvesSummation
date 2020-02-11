@@ -68,6 +68,8 @@
             <Label Content="{Binding Powered}" VerticalAlignment="Bottom" Margin="5,5,5,5" Grid.Column="1"></Label>
             <Slider Maximum="5" SmallChange="0.1" VerticalAlignment="Bottom" Margin="5,10,15,10" Grid.Column="2" Value="{Binding Powered}" LargeChange="0.1"></Slider>
         </Grid>
+        <CheckBox x:Name="AbsCheckBox" Content="Модуль" Margin="5,0,15,0" Grid.Row="5" VerticalAlignment="Bottom" 
+                  IsChecked="{Binding Abs}"/>
         <Label Content="Слои" VerticalAlignment="Bottom" FontWeight="Bold" Grid.Row="6" />
         <DataGrid x:Name="LayersListDataGrid" Grid.Row="7" CanUserAddRows="False" CanUserSortColumns="False" IsReadOnly="True"
                   ItemsSource="{Binding Layers}" AutoGenerateColumns="False">
