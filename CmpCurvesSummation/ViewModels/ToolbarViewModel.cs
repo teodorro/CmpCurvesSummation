@@ -43,7 +43,7 @@ namespace CmpCurvesSummation.ViewModels
                         break;
                     case "geo":
                         geo = true;
-                        data = _fileOpener.OpenGeo1(fileDialog.FileName);
+                        data = _fileOpener.OpenGeo2(fileDialog.FileName);
                         break;
                     default:
                         data = _fileOpener.OpenKrotTxt(fileDialog.FileName);
@@ -59,10 +59,10 @@ namespace CmpCurvesSummation.ViewModels
         private void SecondAttemptForGeo(OpenFileDialog fileDialog)
         {
             ICmpScan data;
-            var isOk = MessageBox.Show("Нормально открылось?", "Нормально открылось?", MessageBoxButton.YesNo);
+            var isOk = MessageBox.Show("Нормально открылось?", "", MessageBoxButton.YesNo);
             if (isOk == MessageBoxResult.No)
             {
-                data = _fileOpener.OpenGeo2(fileDialog.FileName);
+                data = _fileOpener.OpenGeo1(fileDialog.FileName);
                 FileOpened?.Invoke(this, new FileLoadedEventArgs(data, fileDialog.FileName));
             }
         }

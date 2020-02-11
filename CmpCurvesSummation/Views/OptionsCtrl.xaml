@@ -23,6 +23,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label x:Name="StepDistanceLabel" Content="Шаг измерений, м" Grid.Row="1" Margin="10,5"/>
@@ -68,9 +69,9 @@
         </ComboBox>
         <CheckBox x:Name="checkBoxInterpolation" Grid.Row="6" Grid.ColumnSpan="2" Margin="15,10,5,5" Content="Интерполяция"
                   IsChecked="{Binding InterpolationEnabled}"></CheckBox>
-        <Button x:Name="ButtonSummation" Content="Запустить суммирование" HorizontalAlignment="Left"  Grid.Row="8" Margin="20,0,0,15" Width="150" VerticalAlignment="Bottom" Grid.ColumnSpan="2"
+        <Button x:Name="ButtonSummation" Content="Запустить суммирование" HorizontalAlignment="Left"  Grid.Row="9" Margin="20,0,0,15" Width="150" VerticalAlignment="Bottom" Grid.ColumnSpan="2"
                 IsEnabled="{Binding ManualSummationPossible}" Click="ButtonSummation_Click" Height="20" />
-        <ProgressBar x:Name="progressBar" Grid.Row="9" Grid.ColumnSpan="2" Margin="20,10,15,10"
+        <ProgressBar x:Name="progressBar" Grid.Row="10" Grid.ColumnSpan="2" Margin="20,10,15,10"
                      Visibility="{Binding ProgressBarVisible}" Value="{Binding ProgressValue}"/>
     </Grid>
 </UserControl>

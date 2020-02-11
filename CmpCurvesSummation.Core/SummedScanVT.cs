@@ -21,8 +21,6 @@ namespace CmpCurvesSummation.Core
         double AscanLength { get; }
         int CheckRadius { get; set; }
         List<Tuple<double, double>> Layers { get; }
-        List<Tuple<double, double>> AllExtremums { get; }
-        List<Tuple<double, double>> FilteredExtremums { get; }
 
         double[,] GetDataArray();
         void Sum(ICmpScan cmpScan);
@@ -30,6 +28,7 @@ namespace CmpCurvesSummation.Core
         void AddLayer(double velocity, double time);
         void RemoveLayersAround(double velocity, double time);
         void RemoveRightAscans(double maxVelocity);
+        void Power(double powered);
 
         event RefreshLayersHandler RefreshLayers;
     }
@@ -57,9 +56,6 @@ namespace CmpCurvesSummation.Core
         public double AscanLength => AscanLengthDimensionless * StepTime;
         public int CheckRadius { get; set; } = 5;
         public List<Tuple<double, double>> Layers { get; } = new List<Tuple<double, double>>();
-
-        public List<Tuple<double, double>> AllExtremums { get; } = new List<Tuple<double, double>>();
-        public List<Tuple<double, double>> FilteredExtremums { get; } = new List<Tuple<double, double>>();
 
         public event RefreshLayersHandler RefreshLayers;
 
@@ -282,26 +278,16 @@ namespace CmpCurvesSummation.Core
 
         private double Velocity(int indexVelocity) => indexVelocity * StepVelocity + MinVelocity;
 
-        public void GetAllExtremums()
+        public void Power(double powered)
         {
-            for (int i = 0; i < Data.Count; i++)
-            for (int j = 0; j < AscanLengthDimensionless; j++)
+            RemoveRightAscans(MaxVelocity);
+            foreach (var ascan in Data)
             {
-                if (Data[i].Length <= j)
-                    continue;
-                if (CheckIfMax(i, j))
-                    AllExtremums.Add(new Tuple<double, double>(Velocity(i), Time(j)));
-                if (CheckIfMin(i, j))
-                    AllExtremums.Add(new Tuple<double, double>(Velocity(i), Time(j)));
+                for (int i = 0; i < ascan.Length; i++)
+                    ascan[i] = Math.Sign(ascan[i]) * Math.Pow(Math.Abs(ascan[i]), powered);
             }
         }
 
-        public void FilterExtremums()
-        {
-//            CopyAllToFiltered();
-//            RemoveFlatExtremums();
-//            RemoveCloseExtremums();
-        }
 
     }
 
