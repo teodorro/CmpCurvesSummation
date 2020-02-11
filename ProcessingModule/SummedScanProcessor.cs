@@ -6,7 +6,7 @@ namespace ProcessingModule
     public interface ISumScanProcessing
     {
         string Name { get; }
-        void Process(ISummedScanVT data);
+        void Process(ISummedScanVT summedScan);
     }
 
 

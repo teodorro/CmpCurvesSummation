@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace CmpCurvesSummation.Core
 {
@@ -11,8 +10,10 @@ namespace CmpCurvesSummation.Core
     public interface ISummedScanVT
     {
         List<double[]> Data { get; }
+        List<double[]> RawData { get; }
         double StepTime { get;  }
         double StepDistance { get; }
+        double StepVelocity { get; }
         double MinVelocity { get; }
         double MaxVelocity { get; }
         double MinTime { get; }
@@ -28,8 +29,6 @@ namespace CmpCurvesSummation.Core
         Tuple<double, double> CorrectPoint(double velocity, double time);
         void AddLayer(double velocity, double time);
         void RemoveLayersAround(double velocity, double time);
-//        void RemoveRightAscans(double maxVelocity);
-//        void Power(double powered);
         void CopyRawDataToProcessed();
 
         event RefreshLayersHandler RefreshLayers;
@@ -112,17 +111,7 @@ namespace CmpCurvesSummation.Core
                     Data[i][j] = RawData[i][j];
             }
         }
-
-        1public void RemoveRightAscans(double maxVelocity)
-        {
-            if (maxVelocity > LightRadarVelocity || maxVelocity < MinVelocity)
-                throw new ArgumentOutOfRangeException("Недопустимая максимальная скорость");
-            MaxVelocity = maxVelocity;
-            var indMaxVelocity = (int)Math.Round((maxVelocity - MinVelocity) / StepVelocity);
-            CopyRawToProcessed();
-            Data.RemoveRange(indMaxVelocity, RawData.Count - indMaxVelocity);
-        }
-
+        
         private double CalcSumForVelocityAndDepth(ICmpScan cmpScan, double h, double v)
         {
             double sum = 0;
@@ -281,17 +270,7 @@ namespace CmpCurvesSummation.Core
 
         private double Velocity(int indexVelocity) => indexVelocity * StepVelocity + MinVelocity;
 
-        public void 1Power(double powered)
-        {
-            RemoveRightAscans(MaxVelocity);
-            foreach (var ascan in Data)
-            {
-                for (int i = 0; i < ascan.Length; i++)
-                    ascan[i] = Math.Sign(ascan[i]) * Math.Pow(Math.Abs(ascan[i]), powered);
-            }
-        }
-
-
+        
     }
 
 

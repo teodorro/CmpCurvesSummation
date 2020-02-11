@@ -18,9 +18,9 @@ namespace LayersInfoModule.ViewModels
         public event AutoCorrectionCheckHander AutoCorrectionClick;
         public event AlphaChangedHandler AlphaChanged;
         public event HalfWaveSizeChangedHandler HalfWaveSizeChanged;
-        public event MaxVelocityChangedHandler MaxVelocityChanged;
-        public event PoweredChangedHandler PoweredChanged;
-        public event AbsChangedHandler AbsChanged;
+//        public event MaxVelocityChangedHandler MaxVelocityChanged;
+//        public event PoweredChangedHandler PoweredChanged;
+//        public event AbsChangedHandler AbsChanged;
 
 
         public ObservableCollection<LayerInfo> Layers { get; } = new ObservableCollection<LayerInfo>();
@@ -51,17 +51,17 @@ namespace LayersInfoModule.ViewModels
             }
         }
 
-        private double _maxVelocity = 0.15;
-        public double MaxVelocity
-        {
-            get => _maxVelocity;
-            set
-            {
-                _maxVelocity = value;
-                OnPropertyChanged(nameof(MaxVelocity));
-                MaxVelocityChanged?.Invoke(this, new MaxVelocityChangedEventArgs(_maxVelocity));
-            }
-        }
+//        private double _maxVelocity = 0.15;
+//        public double MaxVelocity
+//        {
+//            get => _maxVelocity;
+//            set
+//            {
+//                _maxVelocity = value;
+//                OnPropertyChanged(nameof(MaxVelocity));
+//                MaxVelocityChanged?.Invoke(this, new MaxVelocityChangedEventArgs(_maxVelocity));
+//            }
+//        }
 
         private int _halfWaveSize = 5;
         public int HalfWaveSize
@@ -75,29 +75,29 @@ namespace LayersInfoModule.ViewModels
             }
         }
 
-        private double _powered = 1;
-        public double Powered
-        {
-            get => _powered;
-            set
-            {
-                _powered = value;
-                OnPropertyChanged(nameof(Powered));
-                PoweredChanged?.Invoke(this, new PoweredChangedEventArgs(_powered));
-            }
-        }
-
-        private bool _abs = false;
-        public bool Abs
-        {
-            get => _abs;
-            set
-            {
-                _abs = value;
-                OnPropertyChanged(nameof(Abs));
-                AbsChanged?.Invoke(this, new AbsChangedEventArgs(Abs));
-            }
-        }
+//        private double _powered = 1;
+//        public double Powered
+//        {
+//            get => _powered;
+//            set
+//            {
+//                _powered = value;
+//                OnPropertyChanged(nameof(Powered));
+//                PoweredChanged?.Invoke(this, new PoweredChangedEventArgs(_powered));
+//            }
+//        }
+//
+//        private bool _abs = false;
+//        public bool Abs
+//        {
+//            get => _abs;
+//            set
+//            {
+//                _abs = value;
+//                OnPropertyChanged(nameof(Abs));
+//                AbsChanged?.Invoke(this, new AbsChangedEventArgs(Abs));
+//            }
+//        }
 
 
 

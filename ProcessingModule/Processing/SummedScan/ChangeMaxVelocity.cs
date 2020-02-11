@@ -20,9 +20,10 @@ namespace ProcessingModule.Processing.SummedScan
             }
         }
 
-        public void Process(ISummedScanVT data)
+        public void Process(ISummedScanVT summedScan)
         {
-            throw new System.NotImplementedException();
+            var indMaxVelocity = (int)Math.Round((_maxVelocity - summedScan.MinVelocity) / summedScan.StepVelocity);
+            summedScan.Data.RemoveRange(indMaxVelocity, summedScan.RawData.Count - indMaxVelocity);
         }
     }
 }

@@ -284,20 +284,20 @@ namespace SummedScanModule.ViewModels
                 _summedScan.CheckRadius = _halfWaveSize;
         }
 
-        public void OnMaxVelocityChanged(object obj, MaxVelocityChangedEventArgs e)
-        {
-            MaxVelocity = e.MaxVelocity;
-            _summedScan.RemoveRightAscans(MaxVelocity);
-            Clear();
-            _plotLoader.LoadSummedScan(_summedScan, _cmpScan, _palette);
-            _layersLoader.LoadLayers(AvgLinesColor, _summedScan, _cmpScan);
-        }
-
-        public void OnPoweredChanged(object obj, PoweredChangedEventArgs e)
-        {
-            _summedScan.Power(e.Powered);
-            _plotLoader.LoadSummedScan(_summedScan, _cmpScan, _palette);
-        }
+//        public void OnMaxVelocityChanged(object obj, MaxVelocityChangedEventArgs e)
+//        {
+//            MaxVelocity = e.MaxVelocity;
+//            _summedScan.RemoveRightAscans(MaxVelocity);
+//            Clear();
+//            _plotLoader.LoadSummedScan(_summedScan, _cmpScan, _palette);
+//            _layersLoader.LoadLayers(AvgLinesColor, _summedScan, _cmpScan);
+//        }
+//
+//        public void OnPoweredChanged(object obj, PoweredChangedEventArgs e)
+//        {
+//            _summedScan.Power(e.Powered);
+//            _plotLoader.LoadSummedScan(_summedScan, _cmpScan, _palette);
+//        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -4,7 +4,6 @@ using System.Windows.Media;
 
 namespace CmpCurvesSummation.Core
 {
-
     public enum PaletteType
     {
         Jet,
@@ -35,9 +34,9 @@ namespace CmpCurvesSummation.Core
     public delegate void InterpolationChangedHandler(object obj, InterpolationChangedEventArgs e);
     public delegate void AlphaChangedHandler(object obj, AlphaChangedEventArgs e);
     public delegate void HalfWaveSizeChangedHandler(object obj, HalfWaveSizeChangedEventArgs e);
-    public delegate void MaxVelocityChangedHandler(object obj, MaxVelocityChangedEventArgs e);
-    public delegate void PoweredChangedHandler(object obj, PoweredChangedEventArgs e);
-    public delegate void AbsChangedHandler(object obj, AbsChangedEventArgs e);
+//    public delegate void MaxVelocityChangedHandler(object obj, MaxVelocityChangedEventArgs e);
+//    public delegate void PoweredChangedHandler(object obj, PoweredChangedEventArgs e);
+//    public delegate void AbsChangedHandler(object obj, AbsChangedEventArgs e);
 
 
 
@@ -273,35 +272,35 @@ namespace CmpCurvesSummation.Core
         }
     }
 
-    public class MaxVelocityChangedEventArgs : EventArgs
-    {
-        public double MaxVelocity { get; }
-
-        public MaxVelocityChangedEventArgs(double maxVelocity)
-        {
-            MaxVelocity = maxVelocity;
-        }
-    }
-
-    public class PoweredChangedEventArgs : EventArgs
-    {
-        public double Powered { get; }
-
-        public PoweredChangedEventArgs(double powered)
-        {
-            Powered = powered;
-        }
-    }
-
-    public class AbsChangedEventArgs : EventArgs
-    {
-        public bool Abs { get; }
-
-        public AbsChangedEventArgs(bool abs)
-        {
-            Abs = abs;
-        }
-    }
+//    public class MaxVelocityChangedEventArgs : EventArgs
+//    {
+//        public double MaxVelocity { get; }
+//
+//        public MaxVelocityChangedEventArgs(double maxVelocity)
+//        {
+//            MaxVelocity = maxVelocity;
+//        }
+//    }
+//
+//    public class PoweredChangedEventArgs : EventArgs
+//    {
+//        public double Powered { get; }
+//
+//        public PoweredChangedEventArgs(double powered)
+//        {
+//            Powered = powered;
+//        }
+//    }
+//
+//    public class AbsChangedEventArgs : EventArgs
+//    {
+//        public bool Abs { get; }
+//
+//        public AbsChangedEventArgs(bool abs)
+//        {
+//            Abs = abs;
+//        }
+//    }
 
 
 
