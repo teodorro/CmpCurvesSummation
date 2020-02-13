@@ -272,13 +272,13 @@ namespace CmpCurvesSummation.ViewModels
             CmpScan.StepDistance = _stepDistance;
         }
 
-        public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args)
+        public void OnCmpDataProcessed(object obj, CmpProcessedEventArgs args)
         {
             _cmpScanLoaded = true;
             ManualSummationPossible = _cmpScanLoaded;
         }
 
-        public void OnSummationFinished(object obj, SummationFinishedEventArgs e)
+        public void OnSumProcessed(object obj, SumProcessedEventArgs e)
         {
             ManualSummationPossible = true;
             ProgressBarVisible = Visibility.Hidden;

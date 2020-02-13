@@ -59,13 +59,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\LayersLoader.cs" />
     <Compile Include="ViewModels\PlotLoader.cs" />
+    <Compile Include="ViewModels\SummedScanOptionsViewModel.cs" />
     <Compile Include="ViewModels\SummedScanViewModel.cs" />
     <Compile Include="Views\SummedScanCtrl.xaml.cs">
       <DependentUpon>SummedScanCtrl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SummedScanOptionsCtrl.xaml.cs">
+      <DependentUpon>SummedScanOptionsCtrl.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\SummedScanCtrl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SummedScanOptionsCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

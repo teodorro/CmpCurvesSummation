@@ -13,6 +13,10 @@ namespace CmpCurvesSummation.Core
 
         public const double SpeedOfLight = 0.3;
         public const double WaterPermittivity = 81;
+        public const double AirPermittivity = 1;
+        public const double PlotMinVelocity = 0.015;
+        public const double PlotMaxVelocity = 0.16;
+        public const double AirVelocity = SpeedOfLight / 2;
 
         public double Velocity(double permittivity) => SpeedOfLight / (Math.Sqrt(permittivity)) / 2;
         public double Permittivity(double velocity) => Math.Pow(SpeedOfLight / velocity / 2, 2);

@@ -15,7 +15,7 @@ namespace ProcessingModule.ViewModels
     {
         private ICmpScan _cmpScan;
 
-        public event RawCmpProcessedHandler RawCmpDataProcessed;
+        public event CmpProcessedHandler CmpDataProcessed;
 
         public ObservableCollection<CmpProcessingDataRow> ProcessingRowList { get; } = new ObservableCollection<CmpProcessingDataRow>();
         public ICmpScanProcessor Processor { get; }
@@ -47,8 +47,7 @@ namespace ProcessingModule.ViewModels
         // TODO: should be placed in config or something
         private bool IsOperationEnabled(ICmpScanProcessing operation)
         {
-            if (operation is ZeroAmplitudeCorrection 
-                )
+            if (operation is ZeroAmplitudeCorrection)
                 return true;
             return false;
         }
@@ -58,14 +57,14 @@ namespace ProcessingModule.ViewModels
             _cmpScan = e.CmpScan;
             Processor.RefreshOperations(_cmpScan);
             Processor.Process(_cmpScan);
-            RawCmpDataProcessed?.Invoke(this, new RawCmpProcessedEventArgs(_cmpScan));
+            CmpDataProcessed?.Invoke(this, new CmpProcessedEventArgs(_cmpScan));
         }
 
         internal void OnProcessingListChanged(object sender, CmpProcessingListChangedEventArgs e)
         {
             UpdateProcessingList(e);
             Processor.Process(_cmpScan);
-            RawCmpDataProcessed?.Invoke(this, new RawCmpProcessedEventArgs(_cmpScan));
+            CmpDataProcessed?.Invoke(this, new CmpProcessedEventArgs(_cmpScan));
         }
 
         private void UpdateProcessingList(CmpProcessingListChangedEventArgs e)

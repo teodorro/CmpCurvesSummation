@@ -5,18 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ProcessingModule.Views.SummedScan"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="300">
+             d:DesignHeight="100" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
-        <Label Content="Возведение в степень" HorizontalAlignment="Left" Margin="20,10,0,5" VerticalAlignment="Bottom"
-               Grid.Row="1"/>
-        <Label x:Name="PowerLabel"  HorizontalAlignment="Left" Margin="200,10,0,5" VerticalAlignment="Bottom"
-               Content="{Binding PowerValue}" Grid.Row="1"/>
-        <Slider  Margin="10,12,10,0" VerticalAlignment="Top" 
-                 Value="{Binding PowerValue}" Grid.Row="2" Maximum="8" LargeChange="0.5"/>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Возведение в степень" HorizontalAlignment="Left" Margin="10,5,10,5" VerticalAlignment="Bottom"/>
+            <Label x:Name="PowerLabel"  HorizontalAlignment="Left" Margin="10,5,10,5" VerticalAlignment="Bottom"
+                   Content="{Binding Power}"/>
+        </StackPanel>
+        <Slider  Margin="10,5,10,0" VerticalAlignment="Top" 
+                 Value="{Binding Power}" Grid.Row="1" Maximum="10" LargeChange="0.5"/>
     </Grid>
 </UserControl>

@@ -85,12 +85,12 @@ namespace LayersInfoModule.ViewModels
             }
         }
 
-        public bool IsLayerVelocityOk => LayerVelocity >= SummedScanVT.AbsoluteMinVelocity && LayerVelocity <= CmpMath.SpeedOfLight / 2;
+        public bool IsLayerVelocityOk => LayerVelocity >= CmpMath.Instance.WaterVelocity && LayerVelocity <= CmpMath.AirVelocity;
 
         [DisplayName("Диэл. пр-ть слоя")]
         public double LayerPermittivity => Math.Round(CmpMath.Instance.Permittivity(LayerVelocity), 2);
 
-        public bool IsLayerPermittivityOk => LayerPermittivity >= 1 && LayerPermittivity <= 100;
+        public bool IsLayerPermittivityOk => LayerPermittivity >= CmpMath.AirPermittivity && LayerPermittivity <= CmpMath.WaterPermittivity;
 
 
         public event PropertyChangedEventHandler PropertyChanged;

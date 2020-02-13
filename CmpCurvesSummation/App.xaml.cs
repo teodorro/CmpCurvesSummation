@@ -28,6 +28,7 @@ namespace CmpCurvesSummation
             {
                 _.For<IFileOpener>().Use<FileOpener>();
                 _.For<ICmpScanProcessor>().Use<CmpScanProcessor>();
+                _.For<ISummedScanProcessor>().Use<SummedScanProcessor>();
             });
         }
     }

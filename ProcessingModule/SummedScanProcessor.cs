@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using CmpCurvesSummation.Core;
+using ProcessingModule.Processing.SummedScan;
 
 namespace ProcessingModule
 {
@@ -25,7 +26,9 @@ namespace ProcessingModule
     {
         public void InitOperationList()
         {
-            throw new System.NotImplementedException();
+            OperationsAvailable.Add(new ChangeMaxVelocity());
+            OperationsAvailable.Add(new RaiseToPower());
+            OperationsAvailable.Add(new Absolutize());
         }
 
         public ObservableCollection<ISumScanProcessing> OperationsAvailable { get; } = new ObservableCollection<ISumScanProcessing>();
@@ -49,7 +52,7 @@ namespace ProcessingModule
 
         public void RefreshOperations(ISummedScanVT summedScan)
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

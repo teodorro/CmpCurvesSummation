@@ -18,87 +18,10 @@ namespace LayersInfoModule.ViewModels
         public event AutoCorrectionCheckHander AutoCorrectionClick;
         public event AlphaChangedHandler AlphaChanged;
         public event HalfWaveSizeChangedHandler HalfWaveSizeChanged;
-//        public event MaxVelocityChangedHandler MaxVelocityChanged;
-//        public event PoweredChangedHandler PoweredChanged;
-//        public event AbsChangedHandler AbsChanged;
-
 
         public ObservableCollection<LayerInfo> Layers { get; } = new ObservableCollection<LayerInfo>();
 
         private ISummedScanVT _summedScan;
-
-        private bool _autoCorrection;
-        public bool AutoCorrection
-        {
-            get => _autoCorrection;
-            set
-            {
-                _autoCorrection = value;
-                OnPropertyChanged(nameof(AutoCorrection));
-                AutoCorrectionClick?.Invoke(this, new AutoCorrectionCheckEventArgs(_autoCorrection));
-            }
-        }
-
-        private byte _alpha;
-        public byte Alpha
-        {
-            get => _alpha;
-            set
-            {
-                _alpha = value;
-                OnPropertyChanged(nameof(Alpha));
-                AlphaChanged?.Invoke(this, new AlphaChangedEventArgs(_alpha));
-            }
-        }
-
-//        private double _maxVelocity = 0.15;
-//        public double MaxVelocity
-//        {
-//            get => _maxVelocity;
-//            set
-//            {
-//                _maxVelocity = value;
-//                OnPropertyChanged(nameof(MaxVelocity));
-//                MaxVelocityChanged?.Invoke(this, new MaxVelocityChangedEventArgs(_maxVelocity));
-//            }
-//        }
-
-        private int _halfWaveSize = 5;
-        public int HalfWaveSize
-        {
-            get => _halfWaveSize;
-            set
-            {
-                _halfWaveSize = value;
-                OnPropertyChanged(nameof(HalfWaveSize));
-                HalfWaveSizeChanged?.Invoke(this, new HalfWaveSizeChangedEventArgs(_halfWaveSize));
-            }
-        }
-
-//        private double _powered = 1;
-//        public double Powered
-//        {
-//            get => _powered;
-//            set
-//            {
-//                _powered = value;
-//                OnPropertyChanged(nameof(Powered));
-//                PoweredChanged?.Invoke(this, new PoweredChangedEventArgs(_powered));
-//            }
-//        }
-//
-//        private bool _abs = false;
-//        public bool Abs
-//        {
-//            get => _abs;
-//            set
-//            {
-//                _abs = value;
-//                OnPropertyChanged(nameof(Abs));
-//                AbsChanged?.Invoke(this, new AbsChangedEventArgs(Abs));
-//            }
-//        }
-
 
 
         public void OnDeleteRowClick(object sender, DeleteLayerEventArgs e)
@@ -120,7 +43,7 @@ namespace LayersInfoModule.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs e)
+        public void OnCmpDataProcessed(object obj, CmpProcessedEventArgs e)
         {
             Layers.Clear();
         }
@@ -135,7 +58,7 @@ namespace LayersInfoModule.ViewModels
             Layers.Clear();
         }
 
-        public void OnSummationFinished(object obj, SummationFinishedEventArgs e)
+        public void OnSummationFinished(object sender, SummationFinishedEventArgs e)
         {
             _summedScan = e.SummedScan;
             _summedScan.RefreshLayers += OnRefreshLayers;

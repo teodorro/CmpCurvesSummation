@@ -45,12 +45,7 @@ namespace LayersInfoModule.Views
                 ViewModel.OnDeleteRowClick(sender, new DeleteLayerEventArgs(layer.AvgVelocity, layer.Time));
             }
         }
-
-//        private void LayersListDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
-//        {
-//            e.Column.Header = ((System.ComponentModel.MemberDescriptor) e.PropertyDescriptor).DisplayName;
-//        }
-
+        
         private void MenuItem_OnClick(object sender, RoutedEventArgs e)
         {
             var menuItem = (MenuItem)sender;
@@ -61,9 +56,5 @@ namespace LayersInfoModule.Views
             ViewModel.OnDeleteRowClick(sender, new DeleteLayerEventArgs(layer.AvgVelocity, layer.Time));
         }
 
-        private void ButtGetMax_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

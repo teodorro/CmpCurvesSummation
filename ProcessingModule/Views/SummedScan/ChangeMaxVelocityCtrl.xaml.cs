@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ProcessingModule.Processing.SummedScan;
+using ProcessingModule.ViewModels;
+using ProcessingModule.ViewModels.SummedScan;
 
 namespace ProcessingModule.Views.SummedScan
 {
@@ -20,9 +23,16 @@ namespace ProcessingModule.Views.SummedScan
     /// </summary>
     public partial class ChangeMaxVelocityCtrl : UserControl
     {
-        public ChangeMaxVelocityCtrl()
+        private ChangeMaxVelocityViewModel _viewModel;
+
+
+        public ChangeMaxVelocityCtrl(SumProcessingListChangedHandler onSumProcessingListChanged, ChangeMaxVelocity processing)
         {
             InitializeComponent();
+
+            _viewModel = new ChangeMaxVelocityViewModel(processing);
+            _viewModel.ProcessingListChanged += onSumProcessingListChanged;
+            DataContext = _viewModel;
         }
     }
 }

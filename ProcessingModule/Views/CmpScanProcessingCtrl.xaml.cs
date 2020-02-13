@@ -27,6 +27,8 @@ namespace ProcessingModule.Views
         private CmpScanProcessingViewModel _viewModel;
         public CmpScanProcessingViewModel ViewModel => _viewModel;
 
+        private const int _tempCtrlIndex = 2;
+
 
         public CmpScanProcessingCtrl()
         {
@@ -39,8 +41,8 @@ namespace ProcessingModule.Views
 
         private void RemoveIrrelevantCtrls()
         {
-            if (UiElementsStack.Children.Count > 2)
-                UiElementsStack.Children.RemoveAt(2);
+            if (UiElementsStack.Children.Count > _tempCtrlIndex)
+                UiElementsStack.Children.RemoveAt(_tempCtrlIndex);
         }
 
         private void EventSetter_OnHandler(object sender, RoutedEventArgs e)
@@ -63,10 +65,6 @@ namespace ProcessingModule.Views
                 ManageRemoveRightAscans(removeRightAscans);
             else if (dataRow.Processing is StraightenSynchronizationLine2 straightenSynchronizationLine2)
                 ManageStraightenSynchronizationLine2(straightenSynchronizationLine2);
-            else
-            {
-                
-            }
         }
 
         private void ManageRemoveRightAscans(RemoveRightAscans processing)

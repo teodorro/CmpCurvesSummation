@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CmpCurvesSummation.Core;
@@ -10,7 +11,61 @@ namespace ProcessingModule.ViewModels
     {
         private ISummedScanVT _summedScan;
 
-//        public event SummedScanProcessedHandler SummedScanDataProcessed;
+        //        public event SummedScanProcessedHandler SummedScanDataProcessed;
+        public ObservableCollection<SumProcessingDataRow> ProcessingRowList { get; } = new ObservableCollection<SumProcessingDataRow>();
+        public ISummedScanProcessor Processor { get; }
+
+        public event SumProcessedHandler SumDataProcessed;
+
+
+        public SummedScanProcessingViewModel(ISummedScanProcessor processor)
+        {
+            Processor = processor;
+            processor.InitOperationList();
+            InitOperationsList();
+        }
+
+        private void InitOperationsList()
+        {
+            ProcessingRowList.Clear();
+
+            foreach (var operation in Processor.OperationsAvailable)
+            {
+                var processingDataRow = new SumProcessingDataRow(false, operation);
+                processingDataRow.ProcessingListChanged += OnProcessingListChanged;
+                ProcessingRowList.Add(processingDataRow);
+            }
+        }
+
+
+        internal void OnProcessingListChanged(object sender, SumProcessingListChangedEventArgs e)
+        {
+            UpdateProcessingList(e);
+            Processor.Process(_summedScan);
+            SumDataProcessed?.Invoke(this, new SumProcessedEventArgs(_summedScan));
+        }
+
+        private void UpdateProcessingList(SumProcessingListChangedEventArgs e)
+        {
+            foreach (var row in ProcessingRowList)
+            {
+                if (row.Processing == e.Processing && e.Enabled != null && row.Enabled != (bool)e.Enabled)
+                    row.Enabled = (bool)e.Enabled;
+            }
+            if (e.Enabled == true && !Processor.OperationsToProcess.Contains(e.Processing))
+                Processor.OperationsToProcess.Add(e.Processing);
+            else if (e.Enabled == false)
+                Processor.OperationsToProcess.Remove(e.Processing);
+
+        }
+
+        public void OnSummationFinished(object sender, SummationFinishedEventArgs e)
+        {
+            _summedScan = e.SummedScan;
+            Processor.RefreshOperations(_summedScan);
+            Processor.Process(_summedScan);
+            SumDataProcessed?.Invoke(this, new SumProcessedEventArgs(_summedScan));
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -62,7 +117,6 @@ namespace ProcessingModule.ViewModels
 
         private ISumScanProcessing _processing;
         public ISumScanProcessing Processing => _processing;
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

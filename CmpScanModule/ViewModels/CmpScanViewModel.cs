@@ -53,7 +53,7 @@ namespace CmpScanModule.ViewModels
             Plot.Annotations.Clear();
         }
 
-        public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args)
+        public void OnCmpDataProcessed(object obj, CmpProcessedEventArgs args)
         {
             _cmpScan = args.CmpScan;
             Plot.Annotations.Clear();
@@ -263,11 +263,9 @@ namespace CmpScanModule.ViewModels
             Plot.InvalidatePlot(true);
         }
 
-        public void OnSummationFinished(object obj, SummationFinishedEventArgs e)
+        public void OnSumProcessed(object obj, SumProcessedEventArgs e)
         {
-            Plot.Annotations.Clear();
-            e.SummedScan.RefreshLayers += OnRefreshLayers;
-            Plot.InvalidatePlot(true);
+            OnRefreshLayers(obj, new RefreshLayersEventArgs(e.SumScan.Layers));
         }
 
         private void RepaintHodographs()
@@ -294,6 +292,11 @@ namespace CmpScanModule.ViewModels
             _interpolate = e.Interpolation;
             HeatMap.Interpolate = e.Interpolation;
             Plot.InvalidatePlot(true);
+        }
+
+        public void OnSummationFinished(object obj, SummationFinishedEventArgs e)
+        {
+            e.SummedScan.RefreshLayers += OnRefreshLayers;
         }
     }
 }

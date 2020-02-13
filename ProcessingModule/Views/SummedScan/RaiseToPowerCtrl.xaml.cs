@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ProcessingModule.Processing.SummedScan;
+using ProcessingModule.ViewModels;
+using ProcessingModule.ViewModels.SummedScan;
 
 namespace ProcessingModule.Views.SummedScan
 {
@@ -20,9 +23,15 @@ namespace ProcessingModule.Views.SummedScan
     /// </summary>
     public partial class RaiseToPowerCtrl : UserControl
     {
-        public RaiseToPowerCtrl()
+        private RaiseToPowerViewModel _viewModel;
+
+        public RaiseToPowerCtrl(SumProcessingListChangedHandler onSumProcessingListChanged, RaiseToPower processing)
         {
             InitializeComponent();
+
+            _viewModel = new RaiseToPowerViewModel(processing);
+            _viewModel.ProcessingListChanged += onSumProcessingListChanged;
+            DataContext = _viewModel;
         }
     }
 }

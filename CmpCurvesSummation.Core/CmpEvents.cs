@@ -18,13 +18,13 @@ namespace CmpCurvesSummation.Core
     }
 
 
-    public delegate void EndSummationHandler(object obj, SummationFinishedEventArgs e);
+    public delegate void SummationFinishedHandler(object obj, SummationFinishedEventArgs e);
     public delegate void SummationStartedHander(object obj, SummationStartedClickEventArgs e);
     public delegate void PaletteChangedHander(object obj, PaletteChangedEventArgs e);
     public delegate void StepDistanceChangedHandler(object obj, StepDistanceEventArgs e);
     public delegate void StepTimeChangedHandler(object obj, StepTimeEventArgs e);
     public delegate void FileOpenHandler(object obj, FileLoadedEventArgs e);
-    public delegate void RawCmpProcessedHandler(object obj, RawCmpProcessedEventArgs e);
+    public delegate void CmpProcessedHandler(object obj, CmpProcessedEventArgs e);
     public delegate void SummationInProcessHandler(object obj, SummationInProcessEventArgs e);
     public delegate void AutoCorrectionCheckHander(object obj, AutoCorrectionCheckEventArgs e);
     public delegate void HodographColorChangedHandler(object obj, HodographColorChangedEventArgs e);
@@ -34,9 +34,10 @@ namespace CmpCurvesSummation.Core
     public delegate void InterpolationChangedHandler(object obj, InterpolationChangedEventArgs e);
     public delegate void AlphaChangedHandler(object obj, AlphaChangedEventArgs e);
     public delegate void HalfWaveSizeChangedHandler(object obj, HalfWaveSizeChangedEventArgs e);
-//    public delegate void MaxVelocityChangedHandler(object obj, MaxVelocityChangedEventArgs e);
-//    public delegate void PoweredChangedHandler(object obj, PoweredChangedEventArgs e);
-//    public delegate void AbsChangedHandler(object obj, AbsChangedEventArgs e);
+    public delegate void SumProcessedHandler(object obj, SumProcessedEventArgs e);
+    //    public delegate void MaxVelocityChangedHandler(object obj, MaxVelocityChangedEventArgs e);
+    //    public delegate void PoweredChangedHandler(object obj, PoweredChangedEventArgs e);
+    //    public delegate void AbsChangedHandler(object obj, AbsChangedEventArgs e);
 
 
 
@@ -53,10 +54,10 @@ namespace CmpCurvesSummation.Core
     }
 
 
-    public class RawCmpProcessedEventArgs : EventArgs
+    public class CmpProcessedEventArgs : EventArgs
     {
         public ICmpScan CmpScan { get; }
-        public RawCmpProcessedEventArgs(ICmpScan cmpScan)
+        public CmpProcessedEventArgs(ICmpScan cmpScan)
         {
             CmpScan = cmpScan;
         }
@@ -272,35 +273,48 @@ namespace CmpCurvesSummation.Core
         }
     }
 
-//    public class MaxVelocityChangedEventArgs : EventArgs
-//    {
-//        public double MaxVelocity { get; }
-//
-//        public MaxVelocityChangedEventArgs(double maxVelocity)
-//        {
-//            MaxVelocity = maxVelocity;
-//        }
-//    }
-//
-//    public class PoweredChangedEventArgs : EventArgs
-//    {
-//        public double Powered { get; }
-//
-//        public PoweredChangedEventArgs(double powered)
-//        {
-//            Powered = powered;
-//        }
-//    }
-//
-//    public class AbsChangedEventArgs : EventArgs
-//    {
-//        public bool Abs { get; }
-//
-//        public AbsChangedEventArgs(bool abs)
-//        {
-//            Abs = abs;
-//        }
-//    }
+
+    public class SumProcessedEventArgs : EventArgs
+    {
+        public ISummedScanVT SumScan { get; }
+
+        public SumProcessedEventArgs(ISummedScanVT sumScan)
+        {
+            SumScan = sumScan;
+        }
+    }
+
+
+
+    //    public class MaxVelocityChangedEventArgs : EventArgs
+    //    {
+    //        public double MaxVelocity { get; }
+    //
+    //        public MaxVelocityChangedEventArgs(double maxVelocity)
+    //        {
+    //            MaxVelocity = maxVelocity;
+    //        }
+    //    }
+    //
+    //    public class PoweredChangedEventArgs : EventArgs
+    //    {
+    //        public double Powered { get; }
+    //
+    //        public PoweredChangedEventArgs(double powered)
+    //        {
+    //            Powered = powered;
+    //        }
+    //    }
+    //
+    //    public class AbsChangedEventArgs : EventArgs
+    //    {
+    //        public bool Abs { get; }
+    //
+    //        public AbsChangedEventArgs(bool abs)
+    //        {
+    //            Abs = abs;
+    //        }
+    //    }
 
 
 

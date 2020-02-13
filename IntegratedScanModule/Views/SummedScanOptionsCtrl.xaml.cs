@@ -14,22 +14,22 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SummedScanModule.ViewModels;
 
-namespace SummedScanModule.Views
+namespace IntegratedScanModule.Views
 {
     /// <summary>
-    /// Interaction logic for SummedScanCtrl.xaml
+    /// Interaction logic for SummedScanOptionsCtrl.xaml
     /// </summary>
-    public partial class SummedScanCtrl : UserControl
+    public partial class SummedScanOptionsCtrl : UserControl
     {
+        private SummedScanOptionsViewModel _viewModel;
+        public SummedScanOptionsViewModel ViewModel => _viewModel;
 
-        private SummedScanViewModel _viewModel;
-        public SummedScanViewModel ViewModel => _viewModel;
 
-        public SummedScanCtrl()
+        public SummedScanOptionsCtrl()
         {
             InitializeComponent();
 
-            _viewModel = new SummedScanViewModel();
+            _viewModel = new SummedScanOptionsViewModel();
             DataContext = _viewModel;
         }
     }

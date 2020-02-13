@@ -15,7 +15,7 @@ namespace CmpCurvesSummation.Core
         double StepDistance { get; }
         double StepVelocity { get; }
         double MinVelocity { get; }
-        double MaxVelocity { get; }
+        double MaxVelocity { get; set; }
         double MinTime { get; }
         double MaxTime { get; }
         int AscanLengthDimensionless { get; }
@@ -39,18 +39,17 @@ namespace CmpCurvesSummation.Core
     public class SummedScanVT : ISummedScanVT
     {
         private const int _vLengthDimensionless = 300;
-        public const double AbsoluteMinVelocity = 0.015;
 
         private Dictionary<double, Tuple<int, int>> _checkOrderDict = new Dictionary<double, Tuple<int, int>>();
 
         public List<double[]> Data { get; } = new List<double[]>();
         public List<double[]> RawData { get; } = new List<double[]>();
-        public double StepVelocity => (LightRadarVelocity - MinVelocity) / _vLengthDimensionless;
+        //        public double StepVelocity => (MaxVelocity - MinVelocity) / _vLengthDimensionless;
+        public double StepVelocity => (CmpMath.PlotMaxVelocity - CmpMath.PlotMinVelocity) / _vLengthDimensionless;
         public double StepTime { get; }
         public double StepDistance { get; }
-        public double MinVelocity { get; } = AbsoluteMinVelocity; //CmpMath.Instance.Velocity(CmpMath.WaterPermittivity) / 2;
-        public double LightRadarVelocity { get; } = CmpMath.SpeedOfLight / 2;
-        public double MaxVelocity { get; private set; } = CmpMath.SpeedOfLight / 3;
+        public double MinVelocity { get; } = CmpMath.PlotMinVelocity; 
+        public double MaxVelocity { get; set; } = CmpMath.PlotMaxVelocity;
         public double MinTime { get; } = 0;
         public double MaxTime => MinTime + AscanLength;
         public int AscanLengthDimensionless { get; }
@@ -64,7 +63,7 @@ namespace CmpCurvesSummation.Core
 
         public SummedScanVT(ICmpScan cmpScan, double maxVelocity)
         {
-            if (maxVelocity > LightRadarVelocity || maxVelocity < MinVelocity)
+            if (maxVelocity > MaxVelocity || maxVelocity < MinVelocity)
                 throw new ArgumentOutOfRangeException("Недопустимая максимальная скорость");
             MaxVelocity = maxVelocity;
             StepTime = cmpScan.StepTime;
@@ -79,7 +78,7 @@ namespace CmpCurvesSummation.Core
         {
             double v;
             double h;
-            var vStep = (LightRadarVelocity - MinVelocity) / _vLengthDimensionless;
+            var vStep = (MaxVelocity - MinVelocity) / _vLengthDimensionless;
 
             for (int p = 0; p < _vLengthDimensionless; p++)
             {

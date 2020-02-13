@@ -17,8 +17,8 @@ namespace SummedScanModule.ViewModels
     {
         PlotModel Plot { get; }
         OxyColor AvgLinesColor { get; set; }
-        event EndSummationHandler SummationFinished;
-        void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args);
+        event SummationFinishedHandler SummationFinished;
+        void OnCmpDataProcessed(object obj, CmpProcessedEventArgs args);
         void AddPalette(PaletteType palette);
         void OnSummationStarted(object obj, EventArgs e);
         void OnPaletteChanged(object obj, PaletteChangedEventArgs e);
@@ -43,7 +43,7 @@ namespace SummedScanModule.ViewModels
         private ILayersLoader _layersLoader;
 
         public PlotModel Plot { get; }
-        public double MaxVelocity { get; private set; } = CmpMath.SpeedOfLight / 2;
+        public double MaxVelocity { get; private set; } = CmpMath.PlotMaxVelocity;
 
         private bool _autoCorrection;
         
@@ -61,7 +61,7 @@ namespace SummedScanModule.ViewModels
         }
 
 
-        public event EndSummationHandler SummationFinished;
+        public event SummationFinishedHandler SummationFinished;
 
 
         public SummedScanViewModel()
@@ -76,7 +76,7 @@ namespace SummedScanModule.ViewModels
 
         private Axis TimeAxis => Plot.Axes.First(x => x.Position == AxisPosition.Left);
 
-        public void OnRawCmpDataProcessed(object obj, RawCmpProcessedEventArgs args)
+        public void OnCmpDataProcessed(object obj, CmpProcessedEventArgs args)
         {
             Clear();
             _cmpScan = args.CmpScan;
@@ -106,6 +106,13 @@ namespace SummedScanModule.ViewModels
 
         private void OnRefreshLayers(object o, RefreshLayersEventArgs e)
         {
+            _layersLoader.LoadLayers(AvgLinesColor, _summedScan, _cmpScan);
+        }
+
+        public void OnSumProcessed(object o, SumProcessedEventArgs e)
+        {
+            _summedScan = e.SumScan;
+            _plotLoader.LoadSummedScan(_summedScan, _cmpScan, _palette);
             _layersLoader.LoadLayers(AvgLinesColor, _summedScan, _cmpScan);
         }
 
@@ -283,21 +290,6 @@ namespace SummedScanModule.ViewModels
             if (_summedScan != null)
                 _summedScan.CheckRadius = _halfWaveSize;
         }
-
-//        public void OnMaxVelocityChanged(object obj, MaxVelocityChangedEventArgs e)
-//        {
-//            MaxVelocity = e.MaxVelocity;
-//            _summedScan.RemoveRightAscans(MaxVelocity);
-//            Clear();
-//            _plotLoader.LoadSummedScan(_summedScan, _cmpScan, _palette);
-//            _layersLoader.LoadLayers(AvgLinesColor, _summedScan, _cmpScan);
-//        }
-//
-//        public void OnPoweredChanged(object obj, PoweredChangedEventArgs e)
-//        {
-//            _summedScan.Power(e.Powered);
-//            _plotLoader.LoadSummedScan(_summedScan, _cmpScan, _palette);
-//        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
