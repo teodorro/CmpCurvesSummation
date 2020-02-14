@@ -28,24 +28,20 @@ namespace CmpCurvesSummation.ViewModels
         public const string BlackWhiteRed = "BlackWhiteRed";
         public const string BlueWhiteRed = "BlueWhiteRed";
         public const string Cool = "Cool";
-
-        public event SummationStartedHander SummationStarted;
-        public event PaletteChangedHander PaletteChanged;
-        public event StepDistanceChangedHandler StepDistanceChanged;
-        public event StepTimeChangedHandler StepTimeChanged;
-        public event HodographColorChangedHandler HodographColorChanged;
-        public event PointColorChangedHandler PointColorChanged;
-        public event InterpolationChangedHandler InterpolationChanged;
-
+        
 
         public OptionsViewModel()
         {
+            EventAggregator.Instance.SummationInProcess += OnSummationInProcess;
+            EventAggregator.Instance.FileLoaded += OnFileLoaded;
+            EventAggregator.Instance.CmpDataProcessed += OnCmpDataProcessed;
+            EventAggregator.Instance.SumDataProcessed += OnSumProcessed;
+
             InitStepsTime();
             InitStepsDistance();
             InitPalettes();
 
             PointColors = GetColors();
-
             ItemsHodographColor = GetColors();
         }
 
@@ -75,7 +71,8 @@ namespace CmpCurvesSummation.ViewModels
                 if (CmpScan != null)
                     CmpScan.StepTime = value;
                 OnPropertyChanged(nameof(StepTime));
-                StepTimeChanged?.Invoke(this, new StepTimeEventArgs(_stepTime, oldStepTime, CmpScan));
+                EventAggregator.Instance.Invoke(this, 
+                    new CmpScanParametersChangedEventArgs(CmpScan.StepDistance, oldStepTime, CmpScan.MinTime, CmpScan.StepDistance, CmpScan.StepTime, CmpScan.MinTime));
             }
         }
 
@@ -92,7 +89,8 @@ namespace CmpCurvesSummation.ViewModels
                 if (CmpScan != null)
                     CmpScan.StepDistance = value;
                 OnPropertyChanged(nameof(StepDistance));
-                StepDistanceChanged?.Invoke(this, new StepDistanceEventArgs(_stepDistance, oldStepDistance, CmpScan));
+                EventAggregator.Instance.Invoke(this,
+                    new CmpScanParametersChangedEventArgs(oldStepDistance, CmpScan.StepTime, CmpScan.MinTime, CmpScan.StepDistance, CmpScan.StepTime, CmpScan.MinTime));
             }
         }
         public ObservableCollection<double> StepsDistance { get; set; } = new ObservableCollection<double>();
@@ -107,38 +105,9 @@ namespace CmpCurvesSummation.ViewModels
             {
                 _palette = value;
                 OnPropertyChanged(nameof(Palette));
-                PaletteType palette;
-                switch (_palette)
-                {
-                    case Gray:
-                        palette = PaletteType.Gray;
-                        break;
-                    case Rainbow:
-                        palette = PaletteType.Rainbow;
-                        break;
-                    case Hot:
-                        palette = PaletteType.Hot;
-                        break;
-                    case Cool:
-                        palette = PaletteType.Cool;
-                        break;
-                    case HueDistinct:
-                        palette = PaletteType.HueDistinct;
-                        break;
-                    case Hue:
-                        palette = PaletteType.Hue;
-                        break;
-                    case BlackWhiteRed:
-                        palette = PaletteType.BlackWhiteRed;
-                        break;
-                    case BlueWhiteRed:
-                        palette = PaletteType.BlueWhiteRed;
-                        break;
-                    default:
-                        palette = PaletteType.Jet;
-                        break;
-                }
-                PaletteChanged?.Invoke(this, new PaletteChangedEventArgs(palette));
+                var palette = (PaletteType)new StringToPaletteConverter().Convert(_palette, null, null, null);
+                EventAggregator.Instance.Invoke(this, 
+                    new PlotVisualOptionsChangedEventArgs(palette, SelectedItemHodographColor.Value, SelectedPointColor.Value, _interpolationEnabled));
             }
         }
 
@@ -182,7 +151,9 @@ namespace CmpCurvesSummation.ViewModels
             set
             {
                 _selectedPointColor = value;
-                PointColorChanged?.Invoke(this, new PointColorChangedEventArgs(SelectedPointColor.Value));
+                var palette = (PaletteType)new StringToPaletteConverter().Convert(_palette, null, null, null);
+                EventAggregator.Instance.Invoke(this,
+                    new PlotVisualOptionsChangedEventArgs(palette, SelectedItemHodographColor.Value, SelectedPointColor.Value, _interpolationEnabled));
                 OnPropertyChanged(nameof(SelectedPointColor));
             }
         }
@@ -205,7 +176,9 @@ namespace CmpCurvesSummation.ViewModels
             set
             {
                 _selectedItemItemHodographColor = value;
-                HodographColorChanged?.Invoke(this, new HodographColorChangedEventArgs(SelectedItemHodographColor.Value));
+                var palette = (PaletteType)new StringToPaletteConverter().Convert(_palette, null, null, null);
+                EventAggregator.Instance.Invoke(this,
+                    new PlotVisualOptionsChangedEventArgs(palette, SelectedItemHodographColor.Value, SelectedPointColor.Value, _interpolationEnabled));
                 OnPropertyChanged(nameof(SelectedItemHodographColor));
             }
         }
@@ -218,7 +191,9 @@ namespace CmpCurvesSummation.ViewModels
             {
                 _interpolationEnabled = value;
                 OnPropertyChanged(nameof(InterpolationEnabled));
-                InterpolationChanged?.Invoke(this, new InterpolationChangedEventArgs(_interpolationEnabled));
+                var palette = (PaletteType)new StringToPaletteConverter().Convert(_palette, null, null, null);
+                EventAggregator.Instance.Invoke(this,
+                    new PlotVisualOptionsChangedEventArgs(palette, SelectedItemHodographColor.Value, SelectedPointColor.Value, _interpolationEnabled));
             }
         }
 
@@ -227,9 +202,8 @@ namespace CmpCurvesSummation.ViewModels
         {
             ManualSummationPossible = false;
             ProgressBarVisible = Visibility.Visible;
-            SummationStarted?.Invoke(this, new SummationStartedClickEventArgs());
+            EventAggregator.Instance.Invoke(this, new SummationStartedEventArgs());
         }
-
         
         private void InitStepsDistance()
         {
@@ -263,22 +237,20 @@ namespace CmpCurvesSummation.ViewModels
             Palettes.Add(BlueWhiteRed);
         }
 
-
-        public void OnFileLoaded(object sender, FileLoadedEventArgs e)
+        private void OnFileLoaded(object sender, FileLoadedEventArgs e)
         {
             CmpScan = e.CmpScan;
-
             CmpScan.StepTime = _stepTime;
             CmpScan.StepDistance = _stepDistance;
         }
 
-        public void OnCmpDataProcessed(object obj, CmpProcessedEventArgs args)
+        private void OnCmpDataProcessed(object obj, CmpDataProcessedEventArgs args)
         {
             _cmpScanLoaded = true;
             ManualSummationPossible = _cmpScanLoaded;
         }
 
-        public void OnSumProcessed(object obj, SumProcessedEventArgs e)
+        private void OnSumProcessed(object obj, SumDataProcessedEventArgs e)
         {
             ManualSummationPossible = true;
             ProgressBarVisible = Visibility.Hidden;
@@ -293,6 +265,11 @@ namespace CmpCurvesSummation.ViewModels
                 .Select(prop => new KeyValuePair<String, Color>(prop.Name, (Color)prop.GetValue(null)));
         }
 
+        private void OnSummationInProcess(object obj, SummationInProcessEventArgs e)
+        {
+            ProgressValue = e.Percent;
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -301,11 +278,6 @@ namespace CmpCurvesSummation.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        public void OnSummationInProcess(object obj, SummationInProcessEventArgs e)
-        {
-            ProgressValue = e.Percent;
-        }
     }
 
 
@@ -313,18 +285,88 @@ namespace CmpCurvesSummation.ViewModels
     public class ColorToSolidBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            return new SolidColorBrush((Color)value);
-        }
+            => new SolidColorBrush((Color)value);
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
     }
 
 
 
+    public class StringToPaletteConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var paletteString = (string) value;
+            PaletteType palette;
+            switch (paletteString)
+            {
+                case "Gray":
+                    palette = PaletteType.Gray;
+                    break;
+                case "Rainbow":
+                    palette = PaletteType.Rainbow;
+                    break;
+                case "Hot":
+                    palette = PaletteType.Hot;
+                    break;
+                case "Cool":
+                    palette = PaletteType.Cool;
+                    break;
+                case "HueDistinct":
+                    palette = PaletteType.HueDistinct;
+                    break;
+                case "Hue":
+                    palette = PaletteType.Hue;
+                    break;
+                case "BlackWhiteRed":
+                    palette = PaletteType.BlackWhiteRed;
+                    break;
+                case "BlueWhiteRed":
+                    palette = PaletteType.BlueWhiteRed;
+                    break;
+                default:
+                    palette = PaletteType.Jet;
+                    break;
+            }
+            return palette;
+        }
 
-
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var palette = (PaletteType)value;
+            string paletteString;
+            switch (palette)
+            {
+                case PaletteType.Gray:
+                    paletteString = "Gray";
+                    break;
+                case PaletteType.Rainbow:
+                    paletteString = "Rainbow";
+                    break;
+                case PaletteType.Hot:
+                    paletteString = "Hot";
+                    break;
+                case PaletteType.Cool:
+                    paletteString = "Cool";
+                    break;
+                case PaletteType.HueDistinct:
+                    paletteString = "HueDistinct";
+                    break;
+                case PaletteType.Hue:
+                    paletteString = "Hue";
+                    break;
+                case PaletteType.BlackWhiteRed:
+                    paletteString = "BlackWhiteRed";
+                    break;
+                case PaletteType.BlueWhiteRed:
+                    paletteString = "BlueWhiteRed";
+                    break;
+                default:
+                    paletteString = "Jet";
+                    break;
+            }
+            return paletteString;
+        }
+    }
 }

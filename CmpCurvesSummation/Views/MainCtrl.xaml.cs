@@ -31,7 +31,6 @@ namespace CmpCurvesSummation.Views
             _viewModel = new MainCtrlViewModel();
             DataContext = _viewModel;
 
-            SetUpEvents();
             CrossCuttingInit();
         }
 
@@ -41,51 +40,6 @@ namespace CmpCurvesSummation.Views
                 OptionsControl.ViewModel.PointColors.First(x => x.Value == Colors.Black);
             OptionsControl.ViewModel.SelectedItemHodographColor =
                 OptionsControl.ViewModel.ItemsHodographColor.First(x => x.Value == Colors.Black);
-        }
-
-        private void SetUpEvents()
-        {
-            ToolbarControl.ViewModel.FileOpened += ProcessingControl.ViewModel.OnFileLoaded;
-            ToolbarControl.ViewModel.FileOpened += OptionsControl.ViewModel.OnFileLoaded;
-            ToolbarControl.ViewModel.FileOpened += CmpScanControl.ViewModel.OnFileLoaded;
-            ToolbarControl.ViewModel.FileOpened += SummedOverCurveScanControl.ViewModel.OnFileLoaded;
-            ToolbarControl.ViewModel.FileOpened += LayersInfoControl.ViewModel.OnFileLoaded;
-            ProcessingControl.ViewModel.CmpDataProcessed += CmpScanControl.ViewModel.OnCmpDataProcessed;
-            ProcessingControl.ViewModel.CmpDataProcessed += SummedOverCurveScanControl.ViewModel.OnCmpDataProcessed;
-            ProcessingControl.ViewModel.CmpDataProcessed += OptionsControl.ViewModel.OnCmpDataProcessed;
-            ProcessingControl.ViewModel.CmpDataProcessed += LayersInfoControl.ViewModel.OnCmpDataProcessed;
-            SummedOverCurveScanControl.ViewModel.SummationFinished += SummedScanProcessingControl.ViewModel.OnSummationFinished;
-            SummedOverCurveScanControl.ViewModel.SummationFinished += CmpScanControl.ViewModel.OnSummationFinished;
-            SummedOverCurveScanControl.ViewModel.SummationFinished += SummedScanProcessingControl.ViewModel.OnSummationFinished;
-            SummedOverCurveScanControl.ViewModel.SummationFinished += LayersInfoControl.ViewModel.OnSummationFinished;
-            SummedScanProcessingControl.ViewModel.SumDataProcessed += OptionsControl.ViewModel.OnSumProcessed;
-            SummedScanProcessingControl.ViewModel.SumDataProcessed += CmpScanControl.ViewModel.OnSumProcessed;
-            SummedScanProcessingControl.ViewModel.SumDataProcessed += SummedOverCurveScanControl.ViewModel.OnSumProcessed;
-            SummedScanOptionsControl.ViewModel.AutoCorrectionClick += SummedOverCurveScanControl.ViewModel.OnAutoCorrectionChange;
-            SummedScanOptionsControl.ViewModel.AlphaChanged += SummedOverCurveScanControl.ViewModel.OnAlphaChanged;
-            SummedScanOptionsControl.ViewModel.HalfWaveSizeChanged += SummedOverCurveScanControl.ViewModel.OnHalfWaveSizeChanged;
-            OptionsControl.ViewModel.SummationStarted += SummedOverCurveScanControl.ViewModel.OnSummationStarted;
-            OptionsControl.ViewModel.PaletteChanged += CmpScanControl.ViewModel.OnPaletteChanged;
-            OptionsControl.ViewModel.PaletteChanged += SummedOverCurveScanControl.ViewModel.OnPaletteChanged;
-            OptionsControl.ViewModel.StepDistanceChanged += CmpScanControl.ViewModel.OnStepDistanceChanged;
-            OptionsControl.ViewModel.StepDistanceChanged += SummedOverCurveScanControl.ViewModel.OnStepDistanceChanged;
-            OptionsControl.ViewModel.StepDistanceChanged += LayersInfoControl.ViewModel.OnStepDistanceChanged;
-            OptionsControl.ViewModel.StepTimeChanged += CmpScanControl.ViewModel.OnStepTimeChanged;
-            OptionsControl.ViewModel.StepTimeChanged += SummedOverCurveScanControl.ViewModel.OnStepTimeChanged;
-            OptionsControl.ViewModel.StepTimeChanged += LayersInfoControl.ViewModel.OnStepTimeChanged;
-            OptionsControl.ViewModel.PointColorChanged += SummedOverCurveScanControl.ViewModel.OnPointColorChanged;
-            OptionsControl.ViewModel.HodographColorChanged += CmpScanControl.ViewModel.OnHodographColorChanged;
-            OptionsControl.ViewModel.InterpolationChanged += CmpScanControl.ViewModel.OnInterpolationChanged;
-            OptionsControl.ViewModel.InterpolationChanged += SummedOverCurveScanControl.ViewModel.OnInterpolationChanged;
-            CmpScanControl.ViewModel.TimeOffsetChanged += SummedOverCurveScanControl.ViewModel.OnTimeOffsetChanged;
-            CmpScanControl.ViewModel.TimeOffsetChanged += LayersInfoControl.ViewModel.OnTimeOffsetChanged;
-
-            CmpProgressBar.Instance.SummationInProcess += OptionsControl.ViewModel.OnSummationInProcess;
-        }
-
-        public void AddFileOpenedEventHandler(FileOpenHandler fileOpenHandler)
-        {
-            ToolbarControl.ViewModel.FileOpened += fileOpenHandler;
         }
     }
 }

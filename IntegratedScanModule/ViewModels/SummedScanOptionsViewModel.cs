@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CmpCurvesSummation.Core;
 using LayersInfoModule.Annotations;
@@ -7,11 +8,6 @@ namespace SummedScanModule.ViewModels
 {
     public class SummedScanOptionsViewModel : INotifyPropertyChanged
     {
-        public event AutoCorrectionCheckHander AutoCorrectionClick;
-        public event AlphaChangedHandler AlphaChanged;
-        public event HalfWaveSizeChangedHandler HalfWaveSizeChanged;
-
-
         private bool _autoCorrection;
         public bool AutoCorrection
         {
@@ -20,7 +16,7 @@ namespace SummedScanModule.ViewModels
             {
                 _autoCorrection = value;
                 OnPropertyChanged(nameof(AutoCorrection));
-                AutoCorrectionClick?.Invoke(this, new AutoCorrectionCheckEventArgs(_autoCorrection));
+                EventAggregator.Instance.Invoke(this, new SumScanOptionsChangedEventArgs(_autoCorrection, _alpha, _halfWaveSize));
             }
         }
 
@@ -32,7 +28,7 @@ namespace SummedScanModule.ViewModels
             {
                 _alpha = value;
                 OnPropertyChanged(nameof(Alpha));
-                AlphaChanged?.Invoke(this, new AlphaChangedEventArgs(_alpha));
+                EventAggregator.Instance.Invoke(this, new SumScanOptionsChangedEventArgs(_autoCorrection, _alpha, _halfWaveSize));
             }
         }
 
@@ -44,7 +40,7 @@ namespace SummedScanModule.ViewModels
             {
                 _halfWaveSize = value;
                 OnPropertyChanged(nameof(HalfWaveSize));
-                HalfWaveSizeChanged?.Invoke(this, new HalfWaveSizeChangedEventArgs(_halfWaveSize));
+                EventAggregator.Instance.Invoke(this, new SumScanOptionsChangedEventArgs(_autoCorrection, _alpha, _halfWaveSize));
             }
         }
 

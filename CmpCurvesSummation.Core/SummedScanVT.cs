@@ -44,7 +44,6 @@ namespace CmpCurvesSummation.Core
 
         public List<double[]> Data { get; } = new List<double[]>();
         public List<double[]> RawData { get; } = new List<double[]>();
-        //        public double StepVelocity => (MaxVelocity - MinVelocity) / _vLengthDimensionless;
         public double StepVelocity => (CmpMath.PlotMaxVelocity - CmpMath.PlotMinVelocity) / _vLengthDimensionless;
         public double StepTime { get; }
         public double StepDistance { get; }
@@ -90,8 +89,6 @@ namespace CmpCurvesSummation.Core
                     var t = Time(j);
                     h = CmpMath.Instance.Depth(v, t);
                     var sum = CalcSumForVelocityAndDepth(cmpScan, h, v);
-                    //                    Data[p][j] = Math.Sign(sum) * Math.Log(Math.Abs(sum) + 1); // log for sum works not good
-                    //                    Data[p][j] = Math.Sign(sum) * Math.Sqrt(Math.Abs(sum));
                     RawData[p][j] = sum;
                 }
             }

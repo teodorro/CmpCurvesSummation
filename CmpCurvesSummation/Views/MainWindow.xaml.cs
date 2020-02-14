@@ -18,7 +18,7 @@ namespace CmpCurvesSummation.Views
         {
             InitializeComponent();
 
-            this.mainCtrl.AddFileOpenedEventHandler(OnFileLoaded);
+            EventAggregator.Instance.FileLoaded += OnFileLoaded;
 
             _viewModel = new MainWindowViewModel();
             DataContext = _viewModel;

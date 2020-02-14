@@ -15,50 +15,41 @@ namespace LayersInfoModule.ViewModels
 {
     public class LayersViewModel : INotifyPropertyChanged
     {
-        public event AutoCorrectionCheckHander AutoCorrectionClick;
-        public event AlphaChangedHandler AlphaChanged;
-        public event HalfWaveSizeChangedHandler HalfWaveSizeChanged;
-
         public ObservableCollection<LayerInfo> Layers { get; } = new ObservableCollection<LayerInfo>();
 
         private ISummedScanVT _summedScan;
 
 
-        public void OnDeleteRowClick(object sender, DeleteLayerEventArgs e)
+        public LayersViewModel()
+        {
+            EventAggregator.Instance.CmpScanParametersChanged += OnTimeOffsetChanged;
+            EventAggregator.Instance.FileLoaded += OnFileLoaded;
+            EventAggregator.Instance.CmpDataProcessed += OnCmpDataProcessed;
+            EventAggregator.Instance.CmpScanParametersChanged += OnCmpScanParametersChanged;
+            EventAggregator.Instance.SummationFinished += OnSummationFinished;
+        }
+
+        private void OnCmpScanParametersChanged(object o, CmpScanParametersChangedEventArgs cmpScanParametersChangedEventArgs)
+        {
+            Layers.Clear();
+        }
+        
+        internal void OnDeleteRowClick(object sender, DeleteLayerEventArgs e)
         {
             _summedScan.RemoveLayersAround(e.Velocity, e.Time);
         }
 
-        public void OnFileLoaded(object sender, FileLoadedEventArgs e)
+        private void OnFileLoaded(object sender, FileLoadedEventArgs e)
         {
             Layers.Clear();
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public void OnCmpDataProcessed(object obj, CmpProcessedEventArgs e)
+        private void OnCmpDataProcessed(object obj, CmpDataProcessedEventArgs e)
         {
             Layers.Clear();
         }
 
-        public void OnStepDistanceChanged(object obj, StepDistanceEventArgs e)
-        {
-            Layers.Clear();
-        }
-
-        public void OnStepTimeChanged(object obj, StepTimeEventArgs e)
-        {
-            Layers.Clear();
-        }
-
-        public void OnSummationFinished(object sender, SummationFinishedEventArgs e)
+        private void OnSummationFinished(object sender, SummationFinishedEventArgs e)
         {
             _summedScan = e.SummedScan;
             _summedScan.RefreshLayers += OnRefreshLayers;
@@ -79,10 +70,31 @@ namespace LayersInfoModule.ViewModels
             }
         }
 
-        public void OnTimeOffsetChanged(object obj, TimeOffsetChangedEventArgs e)
+        private void OnTimeOffsetChanged(object obj, CmpScanParametersChangedEventArgs e)
         {
             Layers.Clear();
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+
+    public class DeleteLayerEventArgs : EventArgs
+    {
+        public DeleteLayerEventArgs(double velocity, double time)
+        {
+            Velocity = velocity;
+            Time = time;
+        }
+    
+        public double Velocity { get; }
+        public double Time { get; }
     }
 
 

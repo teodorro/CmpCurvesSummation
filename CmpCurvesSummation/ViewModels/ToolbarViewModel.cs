@@ -9,7 +9,6 @@ namespace CmpCurvesSummation.ViewModels
 
     public interface IToolbarViewModel
     {
-        event FileOpenHandler FileOpened;
         void OpenFile();
     }
 
@@ -17,7 +16,6 @@ namespace CmpCurvesSummation.ViewModels
 
     public class ToolbarViewModel : IToolbarViewModel
     {
-        public event FileOpenHandler FileOpened;
         private IFileOpener _fileOpener;
 
 
@@ -49,7 +47,7 @@ namespace CmpCurvesSummation.ViewModels
                         data = _fileOpener.OpenKrotTxt(fileDialog.FileName);
                         break;
                 }
-                FileOpened?.Invoke(this, new FileLoadedEventArgs(data, fileDialog.FileName));
+                EventAggregator.Instance.Invoke(this, new FileLoadedEventArgs(data, fileDialog.FileName));
 
                 if (geo)
                     SecondAttemptForGeo(fileDialog);
@@ -63,7 +61,7 @@ namespace CmpCurvesSummation.ViewModels
             if (isOk == MessageBoxResult.No)
             {
                 data = _fileOpener.OpenGeo1(fileDialog.FileName);
-                FileOpened?.Invoke(this, new FileLoadedEventArgs(data, fileDialog.FileName));
+                EventAggregator.Instance.Invoke(this, new FileLoadedEventArgs(data, fileDialog.FileName));
             }
         }
     }

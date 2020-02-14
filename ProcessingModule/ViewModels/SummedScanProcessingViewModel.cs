@@ -11,15 +11,13 @@ namespace ProcessingModule.ViewModels
     {
         private ISummedScanVT _summedScan;
 
-        //        public event SummedScanProcessedHandler SummedScanDataProcessed;
         public ObservableCollection<SumProcessingDataRow> ProcessingRowList { get; } = new ObservableCollection<SumProcessingDataRow>();
         public ISummedScanProcessor Processor { get; }
-
-        public event SumProcessedHandler SumDataProcessed;
 
 
         public SummedScanProcessingViewModel(ISummedScanProcessor processor)
         {
+            EventAggregator.Instance.SummationFinished += OnSummationFinished;
             Processor = processor;
             processor.InitOperationList();
             InitOperationsList();
@@ -36,13 +34,12 @@ namespace ProcessingModule.ViewModels
                 ProcessingRowList.Add(processingDataRow);
             }
         }
-
-
+        
         internal void OnProcessingListChanged(object sender, SumProcessingListChangedEventArgs e)
         {
             UpdateProcessingList(e);
             Processor.Process(_summedScan);
-            SumDataProcessed?.Invoke(this, new SumProcessedEventArgs(_summedScan));
+            EventAggregator.Instance.Invoke(this, new SumDataProcessedEventArgs(_summedScan));
         }
 
         private void UpdateProcessingList(SumProcessingListChangedEventArgs e)
@@ -59,12 +56,12 @@ namespace ProcessingModule.ViewModels
 
         }
 
-        public void OnSummationFinished(object sender, SummationFinishedEventArgs e)
+        private void OnSummationFinished(object sender, SummationFinishedEventArgs e)
         {
             _summedScan = e.SummedScan;
             Processor.RefreshOperations(_summedScan);
             Processor.Process(_summedScan);
-            SumDataProcessed?.Invoke(this, new SumProcessedEventArgs(_summedScan));
+            EventAggregator.Instance.Invoke(this, new SumDataProcessedEventArgs(_summedScan));
         }
 
 
@@ -78,6 +75,7 @@ namespace ProcessingModule.ViewModels
     }
 
 
+
     public delegate void SumProcessingListChangedHandler(object obj, SumProcessingListChangedEventArgs e);
 
     public class SumProcessingListChangedEventArgs : EventArgs
@@ -85,6 +83,7 @@ namespace ProcessingModule.ViewModels
         public ISumScanProcessing Processing { get; set; }
         public bool? Enabled { get; set; }
     }
+
 
 
     public class SumProcessingDataRow : INotifyPropertyChanged

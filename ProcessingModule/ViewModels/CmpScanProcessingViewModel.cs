@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using CmpCurvesSummation.Core;
 using ProcessingModule.Annotations;
-using ProcessingModule.Processing;
 using ProcessingModule.Processing.CmpScan;
 
 namespace ProcessingModule.ViewModels
@@ -14,15 +13,14 @@ namespace ProcessingModule.ViewModels
     public class CmpScanProcessingViewModel : INotifyPropertyChanged
     {
         private ICmpScan _cmpScan;
-
-        public event CmpProcessedHandler CmpDataProcessed;
-
+        
         public ObservableCollection<CmpProcessingDataRow> ProcessingRowList { get; } = new ObservableCollection<CmpProcessingDataRow>();
         public ICmpScanProcessor Processor { get; }
 
 
         public CmpScanProcessingViewModel(ICmpScanProcessor processor)
         {
+            EventAggregator.Instance.FileLoaded += OnFileLoaded;
             Processor = processor;
             processor.InitOperationList();
             InitOperationsList();
@@ -52,19 +50,19 @@ namespace ProcessingModule.ViewModels
             return false;
         }
 
-        public void OnFileLoaded(object sender, FileLoadedEventArgs e)
+        private void OnFileLoaded(object sender, FileLoadedEventArgs e)
         {
             _cmpScan = e.CmpScan;
             Processor.RefreshOperations(_cmpScan);
             Processor.Process(_cmpScan);
-            CmpDataProcessed?.Invoke(this, new CmpProcessedEventArgs(_cmpScan));
+            EventAggregator.Instance.Invoke(this, new CmpDataProcessedEventArgs(_cmpScan));
         }
 
         internal void OnProcessingListChanged(object sender, CmpProcessingListChangedEventArgs e)
         {
             UpdateProcessingList(e);
             Processor.Process(_cmpScan);
-            CmpDataProcessed?.Invoke(this, new CmpProcessedEventArgs(_cmpScan));
+            EventAggregator.Instance.Invoke(this, new CmpDataProcessedEventArgs(_cmpScan));
         }
 
         private void UpdateProcessingList(CmpProcessingListChangedEventArgs e)

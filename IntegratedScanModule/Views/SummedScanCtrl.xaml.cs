@@ -21,16 +21,11 @@ namespace SummedScanModule.Views
     /// </summary>
     public partial class SummedScanCtrl : UserControl
     {
-
-        private SummedScanViewModel _viewModel;
-        public SummedScanViewModel ViewModel => _viewModel;
-
+        
         public SummedScanCtrl()
         {
             InitializeComponent();
 
-            _viewModel = new SummedScanViewModel();
-            DataContext = _viewModel;
         }
     }
 }

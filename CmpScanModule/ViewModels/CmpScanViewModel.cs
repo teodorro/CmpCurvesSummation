@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Data;
 using CmpCurvesSummation.Core;
 using OxyPlot;
 using OxyPlot.Annotations;
@@ -10,9 +11,8 @@ using OxyPlot.Series;
 namespace CmpScanModule.ViewModels
 {
 
-    public class CmpScanViewModel 
+    public class CmpScanViewModel
     {
-        private const int colorsCount = 1024;
         private const double _hodographCurveStrokeThickness = 1;
 
         private ICmpScan _cmpScan;
@@ -21,9 +21,8 @@ namespace CmpScanModule.ViewModels
 
         public PlotModel Plot { get; private set; }
 
-        public event TimeOffsetChangedHandler TimeOffsetChanged;
-
         private OxyColor _hodographColor = OxyColor.FromRgb(255, 255, 255);
+
         public OxyColor HodographColor
         {
             get => _hodographColor;
@@ -37,30 +36,34 @@ namespace CmpScanModule.ViewModels
 
         public CmpScanViewModel()
         {
-            Plot = new PlotModel { Title = "Годограф" };
-            
+            Plot = new PlotModel {Title = "Годограф"};
             Plot.MouseDown += PlotOnMouseDown;
+            EventAggregator.Instance.PlotVisualOptionsChanged += OnPlotVisualOptionsChanged;
+            EventAggregator.Instance.CmpScanParametersChanged += OnCmpScanParametersChanged;
+            EventAggregator.Instance.FileLoaded += OnFileLoaded;
+            EventAggregator.Instance.CmpDataProcessed += OnCmpDataProcessed;
+            EventAggregator.Instance.SumDataProcessed += OnSumProcessed;
+            EventAggregator.Instance.SummationFinished += OnSummationFinished;
         }
 
 
         private Axis TimeAxis => Plot.Axes.FirstOrDefault(x => x.Position == AxisPosition.Left);
         private Axis DistanceAxis => Plot.Axes.FirstOrDefault(x => x.Position == AxisPosition.Top);
-        private HeatMapSeries HeatMap => Plot.Series.First() as HeatMapSeries;
+        private HeatMapSeries HeatMap => Plot.Series.FirstOrDefault() as HeatMapSeries;
 
-
-        public void OnFileLoaded(object sender, FileLoadedEventArgs e)
+        private void OnFileLoaded(object sender, FileLoadedEventArgs e)
         {
             Plot.Annotations.Clear();
         }
 
-        public void OnCmpDataProcessed(object obj, CmpProcessedEventArgs args)
+        private void OnCmpDataProcessed(object obj, CmpDataProcessedEventArgs args)
         {
             _cmpScan = args.CmpScan;
             Plot.Annotations.Clear();
             LoadSeries();
             UpdateAxes();
         }
-        
+
         private void UpdateAxes()
         {
             Plot.InvalidatePlot(true); // to make axes be created
@@ -73,7 +76,6 @@ namespace CmpScanModule.ViewModels
 
             TuneHorizontalAxis();
             TuneVerticalAxis(_cmpScan.MinTime, _cmpScan.MaxTime);
-
 
             Plot.InvalidatePlot(true); // to update axes in UI
         }
@@ -116,40 +118,42 @@ namespace CmpScanModule.ViewModels
             Plot.Series.Add(heatMapSeries);
         }
 
-        public void AddPalette(PaletteType palette)
+        private void AddPalette(PaletteType palette)
         {
-            var oxyPalette = OxyPalettes.Jet(colorsCount);
-            switch (palette)
-            {
-                case PaletteType.Gray:
-                    oxyPalette = OxyPalettes.Gray(colorsCount);
-                    break;
-                case PaletteType.Rainbow:
-                    oxyPalette = OxyPalettes.Rainbow(colorsCount);
-                    break;
-                case PaletteType.Hot:
-                    oxyPalette = OxyPalettes.Hot(colorsCount);
-                    break;
-                case PaletteType.HueDistinct:
-                    oxyPalette = OxyPalettes.HueDistinct(colorsCount);
-                    break;
-                case PaletteType.Hue:
-                    oxyPalette = OxyPalettes.Hue(colorsCount);
-                    break;
-                case PaletteType.BlackWhiteRed:
-                    oxyPalette = OxyPalettes.BlackWhiteRed(colorsCount);
-                    break;
-                case PaletteType.BlueWhiteRed:
-                    oxyPalette = OxyPalettes.BlueWhiteRed(colorsCount);
-                    break;
-                case PaletteType.Cool:
-                    oxyPalette = OxyPalettes.Cool(colorsCount);
-                    break;
-                case PaletteType.Jet:
-                    oxyPalette = OxyPalettes.Jet(colorsCount);
-                    break;
-            }
-            Plot.Axes.Add(new LinearColorAxis{ Palette = oxyPalette });
+            var converter = new PaletteToOxyConverter();
+//            var oxyPalette = OxyPalettes.Jet(_colorsCount);
+//            switch (palette)
+//            {
+//                case PaletteType.Gray:
+//                    oxyPalette = OxyPalettes.Gray(_colorsCount);
+//                    break;
+//                case PaletteType.Rainbow:
+//                    oxyPalette = OxyPalettes.Rainbow(_colorsCount);
+//                    break;
+//                case PaletteType.Hot:
+//                    oxyPalette = OxyPalettes.Hot(_colorsCount);
+//                    break;
+//                case PaletteType.HueDistinct:
+//                    oxyPalette = OxyPalettes.HueDistinct(_colorsCount);
+//                    break;
+//                case PaletteType.Hue:
+//                    oxyPalette = OxyPalettes.Hue(_colorsCount);
+//                    break;
+//                case PaletteType.BlackWhiteRed:
+//                    oxyPalette = OxyPalettes.BlackWhiteRed(_colorsCount);
+//                    break;
+//                case PaletteType.BlueWhiteRed:
+//                    oxyPalette = OxyPalettes.BlueWhiteRed(_colorsCount);
+//                    break;
+//                case PaletteType.Cool:
+//                    oxyPalette = OxyPalettes.Cool(_colorsCount);
+//                    break;
+//                case PaletteType.Jet:
+//                    oxyPalette = OxyPalettes.Jet(_colorsCount);
+//                    break;
+//            }
+
+            Plot.Axes.Add(new LinearColorAxis {Palette = (OxyPalette)converter.Convert(palette, null, null, null)});
         }
 
         private double[,] GetDataArray()
@@ -193,26 +197,32 @@ namespace CmpScanModule.ViewModels
                 Plot.Annotations.Add(hodographCurve);
             }
         }
-        
-        public void OnPaletteChanged(object obj, PaletteChangedEventArgs e)
+
+        private void OnPlotVisualOptionsChanged(object obj, PlotVisualOptionsChangedEventArgs e)
         {
             _palette = e.Palette;
+            _interpolate = e.Interpolation;
+
+            HodographColor = OxyColor.FromArgb(e.ColorHodograph.A, e.ColorHodograph.R, e.ColorHodograph.G,
+                e.ColorHodograph.B);
+
             if (Plot == null)
                 return;
             if (Plot.Axes.Any(x => x is LinearColorAxis))
                 Plot.Axes.Remove(Plot.Axes.First(x => x is LinearColorAxis));
-            if (!Plot.Axes.Any(x => x is LinearColorAxis))
-                AddPalette(_palette);
+            AddPalette(_palette);
+
+            if (HeatMap != null)
+                HeatMap.Interpolate = e.Interpolation;
+
             Plot.InvalidatePlot(true);
         }
 
         private void PlotOnMouseDown(object sender, OxyMouseDownEventArgs e)
         {
-            if (e.ClickCount == 2 && e.ChangedButton == OxyMouseButton.Left
-                                  && TimeAxis != null)
+            if (e.ClickCount == 2 && e.ChangedButton == OxyMouseButton.Left && TimeAxis != null)
             {
                 var point = GetPointFromOxyPosition(e);
-
                 if (point.X < 0)
                     ChangeTimeOffset(point);
             }
@@ -220,6 +230,7 @@ namespace CmpScanModule.ViewModels
 
         private void ChangeTimeOffset(DataPoint point)
         {
+            var oldMinTime = _cmpScan.MinTime;
             var offset = point.Y;
             ModifyAxesTimeOffset(offset);
             _cmpScan.MinTime -= offset;
@@ -227,7 +238,9 @@ namespace CmpScanModule.ViewModels
             Plot.Annotations.Clear();
             Plot.InvalidatePlot(true);
 
-            TimeOffsetChanged?.Invoke(this, new TimeOffsetChangedEventArgs(offset, _cmpScan));
+            EventAggregator.Instance.Invoke(this,
+                new CmpScanParametersChangedEventArgs(_cmpScan.StepDistance, _cmpScan.StepTime, oldMinTime,
+                    _cmpScan.StepDistance, _cmpScan.StepTime, _cmpScan.MinTime));
         }
 
         private void ModifyAxesTimeOffset(double offset)
@@ -240,30 +253,34 @@ namespace CmpScanModule.ViewModels
 
         private DataPoint GetPointFromOxyPosition(OxyMouseDownEventArgs e)
             => Axis.InverseTransform(e.Position, DistanceAxis, TimeAxis);
-        
-        public void OnStepDistanceChanged(object sender, StepDistanceEventArgs e)
+
+        private void OnCmpScanParametersChanged(object sender, CmpScanParametersChangedEventArgs e)
         {
             Plot.Annotations.Clear();
-            var factor = e.NewStepDistance / e.OldStepDistance;
+            UpdateDistanceDirection(e.OldStepDistance, e.StepDistance);
+            UpdateTimeDirection(e.OldStepTime, e.StepTime);
+            Plot.InvalidatePlot(true);
+        }
+
+        private void UpdateDistanceDirection(double oldStepDistance, double stepDistance)
+        {
+            var factor = stepDistance / oldStepDistance;
             DistanceAxis.AbsoluteMinimum *= factor;
             DistanceAxis.AbsoluteMaximum *= factor;
             HeatMap.X0 *= factor;
             HeatMap.X1 *= factor;
-            Plot.InvalidatePlot(true);
         }
 
-        public void OnStepTimeChanged(object sender, StepTimeEventArgs e)
+        private void UpdateTimeDirection(double oldStepTime, double stepTime)
         {
-            Plot.Annotations.Clear();
-            var factor = e.NewStepTime / e.OldStepTime;
+            var factor = stepTime / oldStepTime;
             TimeAxis.AbsoluteMinimum *= factor;
             TimeAxis.AbsoluteMaximum *= factor;
             HeatMap.Y0 *= factor;
             HeatMap.Y1 *= factor;
-            Plot.InvalidatePlot(true);
         }
 
-        public void OnSumProcessed(object obj, SumProcessedEventArgs e)
+        private void OnSumProcessed(object obj, SumDataProcessedEventArgs e)
         {
             OnRefreshLayers(obj, new RefreshLayersEventArgs(e.SumScan.Layers));
         }
@@ -273,30 +290,66 @@ namespace CmpScanModule.ViewModels
             if (!Plot.Annotations.Any(x => x is PolylineAnnotation))
                 return;
             foreach (var hodograph in Plot.Annotations.Where(x => x is PolylineAnnotation))
-            {
                 (hodograph as PolylineAnnotation).Color = HodographColor;
-            }
 
             Plot.InvalidatePlot(true);
         }
 
-        public void OnHodographColorChanged(object obj, HodographColorChangedEventArgs e)
-        {
-            HodographColor = OxyColor.FromArgb(e.NewColor.A, e.NewColor.R, e.NewColor.G, e.NewColor.B);
-        }
-
-        public void OnInterpolationChanged(object obj, InterpolationChangedEventArgs e)
-        {
-            if (Plot == null)
-                return;
-            _interpolate = e.Interpolation;
-            HeatMap.Interpolate = e.Interpolation;
-            Plot.InvalidatePlot(true);
-        }
-
-        public void OnSummationFinished(object obj, SummationFinishedEventArgs e)
+        private void OnSummationFinished(object obj, SummationFinishedEventArgs e)
         {
             e.SummedScan.RefreshLayers += OnRefreshLayers;
+        }
+    }
+
+
+    public class PaletteToOxyConverter : IValueConverter
+    {
+        private const int _colorsCount = 512;
+
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var palette = (PaletteType) value;
+            OxyPalette paletteOxy;
+            switch (palette)
+            {
+                case PaletteType.Gray:
+                    paletteOxy = OxyPalettes.Gray(_colorsCount);
+                    break;
+                case PaletteType.Rainbow:
+                    paletteOxy = OxyPalettes.Rainbow(_colorsCount);
+                    break;
+                case PaletteType.Hot:
+                    paletteOxy = OxyPalettes.Hot(_colorsCount);
+                    break;
+                case PaletteType.Cool:
+                    paletteOxy = OxyPalettes.Cool(_colorsCount);
+                    break;
+                case PaletteType.HueDistinct:
+                    paletteOxy = OxyPalettes.HueDistinct(_colorsCount);
+                    break;
+                case PaletteType.Hue:
+                    paletteOxy = OxyPalettes.Hue(_colorsCount);
+                    break;
+                case PaletteType.BlackWhiteRed:
+                    paletteOxy = OxyPalettes.BlackWhiteRed(_colorsCount);
+                    break;
+                case PaletteType.BlueWhiteRed:
+                    paletteOxy = OxyPalettes.BlueWhiteRed(_colorsCount);
+                    break;
+                default:
+                    paletteOxy = OxyPalettes.Jet(_colorsCount);
+                    break;
+            }
+
+            return paletteOxy;
+
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter,
+            System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

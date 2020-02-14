@@ -4,7 +4,7 @@ using CmpCurvesSummation.Core;
 namespace AppWithSimpleTestScan.ViewModels
 {
 
-//    public delegate void FileOpenHandler(object obj, FileLoadedEventArgs e);
+//    public delegate void FileLoadedHandler(object obj, FileLoadedEventArgs e);
 
 
 

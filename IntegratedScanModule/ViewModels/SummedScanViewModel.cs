@@ -17,16 +17,7 @@ namespace SummedScanModule.ViewModels
     {
         PlotModel Plot { get; }
         OxyColor AvgLinesColor { get; set; }
-        event SummationFinishedHandler SummationFinished;
-        void OnCmpDataProcessed(object obj, CmpProcessedEventArgs args);
         void AddPalette(PaletteType palette);
-        void OnSummationStarted(object obj, EventArgs e);
-        void OnPaletteChanged(object obj, PaletteChangedEventArgs e);
-        void OnFileLoaded(object sender, FileLoadedEventArgs e);
-        void OnAutoCorrectionChange(object sender, AutoCorrectionCheckEventArgs e);
-        void OnStepDistanceChanged(object obj, StepDistanceEventArgs e);
-        void OnStepTimeChanged(object obj, StepTimeEventArgs e);
-        void OnPointColorChanged(object obj, PointColorChangedEventArgs e);
     }
 
 
@@ -60,14 +51,21 @@ namespace SummedScanModule.ViewModels
             }
         }
 
-
-        public event SummationFinishedHandler SummationFinished;
-
+        
 
         public SummedScanViewModel()
         {
             Plot = new PlotModel { Title = "После суммирования" };
             Plot.MouseDown += PlotOnMouseDown;
+
+            EventAggregator.Instance.CmpScanParametersChanged += OnTimeOffsetChanged;
+            EventAggregator.Instance.CmpDataProcessed += OnCmpDataProcessed;
+            EventAggregator.Instance.SumDataProcessed += OnSumProcessed;
+            EventAggregator.Instance.SummationStarted += OnSummationStarted;
+            EventAggregator.Instance.FileLoaded += OnFileLoaded;
+            EventAggregator.Instance.PlotVisualOptionsChanged += OnPlotVisualOptionsChanged;
+            EventAggregator.Instance.SumScanOptionsChanged += OnSumScanOptionsChanged;
+            EventAggregator.Instance.CmpScanParametersChanged += OnCmpScanParametersChanged;
 
             _plotLoader = new PlotLoader(Plot, false, AddPalette);
             _layersLoader = new LayersLoader(Plot);
@@ -76,7 +74,7 @@ namespace SummedScanModule.ViewModels
 
         private Axis TimeAxis => Plot.Axes.First(x => x.Position == AxisPosition.Left);
 
-        public void OnCmpDataProcessed(object obj, CmpProcessedEventArgs args)
+        private void OnCmpDataProcessed(object obj, CmpDataProcessedEventArgs args)
         {
             Clear();
             _cmpScan = args.CmpScan;
@@ -101,7 +99,7 @@ namespace SummedScanModule.ViewModels
                 _plotLoader.LoadSummedScan(_summedScan, _cmpScan, _palette);
             });
             _summedScan.RefreshLayers += OnRefreshLayers;
-            SummationFinished?.Invoke(this, new SummationFinishedEventArgs(_summedScan));
+            EventAggregator.Instance.Invoke(this, new SummationFinishedEventArgs(_summedScan));
         }
 
         private void OnRefreshLayers(object o, RefreshLayersEventArgs e)
@@ -109,7 +107,7 @@ namespace SummedScanModule.ViewModels
             _layersLoader.LoadLayers(AvgLinesColor, _summedScan, _cmpScan);
         }
 
-        public void OnSumProcessed(object o, SumProcessedEventArgs e)
+        private void OnSumProcessed(object o, SumDataProcessedEventArgs e)
         {
             _summedScan = e.SumScan;
             _plotLoader.LoadSummedScan(_summedScan, _cmpScan, _palette);
@@ -196,25 +194,34 @@ namespace SummedScanModule.ViewModels
             }
             Plot.Axes.Add(new LinearColorAxis { Palette = oxyPalette });
         }
-        
-        public void OnSummationStarted(object obj, EventArgs e)
+
+        private void OnSummationStarted(object obj, EventArgs e)
         {
             Sum();
         }
 
-        public void OnPaletteChanged(object obj, PaletteChangedEventArgs e)
+        private void OnPlotVisualOptionsChanged(object o, PlotVisualOptionsChangedEventArgs e)
         {
             _palette = e.Palette;
+            _plotLoader.Interpolation = e.Interpolation;
+            AvgLinesColor = OxyColor.FromArgb(e.ColorLayerLine.A, e.ColorLayerLine.R, e.ColorLayerLine.G, e.ColorLayerLine.B);
+
             if (Plot == null)
                 return;
             if (Plot.Axes.Any(x => x is LinearColorAxis))
                 Plot.Axes.Remove(Plot.Axes.First(x => x is LinearColorAxis));
             if (!Plot.Axes.Any(x => x is LinearColorAxis))
                 AddPalette(_palette);
+
+            var heatmap = Plot.Series.FirstOrDefault(x => x is HeatMapSeries);
+            if (heatmap == null)
+                return;
+            (heatmap as HeatMapSeries).Interpolate = e.Interpolation;
+
             Plot.InvalidatePlot(true);
         }
 
-        public void OnFileLoaded(object sender, FileLoadedEventArgs e)
+        private void OnFileLoaded(object sender, FileLoadedEventArgs e)
         {
             Clear();
         }
@@ -227,69 +234,34 @@ namespace SummedScanModule.ViewModels
             Plot.InvalidatePlot(true);
         }
 
-        public void OnAutoCorrectionChange(object sender, AutoCorrectionCheckEventArgs e)
+        private void OnSumScanOptionsChanged(object o, SumScanOptionsChangedEventArgs e)
         {
-            _autoCorrection = e.Auto;
-        }
-        
-        public void OnStepDistanceChanged(object obj, StepDistanceEventArgs e)
-        {
-            Clear();
-            _cmpScan = e.CmpScan;
+            _autoCorrection = e.AutoCorrection;
+            _layersLoader.LoadLayers(AvgLinesColor, _summedScan, _cmpScan, e.Alpha);
+            _halfWaveSize = e.HalfWaveLength;
+            if (_summedScan != null)
+                _summedScan.CheckRadius = _halfWaveSize;
         }
 
-        public void OnStepTimeChanged(object obj, StepTimeEventArgs e)
+        private void OnCmpScanParametersChanged(object o, CmpScanParametersChangedEventArgs e)
         {
             Clear();
-            _cmpScan = e.CmpScan;
-        }
-
-        public void OnPointColorChanged(object obj, PointColorChangedEventArgs e)
-        {
-            AvgLinesColor = OxyColor.FromArgb(e.NewColor.A, e.NewColor.R, e.NewColor.G, e.NewColor.B);
         }
         
         private void RepaintPoints()
         {
             if (!Plot.Annotations.Any(x => x is PointAnnotation))
                 return;
-            foreach (var point in Plot.Annotations.Where(x => x is PointAnnotation))
-            {
-                (point as PointAnnotation).Fill = AvgLinesColor;
-            }
+            foreach (var point in Plot.Annotations.Where(x => x is PointAnnotation)) (point as PointAnnotation).Fill = AvgLinesColor;
 
             Plot.InvalidatePlot(true);
         }
 
-        public void OnTimeOffsetChanged(object obj, TimeOffsetChangedEventArgs e)
+        private void OnTimeOffsetChanged(object obj, CmpScanParametersChangedEventArgs e)
         {
             Clear();
-            _cmpScan = e.CmpScan;
         }
 
-        public void OnInterpolationChanged(object obj, InterpolationChangedEventArgs e)
-        {
-            if (Plot == null)
-                return;
-            var heatmap = Plot.Series.FirstOrDefault(x => x is HeatMapSeries);
-            if (heatmap == null)
-                return;
-            _plotLoader.Interpolation = e.Interpolation;
-            (heatmap as HeatMapSeries).Interpolate = e.Interpolation;
-            Plot.InvalidatePlot(true);
-        }
-
-        public void OnAlphaChanged(object obj, AlphaChangedEventArgs e)
-        {
-            _layersLoader.LoadLayers(AvgLinesColor, _summedScan, _cmpScan, e.Alpha);
-        }
-
-        public void OnHalfWaveSizeChanged(object obj, HalfWaveSizeChangedEventArgs e)
-        {
-            _halfWaveSize = e.HalfWaveSize;
-            if (_summedScan != null)
-                _summedScan.CheckRadius = _halfWaveSize;
-        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
