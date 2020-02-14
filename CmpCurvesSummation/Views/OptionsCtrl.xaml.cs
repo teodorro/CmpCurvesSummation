@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using CmpCurvesSummation.Core;
 using CmpCurvesSummation.ViewModels;
 
 namespace CmpCurvesSummation.Views
@@ -21,9 +22,11 @@ namespace CmpCurvesSummation.Views
         {
             InitializeComponent();
 
-            _viewModel = new OptionsViewModel();
-            DataContext = _viewModel;
-            
+//            _viewModel = new OptionsViewModel();
+//            DataContext = _viewModel;
+
+            EventAggregator.Instance.FileLoaded += (o, args) => { this.IsEnabled = true; };
+
         }
 
 

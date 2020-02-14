@@ -6,7 +6,10 @@
              xmlns:local="clr-namespace:CmpCurvesSummation.Views"
              xmlns:viewModels="clr-namespace:CmpCurvesSummation.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="350">
+             d:DesignHeight="500" d:DesignWidth="350" IsEnabled="False">
+    <Control.DataContext>
+        <viewModels:OptionsViewModel/>
+    </Control.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="19*"/>

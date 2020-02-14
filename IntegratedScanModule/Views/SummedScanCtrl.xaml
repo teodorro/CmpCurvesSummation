@@ -11,7 +11,7 @@
     <Control.DataContext>
         <viewModels:SummedScanViewModel/>
     </Control.DataContext>
-    <Grid>
+    <Grid IsEnabled="False">
         <oxy:PlotView
             x:Name="MyHeatMapPlot"
             Grid.Row="0" Grid.Column="0"

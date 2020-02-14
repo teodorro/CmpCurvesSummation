@@ -31,15 +31,6 @@ namespace CmpCurvesSummation.Views
             _viewModel = new MainCtrlViewModel();
             DataContext = _viewModel;
 
-            CrossCuttingInit();
-        }
-
-        private void CrossCuttingInit()
-        {
-            OptionsControl.ViewModel.SelectedPointColor =
-                OptionsControl.ViewModel.PointColors.First(x => x.Value == Colors.Black);
-            OptionsControl.ViewModel.SelectedItemHodographColor =
-                OptionsControl.ViewModel.ItemsHodographColor.First(x => x.Value == Colors.Black);
         }
     }
 }

@@ -43,6 +43,9 @@ namespace CmpCurvesSummation.ViewModels
 
             PointColors = GetColors();
             ItemsHodographColor = GetColors();
+
+            SelectedPointColor = PointColors.First(x => x.Value == Colors.Black);
+            SelectedItemHodographColor = ItemsHodographColor.First(x => x.Value == Colors.Black);
         }
 
 

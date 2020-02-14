@@ -9,8 +9,12 @@
              xmlns:views2="clr-namespace:SummedScanModule.Views;assembly=IntegratedScanModule"
              xmlns:views3="clr-namespace:LayersInfoModule.Views;assembly=LayersInfoModule"
              xmlns:views4="clr-namespace:IntegratedScanModule.Views;assembly=IntegratedScanModule"
+             xmlns:viewModels="clr-namespace:CmpCurvesSummation.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <Control.DataContext>
+        <viewModels:MainCtrlViewModel/>
+    </Control.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="270"/>
