@@ -26,7 +26,10 @@ namespace SummedScanModule.Views
             InitializeComponent();
 
             EventAggregator.Instance.FileLoaded += (o, args) => { IsEnabled = false; };
-            EventAggregator.Instance.SummationFinished += (o, args) => { IsEnabled = true; };
+            EventAggregator.Instance.SummationFinished += (o, args) =>
+            {
+                IsEnabled = true;
+            };
         }
     }
 }

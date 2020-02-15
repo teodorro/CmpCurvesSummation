@@ -22,15 +22,10 @@ namespace CmpCurvesSummation.Views
     /// </summary>
     public partial class MainCtrl : UserControl
     {
-        private MainCtrlViewModel _viewModel;
-
 
         public MainCtrl()
         {
             InitializeComponent();
-            _viewModel = new MainCtrlViewModel();
-            DataContext = _viewModel;
-
         }
     }
 }

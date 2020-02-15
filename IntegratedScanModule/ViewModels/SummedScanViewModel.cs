@@ -38,7 +38,7 @@ namespace SummedScanModule.ViewModels
 
         private bool _autoCorrection;
         
-        private OxyColor _avgLinesColor = OxyColor.FromRgb(255, 255, 255);
+        private OxyColor _avgLinesColor = OxyColor.FromRgb(0, 0, 0);
         public OxyColor AvgLinesColor
         {
             get => _avgLinesColor;

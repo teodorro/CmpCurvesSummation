@@ -21,7 +21,7 @@ namespace CmpScanModule.ViewModels
 
         public PlotModel Plot { get; private set; }
 
-        private OxyColor _hodographColor = OxyColor.FromRgb(255, 255, 255);
+        private OxyColor _hodographColor = OxyColor.FromRgb(0, 0, 0);
 
         public OxyColor HodographColor
         {
@@ -121,38 +121,6 @@ namespace CmpScanModule.ViewModels
         private void AddPalette(PaletteType palette)
         {
             var converter = new PaletteToOxyConverter();
-//            var oxyPalette = OxyPalettes.Jet(_colorsCount);
-//            switch (palette)
-//            {
-//                case PaletteType.Gray:
-//                    oxyPalette = OxyPalettes.Gray(_colorsCount);
-//                    break;
-//                case PaletteType.Rainbow:
-//                    oxyPalette = OxyPalettes.Rainbow(_colorsCount);
-//                    break;
-//                case PaletteType.Hot:
-//                    oxyPalette = OxyPalettes.Hot(_colorsCount);
-//                    break;
-//                case PaletteType.HueDistinct:
-//                    oxyPalette = OxyPalettes.HueDistinct(_colorsCount);
-//                    break;
-//                case PaletteType.Hue:
-//                    oxyPalette = OxyPalettes.Hue(_colorsCount);
-//                    break;
-//                case PaletteType.BlackWhiteRed:
-//                    oxyPalette = OxyPalettes.BlackWhiteRed(_colorsCount);
-//                    break;
-//                case PaletteType.BlueWhiteRed:
-//                    oxyPalette = OxyPalettes.BlueWhiteRed(_colorsCount);
-//                    break;
-//                case PaletteType.Cool:
-//                    oxyPalette = OxyPalettes.Cool(_colorsCount);
-//                    break;
-//                case PaletteType.Jet:
-//                    oxyPalette = OxyPalettes.Jet(_colorsCount);
-//                    break;
-//            }
-
             Plot.Axes.Add(new LinearColorAxis {Palette = (OxyPalette)converter.Convert(palette, null, null, null)});
         }
 
@@ -203,8 +171,7 @@ namespace CmpScanModule.ViewModels
             _palette = e.Palette;
             _interpolate = e.Interpolation;
 
-            HodographColor = OxyColor.FromArgb(e.ColorHodograph.A, e.ColorHodograph.R, e.ColorHodograph.G,
-                e.ColorHodograph.B);
+            HodographColor = OxyColor.FromArgb(e.ColorHodograph.A, e.ColorHodograph.R, e.ColorHodograph.G, e.ColorHodograph.B);
 
             if (Plot == null)
                 return;

@@ -12,22 +12,15 @@ namespace CmpCurvesSummation.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainWindowViewModel _viewModel;
-
         public MainWindow()
         {
             InitializeComponent();
-
             EventAggregator.Instance.FileLoaded += OnFileLoaded;
-
-            _viewModel = new MainWindowViewModel();
-            DataContext = _viewModel;
-
         }
 
         public void OnFileLoaded(object sender, FileLoadedEventArgs e)
         {
-            _viewModel.Title = e.Filename;
+            (DataContext as MainWindowViewModel).Title = e.Filename;
         }
     }
 }
