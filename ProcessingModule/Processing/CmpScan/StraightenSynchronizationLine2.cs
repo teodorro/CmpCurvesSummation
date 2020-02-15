@@ -31,10 +31,17 @@ namespace ProcessingModule.Processing.CmpScan
 
         private void MakeOffsetsSame(List<double[]> cmpScanData, int[] positiveIndices)
         {
-            var min = positiveIndices.Min();
+            //            var min = positiveIndices.Min();
+            //            for (int i = 0; i < cmpScanData.Count; i++)
+            //                for (int j = 0; j < cmpScanData[i].Length - positiveIndices[i] + min; j++)
+            //                    cmpScanData[i][j] = cmpScanData[i][j + positiveIndices[i] - min];
+            var max = positiveIndices.Max();
             for (int i = 0; i < cmpScanData.Count; i++)
-                for (int j = 0; j < cmpScanData[i].Length - positiveIndices[i] + min; j++)
-                    cmpScanData[i][j] = cmpScanData[i][j + positiveIndices[i] - min];
+            for (int j = cmpScanData[i].Length - 1; j >= 0; j--)
+                if (j - max + positiveIndices[i] >= 0)
+                    cmpScanData[i][j] = cmpScanData[i][j - max + positiveIndices[i]];
+                else
+                    cmpScanData[i][j] = 0;
         }
 
         private int[] GetPositiveIndicesCmpScan(List<double[]> cmpScanData, int[] negativeIndices)
