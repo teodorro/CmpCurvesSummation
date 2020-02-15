@@ -8,6 +8,7 @@ namespace ProcessingModule
     {
         string Name { get; }
         void Process(ISummedScanVT summedScan);
+        int OrderIndex { get; }
     }
 
 
@@ -26,9 +27,9 @@ namespace ProcessingModule
     {
         public void InitOperationList()
         {
-            OperationsAvailable.Add(new ChangeMaxVelocity());
-            OperationsAvailable.Add(new RaiseToPower());
-            OperationsAvailable.Add(new Absolutize());
+            OperationsAvailable.Add(new ChangeMaxVelocity(0));
+            OperationsAvailable.Add(new RaiseToPower(1));
+            OperationsAvailable.Add(new Absolutize(2));
         }
 
         public ObservableCollection<ISumScanProcessing> OperationsAvailable { get; } = new ObservableCollection<ISumScanProcessing>();

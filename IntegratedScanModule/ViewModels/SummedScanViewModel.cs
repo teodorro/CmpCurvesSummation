@@ -29,14 +29,13 @@ namespace SummedScanModule.ViewModels
         private ICmpScan _cmpScan;
         private ISummedScanVT _summedScan;
         private PaletteType _palette = PaletteType.Jet;
-        private int _halfWaveSize = 5;
         private IPlotLoader _plotLoader;
         private ILayersLoader _layersLoader;
+        private int _halfWaveSize = 5;
+        private bool _autoCorrection;
 
         public PlotModel Plot { get; }
         public double MaxVelocity { get; private set; } = CmpMath.PlotMaxVelocity;
-
-        private bool _autoCorrection;
         
         private OxyColor _avgLinesColor = OxyColor.FromRgb(0, 0, 0);
         public OxyColor AvgLinesColor
@@ -52,7 +51,6 @@ namespace SummedScanModule.ViewModels
         }
 
         
-
         public SummedScanViewModel()
         {
             Plot = new PlotModel { Title = "После суммирования" };
@@ -261,7 +259,6 @@ namespace SummedScanModule.ViewModels
         {
             Clear();
         }
-
 
 
         public event PropertyChangedEventHandler PropertyChanged;

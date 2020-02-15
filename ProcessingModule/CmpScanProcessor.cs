@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using CmpCurvesSummation.Core;
 using ProcessingModule.Processing;
@@ -12,6 +13,7 @@ namespace ProcessingModule
     public interface ICmpScanProcessing
     {
         string Name { get; }
+        int OrderIndex { get; }
         void Process(ICmpScan data);
     }
 
@@ -24,7 +26,7 @@ namespace ProcessingModule
     {
         void InitOperationList();
         ObservableCollection<ICmpScanProcessing> OperationsAvailable { get; }
-        ObservableCollection<ICmpScanProcessing> OperationsToProcess { get; }
+        List<ICmpScanProcessing> OperationsToProcess { get; }
         void Process(ICmpScan cmpScan);
         void AutoDetectOperationsNeeded(ICmpScan data);
         void RefreshOperations(ICmpScan cmpScan);
@@ -35,8 +37,8 @@ namespace ProcessingModule
     {
         public ObservableCollection<ICmpScanProcessing> OperationsAvailable { get; } =
             new ObservableCollection<ICmpScanProcessing>();
-        public ObservableCollection<ICmpScanProcessing> OperationsToProcess { get; } =
-            new ObservableCollection<ICmpScanProcessing>();
+        public List<ICmpScanProcessing> OperationsToProcess { get; } =
+            new List<ICmpScanProcessing>();
 
         public void Process(ICmpScan cmpScan)
         {
@@ -56,14 +58,14 @@ namespace ProcessingModule
 
         public void InitOperationList()
         {
-            OperationsAvailable.Add(new RemoveLeftAscans());
-            OperationsAvailable.Add(new RemoveRightAscans());
-            OperationsAvailable.Add(new ZeroAmplitudeCorrection());
-            OperationsAvailable.Add(new LogarithmProcessing());
+            OperationsAvailable.Add(new RemoveLeftAscans(0));
+            OperationsAvailable.Add(new RemoveRightAscans(1));
+            OperationsAvailable.Add(new ZeroAmplitudeCorrection(2));
+            OperationsAvailable.Add(new LogarithmProcessing(3));
+            OperationsAvailable.Add(new AddOffsetAscans(4));
+            OperationsAvailable.Add(new ClearOffsetAscans(5));
 //            OperationsAvailable.Add(new StraightenSynchronizationLine());
-            OperationsAvailable.Add(new StraightenSynchronizationLine2());
-            OperationsAvailable.Add(new AddOffsetAscans());
-            OperationsAvailable.Add(new ClearOffsetAscans());
+            OperationsAvailable.Add(new StraightenSynchronizationLine2(6));
         }
 
         public void RefreshOperations(ICmpScan cmpScan)

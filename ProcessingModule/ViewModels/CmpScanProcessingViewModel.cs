@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -76,7 +77,7 @@ namespace ProcessingModule.ViewModels
                 Processor.OperationsToProcess.Add(e.Processing);
             else if (e.Enabled == false)
                 Processor.OperationsToProcess.Remove(e.Processing);
-
+            Processor.OperationsToProcess.Sort(new CmpScanProcessingComparer());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -97,6 +98,11 @@ namespace ProcessingModule.ViewModels
         public bool? Enabled { get; set; }
     }
 
+
+    public class CmpScanProcessingComparer : IComparer<ICmpScanProcessing>
+    {
+        public int Compare(ICmpScanProcessing x, ICmpScanProcessing y) => x.OrderIndex - y.OrderIndex;
+    }
 
 
     public class CmpProcessingDataRow : INotifyPropertyChanged

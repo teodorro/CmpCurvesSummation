@@ -10,12 +10,20 @@ namespace ProcessingModule.Processing.CmpScan
 
         public int NumberOfAscans { get; set; } = 5;
 
+        public int OrderIndex { get; }
+
         public void Process(ICmpScan cmpScan)
         {
             var data = cmpScan.Data;
             for (int i = 0; i < NumberOfAscans; i++)
             for (int j = 0; j < data[i].Length; j++)
                 data[i][j] = 0;
+        }
+
+
+        public ClearOffsetAscans(int orderIndex)
+        {
+            OrderIndex = orderIndex;
         }
 
 

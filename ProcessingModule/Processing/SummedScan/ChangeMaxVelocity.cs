@@ -20,6 +20,15 @@ namespace ProcessingModule.Processing.SummedScan
             }
         }
 
+        public int OrderIndex { get; }
+
+
+        public ChangeMaxVelocity(int orderIndex)
+        {
+            OrderIndex = orderIndex;
+        }
+
+
         public void Process(ISummedScanVT summedScan)
         {
             var indMaxVelocity = (int)Math.Round((_maxVelocity - summedScan.MinVelocity) / summedScan.StepVelocity);

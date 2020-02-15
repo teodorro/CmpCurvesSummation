@@ -8,7 +8,15 @@ namespace ProcessingModule.Processing.CmpScan
         public string Name { get; } = "Логарифм амплитуды";
 
         public override string ToString() => Name;
-        
+
+        public int OrderIndex { get; }
+
+
+        public LogarithmProcessing(int orderIndex)
+        {
+            OrderIndex = orderIndex;
+        }
+
 
         public void Process(ICmpScan cmpScan)
         {

@@ -8,15 +8,21 @@ namespace ProcessingModule.Processing.SummedScan
         public string Name { get; } = "Степень";
         public override string ToString() => Name;
 
-        private double _power = 1;
+        public double _power = 1;
         public double Power
         {
             get => _power;
-            set
-            {
-                _power = value;
-            }
+            set => _power = value;
         }
+
+        public int OrderIndex { get; }
+
+
+        public RaiseToPower(int orderIndex)
+        {
+            OrderIndex = orderIndex;
+        }
+
 
         public void Process(ISummedScanVT summedScan)
         {

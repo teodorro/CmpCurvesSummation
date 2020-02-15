@@ -17,9 +17,17 @@ namespace ProcessingModule.Processing.CmpScan
     {
         private List<double[]> _data;
         public string Name { get; } = "Корректировка нулевой амплитуды";
-
-
+        
         public override string ToString() => Name;
+
+        public int OrderIndex { get; }
+
+
+        public ZeroAmplitudeCorrection(int orderIndex)
+        {
+            OrderIndex = orderIndex;
+        }
+
 
         public void Process(ICmpScan cmpScan)
         {

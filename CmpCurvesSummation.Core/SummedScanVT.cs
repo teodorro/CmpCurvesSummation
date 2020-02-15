@@ -258,9 +258,25 @@ namespace CmpCurvesSummation.Core
 
         private bool CheckIfMin(int x, int y) => CheckIf(x, y, (i, j) => i <= j);
 
-        private int IndexVelocity(double velocity) => (int) Math.Round((velocity - MinVelocity) / StepVelocity);
+        private int IndexVelocity(double velocity)
+        {
+            var indexVelocity = (int) Math.Round((velocity - MinVelocity) / StepVelocity);
+            if (indexVelocity > Data.Count - 1)
+                indexVelocity = Data.Count - 1;
+            if (indexVelocity < 0)
+                indexVelocity = 0;
+            return indexVelocity;
+        }
 
-        private int IndexTime(double time) => (int) Math.Round((time - MinTime) / StepTime);
+        private int IndexTime(double time)
+        {
+            var indexTime = (int)Math.Round((time - MinTime) / StepTime);
+            if (indexTime > AscanLengthDimensionless - 1)
+                indexTime = AscanLengthDimensionless - 1;
+            if (indexTime < 0)
+                indexTime = 0;
+            return indexTime;
+        }
 
         private double Time(int indexTime) => indexTime * StepTime + MinTime;
 

@@ -13,6 +13,14 @@ namespace ProcessingModule.Processing.CmpScan
         public double MinNegativeAmplitudeToBegin { get; set; } = -2;
         public double MinPositiveAmplitudeToStop { get; set; } = 2;
 
+        public int OrderIndex { get; }
+
+
+        public StraightenSynchronizationLine2(int orderIndex)
+        {
+            OrderIndex = orderIndex;
+        }
+
 
         public void Process(ICmpScan cmpScan)
         {
