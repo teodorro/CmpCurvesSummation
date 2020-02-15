@@ -22,17 +22,16 @@ namespace LayersInfoModule.Views
     /// </summary>
     public partial class LayersCtrl : UserControl
     {
-        private LayersViewModel _viewModel;
-        public LayersViewModel ViewModel => _viewModel;
+        public LayersViewModel ViewModel => DataContext as LayersViewModel;
 
 
         public LayersCtrl()
         {
             InitializeComponent();
-
-            _viewModel = new LayersViewModel();
-            DataContext = _viewModel;
             LayersListDataGrid.PreviewKeyDown += LayersListDataGridOnKeyDown;
+
+            EventAggregator.Instance.FileLoaded += (o, args) => { IsEnabled = false; };
+            EventAggregator.Instance.SummationFinished += (o, args) => { IsEnabled = true; };
         }
 
 

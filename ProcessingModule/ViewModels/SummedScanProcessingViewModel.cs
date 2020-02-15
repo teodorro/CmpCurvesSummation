@@ -15,11 +15,11 @@ namespace ProcessingModule.ViewModels
         public ISummedScanProcessor Processor { get; }
 
 
-        public SummedScanProcessingViewModel(ISummedScanProcessor processor)
+        public SummedScanProcessingViewModel()
         {
             EventAggregator.Instance.SummationFinished += OnSummationFinished;
-            Processor = processor;
-            processor.InitOperationList();
+            Processor = DiContainer.Instance.Container.GetInstance<ISummedScanProcessor>();
+            Processor.InitOperationList();
             InitOperationsList();
         }
 

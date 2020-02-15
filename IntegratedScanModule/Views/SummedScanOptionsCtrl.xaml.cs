@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using SummedScanModule.ViewModels;
+using CmpCurvesSummation.Core;
 
 namespace IntegratedScanModule.Views
 {
@@ -21,16 +21,11 @@ namespace IntegratedScanModule.Views
     /// </summary>
     public partial class SummedScanOptionsCtrl : UserControl
     {
-        private SummedScanOptionsViewModel _viewModel;
-        public SummedScanOptionsViewModel ViewModel => _viewModel;
-
-
         public SummedScanOptionsCtrl()
         {
             InitializeComponent();
-
-            _viewModel = new SummedScanOptionsViewModel();
-            DataContext = _viewModel;
+            EventAggregator.Instance.FileLoaded += (o, args) => { IsEnabled = false; };
+            EventAggregator.Instance.SummationFinished += (o, args) => { IsEnabled = true; };
         }
     }
 }

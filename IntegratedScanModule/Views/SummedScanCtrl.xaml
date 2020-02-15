@@ -7,11 +7,11 @@
              xmlns:viewModels="clr-namespace:SummedScanModule.ViewModels"
              xmlns:oxy="http://oxyplot.org/wpf"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" IsEnabled="False">
     <Control.DataContext>
         <viewModels:SummedScanViewModel/>
     </Control.DataContext>
-    <Grid IsEnabled="False">
+    <Grid>
         <oxy:PlotView
             x:Name="MyHeatMapPlot"
             Grid.Row="0" Grid.Column="0"

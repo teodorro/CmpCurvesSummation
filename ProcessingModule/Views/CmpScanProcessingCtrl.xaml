@@ -6,10 +6,12 @@
              xmlns:local="clr-namespace:ProcessingModule.Views"
              xmlns:viewModels="clr-namespace:ProcessingModule.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="270">
+             d:DesignHeight="450" d:DesignWidth="270" IsEnabled="False">
+    <Control.DataContext>
+        <viewModels:CmpScanProcessingViewModel/>
+    </Control.DataContext>
     <Grid >
-
-        <StackPanel Name="UiElementsStack" IsEnabled="False">
+        <StackPanel Name="UiElementsStack">
         <Label Content="Текущая последовательность обработок" VerticalAlignment="Bottom" FontWeight="Bold" />
         <DataGrid x:Name="ProcessingListDataGrid" CanUserAddRows="False" CanUserSortColumns="False" CanUserDeleteRows="False"
                   AutoGenerateColumns="False" IsReadOnly="True"

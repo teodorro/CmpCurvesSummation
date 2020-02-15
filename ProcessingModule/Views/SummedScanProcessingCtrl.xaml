@@ -4,8 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ProcessingModule.Views"
+             xmlns:viewModels="clr-namespace:ProcessingModule.ViewModels"
              mc:Ignorable="d" 
-             Height="200" d:DesignWidth="400">
+             Height="200" d:DesignWidth="400" IsEnabled="False">
+    <Control.DataContext>
+        <viewModels:SummedScanProcessingViewModel/>
+    </Control.DataContext>
     <Grid>
         <StackPanel Name="UiElementsStack">
             <Label Content="" VerticalAlignment="Bottom" FontWeight="Bold" />

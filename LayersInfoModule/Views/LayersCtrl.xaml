@@ -6,7 +6,10 @@
              xmlns:local="clr-namespace:LayersInfoModule.Views"
              xmlns:viewModels="clr-namespace:LayersInfoModule.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="360">
+             d:DesignHeight="250" d:DesignWidth="360" IsEnabled="False">
+    <Control.DataContext>
+        <viewModels:LayersViewModel/>
+    </Control.DataContext>
     <UserControl.Resources>
         <viewModels:SelectedRowToBoolConverter x:Key="SelectedRowToBoolConverter"/>
         <ContextMenu  x:Key="DataRowContextMenu">

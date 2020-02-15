@@ -14,19 +14,13 @@ namespace CmpCurvesSummation.Views
     /// </summary>
     public partial class OptionsCtrl : UserControl
     {
-        private OptionsViewModel _viewModel;
-        public OptionsViewModel ViewModel => _viewModel;
+        public OptionsViewModel ViewModel => DataContext as OptionsViewModel;
 
 
         public OptionsCtrl()
         {
             InitializeComponent();
-
-//            _viewModel = new OptionsViewModel();
-//            DataContext = _viewModel;
-
             EventAggregator.Instance.FileLoaded += (o, args) => { this.IsEnabled = true; };
-
         }
 
 

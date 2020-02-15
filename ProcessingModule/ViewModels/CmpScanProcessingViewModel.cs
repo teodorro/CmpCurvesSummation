@@ -18,11 +18,11 @@ namespace ProcessingModule.ViewModels
         public ICmpScanProcessor Processor { get; }
 
 
-        public CmpScanProcessingViewModel(ICmpScanProcessor processor)
+        public CmpScanProcessingViewModel()
         {
             EventAggregator.Instance.FileLoaded += OnFileLoaded;
-            Processor = processor;
-            processor.InitOperationList();
+            Processor = DiContainer.Instance.Container.GetInstance<ICmpScanProcessor>();
+            Processor.InitOperationList();
             InitOperationsList();
         }
 

@@ -24,18 +24,15 @@ namespace ProcessingModule.Views
     /// </summary>
     public partial class CmpScanProcessingCtrl : UserControl
     {
-        private CmpScanProcessingViewModel _viewModel;
-        public CmpScanProcessingViewModel ViewModel => _viewModel;
-
         private const int _tempCtrlIndex = 2;
+
+        private CmpScanProcessingViewModel ViewModel => DataContext as CmpScanProcessingViewModel;
 
 
         public CmpScanProcessingCtrl()
         {
             InitializeComponent();
-
-            _viewModel = new CmpScanProcessingViewModel(DiContainer.Instance.Container.GetInstance<ICmpScanProcessor>());
-            DataContext = _viewModel;
+            EventAggregator.Instance.FileLoaded += (o, args) => { this.IsEnabled = true; };
         }
 
 

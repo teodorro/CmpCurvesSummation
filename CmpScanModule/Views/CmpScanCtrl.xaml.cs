@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using CmpCurvesSummation.Core;
 
 namespace CmpScanModule.Views
 {
@@ -10,6 +11,7 @@ namespace CmpScanModule.Views
         public CmpScanCtrl()
         {
             InitializeComponent();
+            EventAggregator.Instance.FileLoaded += (o, args) => { this.IsEnabled = true; };
         }
     }
 }

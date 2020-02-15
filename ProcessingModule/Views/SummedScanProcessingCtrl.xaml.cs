@@ -24,8 +24,7 @@ namespace ProcessingModule.Views
     /// </summary>
     public partial class SummedScanProcessingCtrl : UserControl
     {
-        private SummedScanProcessingViewModel _viewModel;
-        public SummedScanProcessingViewModel ViewModel => _viewModel;
+        public SummedScanProcessingViewModel ViewModel => DataContext as SummedScanProcessingViewModel;
 
         private const int _tempCtrlIndex = 3;
 
@@ -33,8 +32,8 @@ namespace ProcessingModule.Views
         {
             InitializeComponent();
 
-            _viewModel = new SummedScanProcessingViewModel(DiContainer.Instance.Container.GetInstance<ISummedScanProcessor>());
-            DataContext = _viewModel;
+            EventAggregator.Instance.FileLoaded += (o, args) => { IsEnabled = false; };
+            EventAggregator.Instance.SummationFinished += (o, args) => { IsEnabled = true; };
         }
 
 
@@ -60,12 +59,12 @@ namespace ProcessingModule.Views
         
         private void ManageChangeMaxVelocity(ChangeMaxVelocity processing)
         {
-            UiElementsStack.Children.Add(new ChangeMaxVelocityCtrl(_viewModel.OnProcessingListChanged, processing));
+            UiElementsStack.Children.Add(new ChangeMaxVelocityCtrl(ViewModel.OnProcessingListChanged, processing));
         }
 
         private void ManageRaiseToPower(RaiseToPower processing)
         {
-            UiElementsStack.Children.Add(new RaiseToPowerCtrl(_viewModel.OnProcessingListChanged, processing));
+            UiElementsStack.Children.Add(new RaiseToPowerCtrl(ViewModel.OnProcessingListChanged, processing));
         }
     }
 }
