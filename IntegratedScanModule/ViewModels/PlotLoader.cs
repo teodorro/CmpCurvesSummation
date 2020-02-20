@@ -54,8 +54,8 @@ namespace SummedScanModule.ViewModels
             {
                 var heatMapSeries = new HeatMapSeries
                 {
-                    X0 = _summedScan.MinVelocity,
-                    X1 = _summedScan.MaxVelocity,
+                    X0 = _summedScan.MinVelocity * 100,
+                    X1 = _summedScan.MaxVelocity * 100,
                     Y0 = _summedScan.MinTime,
                     Y1 = _summedScan.MaxTime,
                     Interpolate = Interpolation,
@@ -102,8 +102,8 @@ namespace SummedScanModule.ViewModels
             if (_plot.Axes.All(x => x.Position != AxisPosition.Top))
                 _plot.Axes.First(x => x.Position == AxisPosition.Bottom).Position = AxisPosition.Top;
             var top = _plot.Axes.First(x => x.Position == AxisPosition.Top);
-            top.AbsoluteMinimum = _summedScan.MinVelocity;
-            top.AbsoluteMaximum = _summedScan.MaxVelocity;
+            top.AbsoluteMinimum = _summedScan.MinVelocity * 100;
+            top.AbsoluteMaximum = _summedScan.MaxVelocity * 100;
             top.Title = "V";
             top.TitleFontSize = 1;
         }

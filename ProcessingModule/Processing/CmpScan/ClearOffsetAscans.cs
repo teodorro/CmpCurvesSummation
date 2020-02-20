@@ -8,7 +8,7 @@ namespace ProcessingModule.Processing.CmpScan
         public string Name { get; } = "Очистить измерения отступа";
         public override string ToString() => Name;
 
-        public int NumberOfAscans { get; set; } = 5;
+        public int NumberOfAscans { get; set; } = 4;
 
         public int OrderIndex { get; }
 

@@ -120,6 +120,7 @@ namespace SummedScanModule.ViewModels
                 var axisY = Plot.Axes.First(x => x.Position == AxisPosition.Left);
 
                 var point = Axis.InverseTransform(e.Position, axisX, axisY);
+                point = new DataPoint(point.X / 100, point.Y);
                 if (!IsPointOnPlot(point))
                     return;
 
