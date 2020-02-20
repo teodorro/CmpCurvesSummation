@@ -15,7 +15,7 @@ namespace SummedScanModule.ViewModels
 
     public class LayersLoader : ILayersLoader
     {
-        private const double _layersStructureStrokeThickness = 0.5;
+        private const double _layersStructureStrokeThickness = 1;
         private const double _avgLayersStructureStrokeThickness = 0.25;
         private const int _pointSize = 1;
 

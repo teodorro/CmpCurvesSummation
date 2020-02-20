@@ -53,7 +53,7 @@ namespace SummedScanModule.ViewModels
         
         public SummedScanViewModel()
         {
-            Plot = new PlotModel { Title = "После суммирования" };
+            Plot = new PlotModel { Title = "График скоростей" };
             Plot.MouseDown += PlotOnMouseDown;
 
             EventAggregator.Instance.CmpScanParametersChanged += OnTimeOffsetChanged;

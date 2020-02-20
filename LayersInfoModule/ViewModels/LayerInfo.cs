@@ -29,7 +29,6 @@ namespace LayersInfoModule.ViewModels
         }
 
         private double _time;
-        [DisplayName("Время, нс")]
         public double Time
         {
             get => Math.Round(_time, 1);
@@ -38,14 +37,16 @@ namespace LayersInfoModule.ViewModels
                 _time = value;
                 OnPropertyChanged(nameof(Time));
                 OnPropertyChanged(nameof(Depth));
+                OnPropertyChanged(nameof(TimeDisplay));
+                OnPropertyChanged(nameof(DepthDisplay));
             }
         }
+        public double TimeDisplay => Math.Round(Time, 1);
 
-        [DisplayName("Глубина, м")]
-        public double Depth => Math.Round(CmpMath.Instance.Depth(AvgVelocity, Time), 2);
+        public double Depth => CmpMath.Instance.Depth(AvgVelocity, Time);
+        public double DepthDisplay => Math.Round(CmpMath.Instance.Depth(AvgVelocity, Time), 2);
 
         private double _avgVelocity;
-        [DisplayName("Средняя скорость, м/нс")]
         public double AvgVelocity
         {
             get => _avgVelocity;
@@ -54,12 +55,13 @@ namespace LayersInfoModule.ViewModels
                 _avgVelocity = value;
                 OnPropertyChanged(nameof(AvgVelocity));
                 OnPropertyChanged(nameof(Depth));
+                OnPropertyChanged(nameof(AvgVelocityDisplay));
+                OnPropertyChanged(nameof(DepthDisplay));
             }
         }
-
-
+        public double AvgVelocityDisplay => Math.Round(AvgVelocity * 100, 2);
+        
         private double _thickness;
-        [DisplayName("Толщина, м")]
         public double Thickness
         {
             get => _thickness;
@@ -67,13 +69,14 @@ namespace LayersInfoModule.ViewModels
             {
                 _thickness = value;
                 OnPropertyChanged(nameof(Thickness));
+                OnPropertyChanged(nameof(ThicknessDisplay));
             }
         }
+        public double ThicknessDisplay => Math.Round(Thickness, 2);
 
         public bool IsLayerThicknessOk => Thickness > 0;
 
         private double _layerVelocity;
-        [DisplayName("Скорость в слое, м/нс")]
         public double LayerVelocity
         {
             get => _layerVelocity;
@@ -82,13 +85,16 @@ namespace LayersInfoModule.ViewModels
                 _layerVelocity = value;
                 OnPropertyChanged(nameof(LayerVelocity));
                 OnPropertyChanged(nameof(LayerPermittivity));
+                OnPropertyChanged(nameof(LayerVelocityDisplay));
+                OnPropertyChanged(nameof(LayerPermittivityDisplay));
             }
         }
+        public double LayerVelocityDisplay => Math.Round(LayerVelocity * 100, 2);
 
         public bool IsLayerVelocityOk => LayerVelocity >= CmpMath.Instance.WaterVelocity && LayerVelocity <= CmpMath.AirVelocity;
 
-        [DisplayName("Диэл. пр-ть слоя")]
-        public double LayerPermittivity => Math.Round(CmpMath.Instance.Permittivity(LayerVelocity), 2);
+        public double LayerPermittivity => CmpMath.Instance.Permittivity(LayerVelocity);
+        public double LayerPermittivityDisplay => Math.Round(CmpMath.Instance.Permittivity(LayerVelocity), 2);
 
         public bool IsLayerPermittivityOk => LayerPermittivity >= CmpMath.AirPermittivity && LayerPermittivity <= CmpMath.WaterPermittivity;
 

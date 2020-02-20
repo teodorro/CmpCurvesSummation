@@ -18,7 +18,7 @@ namespace ProcessingModule.ViewModels
             get => _processing.MinNegativeAmplitudeToBegin;
             set
             {
-                _processing.MinNegativeAmplitudeToBegin = value;
+                _processing.MinNegativeAmplitudeToBegin = Math.Round(value, 3);
                 OnPropertyChanged(nameof(MinAmplitudeToCheck));
                 ProcessingListChanged(this, new CmpProcessingListChangedEventArgs() { Enabled = true, Processing = _processing });
             }
@@ -29,7 +29,7 @@ namespace ProcessingModule.ViewModels
             get => _processing.MinPositiveAmplitudeToStop;
             set
             {
-                _processing.MinPositiveAmplitudeToStop = value;
+                _processing.MinPositiveAmplitudeToStop = Math.Round(value, 3);
                 OnPropertyChanged(nameof(MaxAmpToBack));
                 ProcessingListChanged(this, new CmpProcessingListChangedEventArgs() { Enabled = true, Processing = _processing });
             }
@@ -46,7 +46,7 @@ namespace ProcessingModule.ViewModels
             }
         }
 
-        private double _maxAmplitude = 100;
+        private double _maxAmplitude = 50;
         public double MaxAmplitude
         {
             get => Math.Round(_maxAmplitude, 2);

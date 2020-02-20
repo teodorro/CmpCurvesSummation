@@ -36,10 +36,10 @@
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Time}" Header="Время, нс"/>
-                <DataGridTextColumn Binding="{Binding Path=Depth}" Header="Глубина, м"/>
-                <DataGridTextColumn Binding="{Binding Path=AvgVelocity}" Header="Средняя скорость, м/нс"/>
-                <DataGridTextColumn Binding="{Binding Path=Thickness}" Header="Толщина, м">
+                <DataGridTextColumn Binding="{Binding Path=TimeDisplay}" Header="Время, нс"/>
+                <DataGridTextColumn Binding="{Binding Path=DepthDisplay}" Header="Глубина, м"/>
+                <DataGridTextColumn Binding="{Binding Path=AvgVelocityDisplay}" Header="Средняя скорость, см/нс"/>
+                <DataGridTextColumn Binding="{Binding Path=ThicknessDisplay}" Header="Толщина, м">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Style.Triggers>
@@ -50,7 +50,7 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Path=LayerVelocity}" Header="Скорость в слое, м/нс">
+                <DataGridTextColumn Binding="{Binding Path=LayerVelocityDisplay}" Header="Скорость в слое, см/нс">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Style.Triggers>
@@ -61,7 +61,7 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Path=LayerPermittivity}" Header="Диэл. пр-ть слоя">
+                <DataGridTextColumn Binding="{Binding Path=LayerPermittivityDisplay}" Header="Диэл. пр-ть слоя">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Style.Triggers>

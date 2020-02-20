@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CmpCurvesSummation.Core;
 using ProcessingModule.Annotations;
@@ -19,9 +20,11 @@ namespace ProcessingModule.ViewModels.SummedScan
             {
                 _processing.MaxVelocity = value;
                 OnPropertyChanged(nameof(MaxVelocity));
+                OnPropertyChanged(nameof(MaxVelocityCm));
                 ProcessingListChanged(this, new SumProcessingListChangedEventArgs() { Enabled = true, Processing = _processing });
             }
         }
+        public double MaxVelocityCm => Math.Round(MaxVelocity * 100, 2);
 
         public double PlotMaxVelocity => CmpMath.PlotMaxVelocity;
         public double PlotMinVelocity => CmpMath.PlotMinVelocity;

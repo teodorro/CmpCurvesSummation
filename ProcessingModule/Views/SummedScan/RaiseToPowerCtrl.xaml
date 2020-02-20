@@ -17,6 +17,6 @@
                    Content="{Binding Power}"/>
         </StackPanel>
         <Slider  Margin="10,5,10,0" VerticalAlignment="Top" 
-                 Value="{Binding Power}" Grid.Row="1" Maximum="10" LargeChange="0.5"/>
+                 Value="{Binding Power}" Grid.Row="1" Maximum="10" LargeChange="0.5" />
     </Grid>
 </UserControl>

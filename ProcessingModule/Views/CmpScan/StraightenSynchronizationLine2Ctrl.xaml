@@ -26,6 +26,6 @@
         <Label x:Name="MaxAmpToBackLabel"  HorizontalAlignment="Left" Margin="200,10,0,5" VerticalAlignment="Bottom"
                Content="{Binding MaxAmpToBack}" Grid.Row="3"/>
         <Slider  Margin="10,12,10,0" VerticalAlignment="Top" Maximum="{Binding MaxAmplitude}" Minimum="0" 
-                 Value="{Binding MaxAmpToBack}" Grid.Row="4"/>
+                 Value="{Binding MaxAmpToBack}" Grid.Row="4" />
     </Grid>
 </UserControl>
