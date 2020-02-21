@@ -61,7 +61,7 @@ namespace SummedScanModule.ViewModels
             if (_summedScan.Layers.Count == 0)
                 return;
 
-            var velocity = _summedScan.Layers[0].Item1;
+            var velocity = _summedScan.Layers[0].Item1 * 100;
             var time = _summedScan.Layers[0].Item2;
             CreateLayersLine(velocity, time);
 
@@ -81,6 +81,7 @@ namespace SummedScanModule.ViewModels
             var prevTime = _summedScan.Layers[i - 1].Item2;
             var prevDepth = CmpMath.Instance.Depth(prevAvgVelocity, prevTime);
             var layerVelocity = Math.Round(CmpMath.Instance.LayerVelocity(time, 0, depth, avgVelocity, prevDepth, prevAvgVelocity), 3);
+            layerVelocity *= 100;
 
             var points = SolidLine.Points;
 
@@ -116,8 +117,8 @@ namespace SummedScanModule.ViewModels
             var c = OxyColor.FromArgb(_alpha, 255, 255, 255);
             var rect = new RectangleAnnotation
             {
-                MaximumX = _summedScan.MaxVelocity,
-                MinimumX = _summedScan.MinVelocity,
+                MaximumX = _summedScan.MaxVelocity * 100,
+                MinimumX = _summedScan.MinVelocity * 100,
                 MinimumY = _summedScan.MinTime,
                 MaximumY = _summedScan.MaxTime,
                 Fill = c
@@ -130,14 +131,14 @@ namespace SummedScanModule.ViewModels
             if (_summedScan.Layers.Count == 0)
                 return;
 
-            var velocity = _summedScan.Layers[0].Item1;
+            var velocity = _summedScan.Layers[0].Item1 * 100;
             var time = _summedScan.Layers[0].Item2;
             CreateAvgLine(velocity, time);
 
             if (_summedScan.Layers.Count <= 1) return;
             for (int i = 1; i < _summedScan.Layers.Count; i++)
             {
-                velocity = _summedScan.Layers[i].Item1;
+                velocity = _summedScan.Layers[i].Item1 * 100;
                 time = _summedScan.Layers[i].Item2;
                 AddPointToAvgLine(velocity, time);
             }
@@ -178,7 +179,7 @@ namespace SummedScanModule.ViewModels
         {
             foreach (var layer in _summedScan.Layers)
             {
-                var velocity = layer.Item1;
+                var velocity = layer.Item1 * 100;
                 var time = layer.Item2;
                 var point = new PointAnnotation();
                 point.X = velocity;
