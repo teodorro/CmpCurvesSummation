@@ -5,7 +5,7 @@ using CmpCurvesSummation.Core;
 
 namespace GprFileService
 {
-    public class GeoFileOpener1
+    public class GeoFileOpener1 : IFileTypeOpener
     {
         public ICmpScan OpenFile(string filepath)
         {

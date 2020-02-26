@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using CmpCurvesSummation.Core;
 using GprFileService;
 using Microsoft.Win32;
@@ -27,30 +28,42 @@ namespace CmpCurvesSummation.ViewModels
 
         public void OpenFile()
         {
-            var fileDialog = new OpenFileDialog();
-            fileDialog.Filter = "Geo Files (*.geo)|*.geo|Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
-            if (fileDialog.ShowDialog() == true)
+            try
             {
-                ICmpScan data = null;
-                bool geo = false;
-                var extension = fileDialog.FileName.Substring(fileDialog.FileName.LastIndexOf(".") + 1);
-                switch (extension)
+                var fileDialog = new OpenFileDialog();
+                fileDialog.Filter =
+                    "Geo Files (*.geo)|*.geo|Gem Files (*.gem)|*.gem|Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+                if (fileDialog.ShowDialog() == true)
                 {
-                    case "txt":
-                        data = _fileOpener.OpenKrotTxt(fileDialog.FileName);
-                        break;
-                    case "geo":
-                        geo = true;
-                        data = _fileOpener.OpenGeo2(fileDialog.FileName);
-                        break;
-                    default:
-                        data = _fileOpener.OpenKrotTxt(fileDialog.FileName);
-                        break;
-                }
-                EventAggregator.Instance.Invoke(this, new FileLoadedEventArgs(data, fileDialog.FileName));
+                    ICmpScan data = null;
+                    bool geo = false;
+                    var extension = fileDialog.FileName.Substring(fileDialog.FileName.LastIndexOf(".") + 1);
+                    switch (extension)
+                    {
+                        case "txt":
+                            data = _fileOpener.OpenKrotTxt(fileDialog.FileName);
+                            break;
+                        case "geo":
+                            geo = true;
+                            data = _fileOpener.OpenGeo2(fileDialog.FileName);
+                            break;
+                        case "gem":
+                            data = _fileOpener.OpenGem(fileDialog.FileName);
+                            break;
+                        default:
+                            data = _fileOpener.OpenKrotTxt(fileDialog.FileName);
+                            break;
+                    }
 
-                if (geo)
-                    SecondAttemptForGeo(fileDialog);
+                    EventAggregator.Instance.Invoke(this, new FileLoadedEventArgs(data, fileDialog.FileName));
+
+                    if (geo)
+                        SecondAttemptForGeo(fileDialog);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

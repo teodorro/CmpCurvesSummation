@@ -6,7 +6,7 @@ using CmpCurvesSummation.Core;
 
 namespace GprFileService
 {
-    public class TxtKrotFileOpener
+    public class TxtKrotFileOpener : IFileTypeOpener
     {
         public ICmpScan OpenFile(string filepath)
         {
@@ -19,7 +19,6 @@ namespace GprFileService
                 var krotFileData = ExtractDataFromKrotTxtFile(lines);
                 var cmpScan = CreateCmpScanFromKrotData(krotFileData);
                 RemoveEmptyAscans(cmpScan);
-                cmpScan.CopyRawDataToProcessed();
 
                 return cmpScan;
             }

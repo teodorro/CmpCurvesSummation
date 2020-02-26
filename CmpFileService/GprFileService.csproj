@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="FileOpener.cs" />
     <Compile Include="FileSaver.cs" />
+    <Compile Include="GemFileOpener.cs" />
     <Compile Include="GeoFileOpener1.cs" />
     <Compile Include="GeoFileOpener2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
