@@ -17,7 +17,7 @@ namespace GprFileService
 
                 if (cmpScan.RawData.Count == 0)
                 {
-                    throw new FileLoadException("Ошибка при загрузке файла", filepath);
+                    throw new FileLoadException("", filepath);
                     cmpScan = ReadFileBefore2013(filepath);
                     RemoveEmptyAscans(cmpScan);
                 }
