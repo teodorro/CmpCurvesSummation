@@ -44,13 +44,25 @@ namespace SummedScanModule.ViewModels
             set
             {
                 _avgLinesColor = value;
-                RepaintPoints();
-                RepaintLines();
+                RepaintAvgPoints();
+                RepaintAvgLines();
                 OnPropertyChanged(nameof(AvgLinesColor));
             }
         }
 
-        
+        private OxyColor _linesColor = OxyColor.FromRgb(0, 0, 0);
+        public OxyColor LinesColor
+        {
+            get => _linesColor;
+            set
+            {
+                _linesColor = value;
+                RepaintLines();
+                OnPropertyChanged(nameof(LinesColor));
+            }
+        }
+
+
         public SummedScanViewModel()
         {
             Plot = new PlotModel { Title = "График скоростей" };
@@ -78,10 +90,18 @@ namespace SummedScanModule.ViewModels
             _cmpScan = args.CmpScan;
         }
 
+        private void RepaintAvgLines()
+        {
+            foreach (var line in Plot.Annotations.OfType<PolylineAnnotation>().Where(x => x.LineStyle == LineStyle.Dash))
+                line.Color = AvgLinesColor;
+
+            Plot.InvalidatePlot(true);
+        }
+
         private void RepaintLines()
         {
-            foreach (var line in Plot.Annotations.OfType<PolylineAnnotation>())
-                line.Color = AvgLinesColor;
+            foreach (var line in Plot.Annotations.OfType<PolylineAnnotation>().Where(x => x.LineStyle == LineStyle.Solid))
+                line.Color = LinesColor;
             
             Plot.InvalidatePlot(true);
         }
@@ -203,7 +223,12 @@ namespace SummedScanModule.ViewModels
         {
             _palette = e.Palette;
             _plotLoader.Interpolation = e.Interpolation;
-            AvgLinesColor = OxyColor.FromArgb(e.ColorLayerLine.A, e.ColorLayerLine.R, e.ColorLayerLine.G, e.ColorLayerLine.B);
+            AvgLinesColor = e.ShowAverageProperties
+                ? OxyColor.FromArgb(e.ColorHodograph.A, e.ColorHodograph.R, e.ColorHodograph.G, e.ColorHodograph.B)
+                : OxyColor.FromArgb(0, e.ColorHodograph.R, e.ColorHodograph.G, e.ColorHodograph.B);
+            LinesColor = e.ShowLayersProperties
+                ? OxyColor.FromArgb(e.ColorHodograph.A, e.ColorHodograph.R, e.ColorHodograph.G, e.ColorHodograph.B)
+                : OxyColor.FromArgb(0, e.ColorHodograph.R, e.ColorHodograph.G, e.ColorHodograph.B);
 
             if (Plot == null)
                 return;
@@ -247,7 +272,7 @@ namespace SummedScanModule.ViewModels
             Clear();
         }
         
-        private void RepaintPoints()
+        private void RepaintAvgPoints()
         {
             if (!Plot.Annotations.Any(x => x is PointAnnotation))
                 return;

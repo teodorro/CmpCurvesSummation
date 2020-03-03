@@ -44,6 +44,42 @@ namespace SummedScanModule.ViewModels
             }
         }
 
+        private bool _showHodographs;
+        public bool ShowHodographs
+        {
+            get => _showHodographs;
+            set
+            {
+                _showHodographs = value;
+                OnPropertyChanged(nameof(ShowHodographs));
+//                EventAggregator.Instance.Invoke(this, new SumScanOptionsChangedEventArgs(_showHodographs, _alpha, _halfWaveSize));
+            }
+        }
+
+        private bool _showLayersProperties;
+        public bool ShowLayersProperties
+        {
+            get => _showLayersProperties;
+            set
+            {
+                _showLayersProperties = value;
+                OnPropertyChanged(nameof(ShowLayersProperties));
+//                EventAggregator.Instance.Invoke(this, new SumScanOptionsChangedEventArgs(_showLayersProperties, _alpha, _halfWaveSize));
+            }
+        }
+
+        private bool _showAverageProperties;
+        public bool ShowAverageProperties
+        {
+            get => _showAverageProperties;
+            set
+            {
+                _showAverageProperties = value;
+                OnPropertyChanged(nameof(ShowAverageProperties));
+//                EventAggregator.Instance.Invoke(this, new SumScanOptionsChangedEventArgs(_showAverageProperties, _alpha, _halfWaveSize));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

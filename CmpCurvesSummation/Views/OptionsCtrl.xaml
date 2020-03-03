@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CmpCurvesSummation.Views"
              xmlns:viewModels="clr-namespace:CmpCurvesSummation.ViewModels"
+             xmlns:toggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="350" IsEnabled="False">
     <Control.DataContext>
@@ -27,6 +28,9 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label x:Name="StepDistanceLabel" Content="Шаг измерений, м" Grid.Row="1" Margin="10,5"/>
@@ -38,7 +42,7 @@
         <Label x:Name="PaletteLabel" Content="Палитра" Margin="10,5" Grid.Row="3"/>
         <ComboBox x:Name="PaletteComboBox" Margin="5,5,5,10" Grid.Row="3" Grid.Column="1"
                   ItemsSource="{Binding Palettes}" SelectedItem="{Binding Palette}"/>
-        <Label x:Name="PointColorLabel" Content="Цвет точек" Margin="10,5" Grid.Row="4"/>
+        <Label x:Name="PointColorLabel" Content="Цвет линий " Margin="10,5" Grid.Row="4"/>
         <ComboBox x:Name="PointColorComboBox" Margin="5,5,5,10" Grid.Row="4" Grid.Column="1"
                   ItemsSource="{Binding PointColors}" SelectedItem="{Binding SelectedPointColor}">
             <ComboBox.Resources>
@@ -70,14 +74,28 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <CheckBox x:Name="checkBoxInterpolation" Grid.Row="6" Grid.ColumnSpan="2" Margin="15,10,5,5" Content="Интерполяция"
-                  IsChecked="{Binding InterpolationEnabled}"></CheckBox>
-        <Button x:Name="ButtonSummation" Content="Запустить суммирование" HorizontalAlignment="Left"  Grid.Row="9" Margin="20,0,0,15" Width="150" VerticalAlignment="Bottom" Grid.ColumnSpan="2"
+        <Label Content="Интерполяция" Grid.Row="6" Margin="10,5" ></Label>
+        <toggleSwitch:HorizontalToggleSwitch Margin="5,10,5,10" Grid.Row="6" Grid.Column="1" Width="50" CheckedContent="" UncheckedContent="" HorizontalAlignment="Right" 
+                                             IsChecked="{Binding InterpolationEnabled, Mode=TwoWay}" ThumbSize="30" />
+        <Label Content="Годографы" Grid.Row="7" Margin="10,5" ></Label>
+        <toggleSwitch:HorizontalToggleSwitch Margin="5,10,5,10" Grid.Row="7" Grid.Column="1" Width="50" CheckedContent="" UncheckedContent="" HorizontalAlignment="Right" 
+                                             IsChecked="{Binding ShowHodographs, Mode=TwoWay}" ThumbSize="30" />
+        <Label Content="Скорости по слоям" Grid.Row="8" Margin="10,5" ></Label>
+        <toggleSwitch:HorizontalToggleSwitch Margin="5,10,5,10" Grid.Row="8" Grid.Column="1" Width="50" CheckedContent="" UncheckedContent=""  HorizontalAlignment="Right"
+                                             IsChecked="{Binding ShowLayersProperties, Mode=TwoWay}" ThumbSize="30" ></toggleSwitch:HorizontalToggleSwitch>
+        <Label Content="Средние скорости" Grid.Row="9" Margin="10,5" ></Label>
+        <toggleSwitch:HorizontalToggleSwitch Margin="5,10,5,10" Grid.Row="9" Grid.Column="1" Width="50" CheckedContent="" UncheckedContent="" HorizontalAlignment="Right"
+                                             IsChecked="{Binding ShowAverageProperties, Mode=TwoWay}" ThumbSize="30" ></toggleSwitch:HorizontalToggleSwitch>
+        <Button x:Name="ButtonSummation" Content="Запустить суммирование" HorizontalAlignment="Left"  Grid.Row="12" Margin="20,0,0,15" Width="150" VerticalAlignment="Bottom" Grid.ColumnSpan="2"
                 IsEnabled="{Binding ManualSummationPossible}" Click="ButtonSummation_Click" Height="20" />
-        <ProgressBar x:Name="progressBar" Grid.Row="10" Grid.ColumnSpan="2" Margin="20,10,15,10"
+        <ProgressBar x:Name="progressBar" Grid.Row="13" Grid.ColumnSpan="2" Margin="20,10,15,10"
                      Visibility="{Binding ProgressBarVisible}" Value="{Binding ProgressValue}"/>
     </Grid>
 </UserControl>
+
+
+
+
 
 
 

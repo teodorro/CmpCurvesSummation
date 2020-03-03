@@ -171,8 +171,10 @@ namespace CmpScanModule.ViewModels
             _palette = e.Palette;
             _interpolate = e.Interpolation;
 
-            HodographColor = OxyColor.FromArgb(e.ColorHodograph.A, e.ColorHodograph.R, e.ColorHodograph.G, e.ColorHodograph.B);
-
+            HodographColor = e.ShowHodographs 
+                ? OxyColor.FromArgb(e.ColorHodograph.A, e.ColorHodograph.R, e.ColorHodograph.G, e.ColorHodograph.B)
+                : OxyColor.FromArgb(0, e.ColorHodograph.R, e.ColorHodograph.G, e.ColorHodograph.B);
+            
             if (Plot == null)
                 return;
             if (Plot.Axes.Any(x => x is LinearColorAxis))

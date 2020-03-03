@@ -108,9 +108,7 @@ namespace CmpCurvesSummation.ViewModels
             {
                 _palette = value;
                 OnPropertyChanged(nameof(Palette));
-                var palette = (PaletteType)new StringToPaletteConverter().Convert(_palette, null, null, null);
-                EventAggregator.Instance.Invoke(this, 
-                    new PlotVisualOptionsChangedEventArgs(palette, SelectedItemHodographColor.Value, SelectedPointColor.Value, _interpolationEnabled));
+                InvokeVisualOptionsChangedEvent();
             }
         }
 
@@ -147,17 +145,15 @@ namespace CmpCurvesSummation.ViewModels
             }
         }
 
-        private KeyValuePair<String, Color> _selectedPointColor;
-        public KeyValuePair<String, Color> SelectedPointColor
+        private KeyValuePair<string, Color> _selectedPointColor;
+        public KeyValuePair<string, Color> SelectedPointColor
         {
             get => _selectedPointColor;
             set
             {
                 _selectedPointColor = value;
-                var palette = (PaletteType)new StringToPaletteConverter().Convert(_palette, null, null, null);
-                EventAggregator.Instance.Invoke(this,
-                    new PlotVisualOptionsChangedEventArgs(palette, SelectedItemHodographColor.Value, SelectedPointColor.Value, _interpolationEnabled));
                 OnPropertyChanged(nameof(SelectedPointColor));
+                InvokeVisualOptionsChangedEvent();
             }
         }
         
@@ -179,10 +175,8 @@ namespace CmpCurvesSummation.ViewModels
             set
             {
                 _selectedItemItemHodographColor = value;
-                var palette = (PaletteType)new StringToPaletteConverter().Convert(_palette, null, null, null);
-                EventAggregator.Instance.Invoke(this,
-                    new PlotVisualOptionsChangedEventArgs(palette, SelectedItemHodographColor.Value, SelectedPointColor.Value, _interpolationEnabled));
                 OnPropertyChanged(nameof(SelectedItemHodographColor));
+                InvokeVisualOptionsChangedEvent();
             }
         }
 
@@ -194,12 +188,54 @@ namespace CmpCurvesSummation.ViewModels
             {
                 _interpolationEnabled = value;
                 OnPropertyChanged(nameof(InterpolationEnabled));
-                var palette = (PaletteType)new StringToPaletteConverter().Convert(_palette, null, null, null);
-                EventAggregator.Instance.Invoke(this,
-                    new PlotVisualOptionsChangedEventArgs(palette, SelectedItemHodographColor.Value, SelectedPointColor.Value, _interpolationEnabled));
+                InvokeVisualOptionsChangedEvent();
             }
         }
 
+        private void InvokeVisualOptionsChangedEvent()
+        {
+            var palette = (PaletteType) new StringToPaletteConverter().Convert(_palette, null, null, null);
+            EventAggregator.Instance.Invoke(this,
+                new PlotVisualOptionsChangedEventArgs(palette, SelectedItemHodographColor.Value, SelectedPointColor.Value,
+                    _interpolationEnabled,
+                    _showHodographs, _showLayersProperties, _showAverageProperties));
+        }
+
+        private bool _showHodographs = true;
+        public bool ShowHodographs
+        {
+            get => _showHodographs;
+            set
+            {
+                _showHodographs = value;
+                OnPropertyChanged(nameof(ShowHodographs));
+                InvokeVisualOptionsChangedEvent();
+            }
+        }
+
+        private bool _showLayersProperties = true;
+        public bool ShowLayersProperties
+        {
+            get => _showLayersProperties;
+            set
+            {
+                _showLayersProperties = value;
+                OnPropertyChanged(nameof(ShowLayersProperties));
+                InvokeVisualOptionsChangedEvent();
+            }
+        }
+
+        private bool _showAverageProperties = true;
+        public bool ShowAverageProperties
+        {
+            get => _showAverageProperties;
+            set
+            {
+                _showAverageProperties = value;
+                OnPropertyChanged(nameof(ShowAverageProperties));
+                InvokeVisualOptionsChangedEvent();
+            }
+        }
 
         public void LaunchSummation()
         {

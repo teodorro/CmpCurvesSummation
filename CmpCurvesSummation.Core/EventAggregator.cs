@@ -173,13 +173,20 @@ namespace CmpCurvesSummation.Core
         public Color ColorHodograph { get; }
         public Color ColorLayerLine { get; }
         public bool Interpolation { get; }
+        public bool ShowHodographs { get; }
+        public bool ShowLayersProperties { get; }
+        public bool ShowAverageProperties { get; }
 
-        public PlotVisualOptionsChangedEventArgs(PaletteType palette, Color colorHodograph, Color colorLayerLine, bool interpolation)
+        public PlotVisualOptionsChangedEventArgs(PaletteType palette, Color colorHodograph, Color colorLayerLine, bool interpolation,
+            bool showHodographs, bool showLayersProperties, bool showAverageProperties)
         {
             Palette = palette;
             ColorHodograph = colorHodograph;
             ColorLayerLine = colorLayerLine;
             Interpolation = interpolation;
+            ShowHodographs = showHodographs;
+            ShowLayersProperties = showLayersProperties;
+            ShowAverageProperties = showAverageProperties;
         }
     }
 

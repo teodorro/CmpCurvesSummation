@@ -58,6 +58,11 @@ namespace AppWithSimpleTestScan
             throw new NotImplementedException();
         }
 
+        public ICmpScan OpenGem(string filepath)
+        {
+            throw new NotImplementedException();
+        }
+
         public ICmpScan OpenGeo(string filepath) => GetCmpScan();
 
 

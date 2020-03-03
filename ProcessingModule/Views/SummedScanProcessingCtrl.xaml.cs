@@ -34,6 +34,9 @@ namespace ProcessingModule.Views
 
             EventAggregator.Instance.FileLoaded += (o, args) => { IsEnabled = false; };
             EventAggregator.Instance.SummationFinished += (o, args) => { IsEnabled = true; };
+
+            ProcessingListDataGrid.SelectedIndex = 0;
+
         }
 
 
