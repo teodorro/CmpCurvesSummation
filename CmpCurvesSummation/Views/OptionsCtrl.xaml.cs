@@ -22,12 +22,6 @@ namespace CmpCurvesSummation.Views
             InitializeComponent();
             EventAggregator.Instance.FileLoaded += (o, args) => { this.IsEnabled = true; };
         }
-
-
-        private void ButtonSummation_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.LaunchSummation();
-        }
     }
 
     public static class ColorHelper

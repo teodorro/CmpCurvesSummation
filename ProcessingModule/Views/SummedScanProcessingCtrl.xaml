@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ProcessingModule.Views"
              xmlns:viewModels="clr-namespace:ProcessingModule.ViewModels"
              mc:Ignorable="d" 
-             Height="200" d:DesignWidth="400" IsEnabled="False">
+             Height="250" d:DesignWidth="400" IsEnabled="False">
     <Control.DataContext>
         <viewModels:SummedScanProcessingViewModel/>
     </Control.DataContext>

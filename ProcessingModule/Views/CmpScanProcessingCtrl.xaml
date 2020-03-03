@@ -12,7 +12,7 @@
     </Control.DataContext>
     <Grid >
         <StackPanel Name="UiElementsStack">
-        <Label Content="Текущая последовательность обработок" VerticalAlignment="Bottom" FontWeight="Bold" />
+        <Label Content="Текущая последовательность обработок" VerticalAlignment="Bottom" FontWeight="Bold" Margin="0,20,0,0"/>
         <DataGrid x:Name="ProcessingListDataGrid" CanUserAddRows="False" CanUserSortColumns="False" CanUserDeleteRows="False"
                   AutoGenerateColumns="False" IsReadOnly="True"
                   ItemsSource="{Binding ProcessingRowList}" ColumnWidth="*" 

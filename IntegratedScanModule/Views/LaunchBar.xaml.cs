@@ -18,16 +18,19 @@ using SummedScanModule.ViewModels;
 namespace IntegratedScanModule.Views
 {
     /// <summary>
-    /// Interaction logic for SummedScanOptionsCtrl.xaml
+    /// Interaction logic for LaunchBar.xaml
     /// </summary>
-    public partial class SummedScanOptionsCtrl : UserControl
+    public partial class LaunchBar : UserControl
     {
-        public SummedScanOptionsCtrl()
+        public LaunchBar()
         {
             InitializeComponent();
-            EventAggregator.Instance.FileLoaded += (o, args) => { IsEnabled = false; };
-            EventAggregator.Instance.SummationFinished += (o, args) => { IsEnabled = true; };
+            EventAggregator.Instance.FileLoaded += (o, args) => { IsEnabled = true; };
         }
 
+        private void ButtonSummation_Click(object sender, RoutedEventArgs e)
+        {
+            (DataContext as LaunchViewModel).LaunchSummation();
+        }
     }
 }

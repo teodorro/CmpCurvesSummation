@@ -58,6 +58,8 @@ namespace ProcessingModule.Views
                 ManageChangeMaxVelocity(changeMaxVelocity);
             else if (dataRow.Processing is RaiseToPower raiseToPower)
                 ManageRaiseToPower(raiseToPower);
+            else if (dataRow.Processing is HideWeakValues hideWeakValues)
+                ManageHideWeakValues(hideWeakValues);
         }
         
         private void ManageChangeMaxVelocity(ChangeMaxVelocity processing)
@@ -68,6 +70,11 @@ namespace ProcessingModule.Views
         private void ManageRaiseToPower(RaiseToPower processing)
         {
             UiElementsStack.Children.Add(new RaiseToPowerCtrl(ViewModel.OnProcessingListChanged, processing));
+        }
+
+        private void ManageHideWeakValues(HideWeakValues processing)
+        {
+            UiElementsStack.Children.Add(new HideWeakValuesCtrl(ViewModel.OnProcessingListChanged, processing));
         }
     }
 }

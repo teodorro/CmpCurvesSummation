@@ -11,7 +11,7 @@
              xmlns:views4="clr-namespace:IntegratedScanModule.Views;assembly=IntegratedScanModule"
              xmlns:viewModels="clr-namespace:CmpCurvesSummation.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="700" d:DesignWidth="1200">
     <Control.DataContext>
         <viewModels:MainCtrlViewModel/>
     </Control.DataContext>
@@ -36,6 +36,7 @@
         <views1:CmpScanCtrl x:Name="CmpScanControl" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="0,0,0,5"></views1:CmpScanCtrl>
         <views2:SummedScanCtrl x:Name="SummedOverCurveScanControl" Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" Margin="0,0,0,5"></views2:SummedScanCtrl>
         <StackPanel Grid.Row="1" Grid.Column="4" Grid.RowSpan="2">
+            <views4:LaunchBar></views4:LaunchBar>
             <views4:SummedScanOptionsCtrl x:Name="SummedScanOptionsControl" Margin="15,5,5,10"></views4:SummedScanOptionsCtrl>
             <views:SummedScanProcessingCtrl x:Name="SummedScanProcessingControl" Margin="10,5,5,10"></views:SummedScanProcessingCtrl>
             <views3:LayersCtrl x:Name="LayersInfoControl" Margin="10,5,5,10"></views3:LayersCtrl>

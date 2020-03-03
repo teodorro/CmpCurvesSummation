@@ -17,14 +17,15 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
+
+        
 
         <Label Content="Автокоррекция клика" Grid.Row="1" Margin="5,5,5,0" ></Label>
         <toggleSwitch:HorizontalToggleSwitch Margin="5,10,20,10" Grid.Row="1" Width="50" CheckedContent="" UncheckedContent="" HorizontalAlignment="Right"
                                              IsChecked="{Binding AutoCorrection, Mode=TwoWay}" ThumbSize="30" ></toggleSwitch:HorizontalToggleSwitch>
-<!--        <CheckBox x:Name="AutoCorrectionPointClickCheckBox" Content="Автокоррекция клика" Margin="5,0,15,10" Grid.Row="1" VerticalAlignment="Bottom" -->
-<!--                  IsChecked="{Binding AutoCorrection}"/>-->
+        <!--        <CheckBox x:Name="AutoCorrectionPointClickCheckBox" Content="Автокоррекция клика" Margin="5,0,15,10" Grid.Row="1" VerticalAlignment="Bottom" -->
+        <!--                  IsChecked="{Binding AutoCorrection}"/>-->
         <Grid Grid.Row="2"  >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="130"/>
@@ -45,4 +46,6 @@
         </Grid>
     </Grid>
 </UserControl>
+
+
 

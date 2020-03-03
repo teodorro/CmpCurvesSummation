@@ -28,8 +28,9 @@ namespace ProcessingModule
         public void InitOperationList()
         {
             OperationsAvailable.Add(new ChangeMaxVelocity(0));
-            OperationsAvailable.Add(new RaiseToPower(1));
-            OperationsAvailable.Add(new Absolutize(2));
+            OperationsAvailable.Add(new HideWeakValues(1));
+            OperationsAvailable.Add(new RaiseToPower(2));
+            OperationsAvailable.Add(new Absolutize(3));
         }
 
         public ObservableCollection<ISumScanProcessing> OperationsAvailable { get; } = new ObservableCollection<ISumScanProcessing>();

@@ -32,10 +32,8 @@ namespace CmpCurvesSummation.ViewModels
 
         public OptionsViewModel()
         {
-            EventAggregator.Instance.SummationInProcess += OnSummationInProcess;
             EventAggregator.Instance.FileLoaded += OnFileLoaded;
             EventAggregator.Instance.CmpDataProcessed += OnCmpDataProcessed;
-            EventAggregator.Instance.SumDataProcessed += OnSumProcessed;
 
             InitStepsTime();
             InitStepsDistance();
@@ -51,16 +49,6 @@ namespace CmpCurvesSummation.ViewModels
 
         public ICmpScan CmpScan { get; private set; }
 
-        private bool _manualSummation;
-        public bool ManualSummationPossible
-        {
-            get => _manualSummation;
-            set
-            {
-                _manualSummation = value;
-                OnPropertyChanged(nameof(ManualSummationPossible));
-            }
-        }
         private bool _cmpScanLoaded;
 
         private double _stepTime = Core.CmpScan.DefaultStepTime;
@@ -109,28 +97,6 @@ namespace CmpCurvesSummation.ViewModels
                 _palette = value;
                 OnPropertyChanged(nameof(Palette));
                 InvokeVisualOptionsChangedEvent();
-            }
-        }
-
-        private bool _progressBarVisible = false;
-        public Visibility ProgressBarVisible
-        {
-            get => _progressBarVisible ? Visibility.Visible : Visibility.Hidden;
-            set
-            {
-                _progressBarVisible = value == Visibility.Visible;
-                OnPropertyChanged(nameof(ProgressBarVisible));
-            }
-        }
-
-        private int _progressValue;
-        public int ProgressValue
-        {
-            get => _progressValue;
-            set
-            {
-                _progressValue = value;
-                OnPropertyChanged(nameof(ProgressValue));
             }
         }
 
@@ -236,13 +202,6 @@ namespace CmpCurvesSummation.ViewModels
                 InvokeVisualOptionsChangedEvent();
             }
         }
-
-        public void LaunchSummation()
-        {
-            ManualSummationPossible = false;
-            ProgressBarVisible = Visibility.Visible;
-            EventAggregator.Instance.Invoke(this, new SummationStartedEventArgs());
-        }
         
         private void InitStepsDistance()
         {
@@ -286,14 +245,6 @@ namespace CmpCurvesSummation.ViewModels
         private void OnCmpDataProcessed(object obj, CmpDataProcessedEventArgs args)
         {
             _cmpScanLoaded = true;
-            ManualSummationPossible = _cmpScanLoaded;
-        }
-
-        private void OnSumProcessed(object obj, SumDataProcessedEventArgs e)
-        {
-            ManualSummationPossible = true;
-            ProgressBarVisible = Visibility.Hidden;
-            ProgressValue = 0;
         }
 
         private IEnumerable<KeyValuePair<String, Color>> GetColors()
@@ -302,11 +253,6 @@ namespace CmpCurvesSummation.ViewModels
                 .GetProperties()
                 .Where(prop => typeof(Color).IsAssignableFrom(prop.PropertyType))
                 .Select(prop => new KeyValuePair<String, Color>(prop.Name, (Color)prop.GetValue(null)));
-        }
-
-        private void OnSummationInProcess(object obj, SummationInProcessEventArgs e)
-        {
-            ProgressValue = e.Percent;
         }
 
 

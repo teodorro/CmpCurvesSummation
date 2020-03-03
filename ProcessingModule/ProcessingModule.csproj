@@ -60,6 +60,7 @@
     <Compile Include="Processing\CmpScan\StraightenSynchronizationLine2.cs" />
     <Compile Include="Processing\SummedScan\Absolutize.cs" />
     <Compile Include="Processing\SummedScan\ChangeMaxVelocity.cs" />
+    <Compile Include="Processing\SummedScan\HideWeakValues.cs" />
     <Compile Include="Processing\SummedScan\RaiseToPower.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="SummedScanProcessor.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="ViewModels\CmpScan\StraightenSynchronizationLineViewModel.cs" />
     <Compile Include="ViewModels\SummedScanProcessingViewModel.cs" />
     <Compile Include="ViewModels\SummedScan\ChangeMaxVelocityViewModel.cs" />
+    <Compile Include="ViewModels\SummedScan\HideWeakValuesViewModel.cs" />
     <Compile Include="ViewModels\SummedScan\RaiseToPowerViewModel.cs" />
     <Compile Include="Views\CmpScan\AddOffsetAscansCtrl.xaml.cs">
       <DependentUpon>AddOffsetAscansCtrl.xaml</DependentUpon>
@@ -104,6 +106,9 @@
     </Compile>
     <Compile Include="Views\SummedScan\ChangeMaxVelocityCtrl.xaml.cs">
       <DependentUpon>ChangeMaxVelocityCtrl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SummedScan\HideWeakValuesCtrl.xaml.cs">
+      <DependentUpon>HideWeakValuesCtrl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SummedScan\RaiseToPowerCtrl.xaml.cs">
       <DependentUpon>RaiseToPowerCtrl.xaml</DependentUpon>
@@ -143,6 +148,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SummedScan\ChangeMaxVelocityCtrl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SummedScan\HideWeakValuesCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

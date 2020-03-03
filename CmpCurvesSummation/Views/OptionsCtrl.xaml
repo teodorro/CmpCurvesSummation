@@ -27,10 +27,6 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label x:Name="StepDistanceLabel" Content="Шаг измерений, м" Grid.Row="1" Margin="10,5"/>
@@ -86,10 +82,7 @@
         <Label Content="Средние скорости" Grid.Row="9" Margin="10,5" ></Label>
         <toggleSwitch:HorizontalToggleSwitch Margin="5,10,5,10" Grid.Row="9" Grid.Column="1" Width="50" CheckedContent="" UncheckedContent="" HorizontalAlignment="Right"
                                              IsChecked="{Binding ShowAverageProperties, Mode=TwoWay}" ThumbSize="30" ></toggleSwitch:HorizontalToggleSwitch>
-        <Button x:Name="ButtonSummation" Content="Запустить суммирование" HorizontalAlignment="Left"  Grid.Row="12" Margin="20,0,0,15" Width="150" VerticalAlignment="Bottom" Grid.ColumnSpan="2"
-                IsEnabled="{Binding ManualSummationPossible}" Click="ButtonSummation_Click" Height="20" />
-        <ProgressBar x:Name="progressBar" Grid.Row="13" Grid.ColumnSpan="2" Margin="20,10,15,10"
-                     Visibility="{Binding ProgressBarVisible}" Value="{Binding ProgressValue}"/>
+        
     </Grid>
 </UserControl>
 
