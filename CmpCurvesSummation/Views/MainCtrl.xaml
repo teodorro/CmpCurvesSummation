@@ -11,35 +11,34 @@
              xmlns:views4="clr-namespace:IntegratedScanModule.Views;assembly=IntegratedScanModule"
              xmlns:viewModels="clr-namespace:CmpCurvesSummation.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="700" d:DesignWidth="1200">
+             d:DesignHeight="700" d:DesignWidth="1500">
     <Control.DataContext>
         <viewModels:MainCtrlViewModel/>
     </Control.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="270"/>
+            <ColumnDefinition Width="450"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="612"/>
+            <ColumnDefinition Width="550"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <local:ToolbarCtrl x:Name="ToolbarControl" Grid.ColumnSpan="5"></local:ToolbarCtrl>
-        <StackPanel Grid.Row="1" Grid.RowSpan="2">
-            <local:OptionsCtrl x:Name="OptionsControl"></local:OptionsCtrl>
+        <StackPanel Grid.Row="1">
+            <local:ToolbarCtrl x:Name="ToolbarControl"></local:ToolbarCtrl>
+            <local:OptionsCtrl x:Name="OptionsControl" Margin="0,20,0,0"></local:OptionsCtrl>
             <views:CmpScanProcessingCtrl x:Name="ProcessingControl" Margin="10,5,5,10"></views:CmpScanProcessingCtrl>
         </StackPanel>
         <views1:CmpScanCtrl x:Name="CmpScanControl" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="0,0,0,5"></views1:CmpScanCtrl>
         <views2:SummedScanCtrl x:Name="SummedOverCurveScanControl" Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" Margin="0,0,0,5"></views2:SummedScanCtrl>
         <StackPanel Grid.Row="1" Grid.Column="4" Grid.RowSpan="2">
-            <views4:LaunchBar></views4:LaunchBar>
-            <views4:SummedScanOptionsCtrl x:Name="SummedScanOptionsControl" Margin="15,5,5,10"></views4:SummedScanOptionsCtrl>
+            <!--            <views4:LaunchBar></views4:LaunchBar>-->
+            <views4:SummedScanOptionsCtrl x:Name="SummedScanOptionsControl"></views4:SummedScanOptionsCtrl>
             <views:SummedScanProcessingCtrl x:Name="SummedScanProcessingControl" Margin="10,5,5,10"></views:SummedScanProcessingCtrl>
-            <views3:LayersCtrl x:Name="LayersInfoControl" Margin="10,5,5,10"></views3:LayersCtrl>
+            <views3:LayersCtrl x:Name="LayersInfoControl" Margin="5,20,5,0"></views3:LayersCtrl>
         </StackPanel>
     </Grid>
 </UserControl>
+

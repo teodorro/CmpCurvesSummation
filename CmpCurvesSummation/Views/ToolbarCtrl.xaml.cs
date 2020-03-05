@@ -33,5 +33,10 @@ namespace CmpCurvesSummation.Views
         {
             _viewModel.OpenFile();
         }
+
+        private void ButtonSummation_Click(object sender, RoutedEventArgs e)
+        {
+            (DataContext as ToolbarViewModel).LaunchSummation();
+        }
     }
 }

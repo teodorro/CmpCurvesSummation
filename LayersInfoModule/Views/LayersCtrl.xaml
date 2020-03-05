@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:LayersInfoModule.Views"
              xmlns:viewModels="clr-namespace:LayersInfoModule.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="360" IsEnabled="False">
+             d:DesignHeight="250" d:DesignWidth="55
+             0" IsEnabled="False">
     <Control.DataContext>
         <viewModels:LayersViewModel/>
     </Control.DataContext>
@@ -38,7 +39,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=TimeDisplay}" Header="Время, нс"/>
                 <DataGridTextColumn Binding="{Binding Path=DepthDisplay}" Header="Глубина, м"/>
-                <DataGridTextColumn Binding="{Binding Path=AvgVelocityDisplay}" Header="Средняя скорость, см/нс"/>
+                <DataGridTextColumn Binding="{Binding Path=AvgVelocityDisplay}" Header="Ср. скорость, см/нс"/>
                 <DataGridTextColumn Binding="{Binding Path=ThicknessDisplay}" Header="Толщина, м">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
@@ -50,7 +51,7 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Path=LayerVelocityDisplay}" Header="Скорость в слое, см/нс">
+                <DataGridTextColumn Binding="{Binding Path=LayerVelocityDisplay}" Header="Скорость(слой), см/нс">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Style.Triggers>
@@ -61,7 +62,7 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Path=LayerPermittivityDisplay}" Header="Диэл. пр-ть слоя">
+                <DataGridTextColumn Binding="{Binding Path=LayerPermittivityDisplay}" Header="Диэл. пр-ть">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Style.Triggers>

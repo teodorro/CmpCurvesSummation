@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CmpCurvesSummation.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="800">
+             d:DesignHeight="100" d:DesignWidth="500">
     <!-- <Control.CommandBindings> -->
     <!--     <CommandBinding Command="Open" Executed="OpenFile"></CommandBinding> -->
     <!-- </Control.CommandBindings> -->
@@ -13,8 +13,12 @@
         <ToolBar>
             <Button x:Name="ButtonOpenFile" Content="Open" Height="50" VerticalAlignment="Top" Width="50" Click="ButtonOpenFile_Click"/>
                     <!-- Command="Open" /> -->
-            <Button x:Name="ButtonSaveFle" Content="Save" Height="50" VerticalAlignment="Top" Width="50"/>
+<!--            <Button x:Name="ButtonSaveFle" Content="Save" Height="50" VerticalAlignment="Top" Width="50"/>-->
 
+            <Button x:Name="ButtonSummation" Content="Запустить суммирование" HorizontalAlignment="Left" Margin="5" Width="170" 
+                    IsEnabled="{Binding ManualSummationPossible}" Click="ButtonSummation_Click" Grid.Column="1" Grid.Row="1" />
+            <ProgressBar x:Name="progressBar"  Margin="10" Width="200"
+                         Visibility="{Binding ProgressBarVisible}" Value="{Binding ProgressValue}"/>
         </ToolBar> 
 
     </Grid>
