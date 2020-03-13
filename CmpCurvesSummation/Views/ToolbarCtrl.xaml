@@ -5,19 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CmpCurvesSummation.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="500">
+             d:DesignHeight="70" d:DesignWidth="300">
     <!-- <Control.CommandBindings> -->
     <!--     <CommandBinding Command="Open" Executed="OpenFile"></CommandBinding> -->
     <!-- </Control.CommandBindings> -->
+    <UserControl.Resources>
+        <Image x:Key="PlayImage" Source="../Resources/Play-1-Normal-icon.png"/>
+        <Image x:Key="OpenFileImage" Source="../Resources/Open-icon.png"/>
+    </UserControl.Resources>
     <Grid>
         <ToolBar>
-            <Button x:Name="ButtonOpenFile" Content="Open" Height="50" VerticalAlignment="Top" Width="50" Click="ButtonOpenFile_Click"/>
-                    <!-- Command="Open" /> -->
-<!--            <Button x:Name="ButtonSaveFle" Content="Save" Height="50" VerticalAlignment="Top" Width="50"/>-->
+            <Button x:Name="ButtonOpenFile" Content="{StaticResource OpenFileImage}"   Click="ButtonOpenFile_Click"/>
 
-            <Button x:Name="ButtonSummation" Content="Запустить суммирование" HorizontalAlignment="Left" Margin="5" Width="170" 
-                    IsEnabled="{Binding ManualSummationPossible}" Click="ButtonSummation_Click" Grid.Column="1" Grid.Row="1" />
-            <ProgressBar x:Name="progressBar"  Margin="10" Width="200"
+            <Button x:Name="ButtonSummation" Content="{StaticResource PlayImage}"  
+                    IsEnabled="{Binding ManualSummationPossible}" Click="ButtonSummation_Click"  />
+            <ProgressBar x:Name="progressBar" Margin="10,10,0,10" Width="120"
                          Visibility="{Binding ProgressBarVisible}" Value="{Binding ProgressValue}"/>
         </ToolBar> 
 

@@ -116,10 +116,7 @@ namespace ProcessingModule.ViewModels
                         Enabled = value,
                         Processing = Processor.OperationsAvailable.OfType<LogarithmProcessing>().FirstOrDefault()
                     });
-                EventAggregator.Instance.Invoke(this, new CmpDataProcessedEventArgs(_cmpScan));
-//                Task.Run(() => EventAggregator.Instance.Invoke(this,
-//                    new CmpProcessingListChangedEventArgs() { Enabled = value, Processing = Processor.OperationsAvailable.OfType<LogarithmProcessing>().FirstOrDefault() }))
-//                    .ContinueWith(_ => EventAggregator.Instance.Invoke(this, new CmpDataProcessedEventArgs(_cmpScan)));
+                EventAggregator.Instance.Invoke(this, new CmpProcessingValuesChangedEventArgs());
             }
         }
 
@@ -138,9 +135,6 @@ namespace ProcessingModule.ViewModels
                         Processing = Processor.OperationsAvailable.OfType<ZeroAmplitudeCorrection>().FirstOrDefault()
                     });
                 EventAggregator.Instance.Invoke(this, new CmpProcessingValuesChangedEventArgs());
-//                Task.Run(() => EventAggregator.Instance.Invoke(this,
-//                    new CmpProcessingListChangedEventArgs() { Enabled = value, Processing = Processor.OperationsAvailable.OfType<ZeroAmplitudeCorrection>().FirstOrDefault() }))
-//                    .ContinueWith(_ => EventAggregator.Instance.Invoke(this, new CmpDataProcessedEventArgs(_cmpScan)));
             }
         }
 
