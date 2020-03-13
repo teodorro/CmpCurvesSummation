@@ -63,12 +63,16 @@
     </ApplicationDefinition>
     <Compile Include="ViewModels\MainCtrlViewModel.cs" />
     <Compile Include="ViewModels\OptionsViewModel.cs" />
+    <Compile Include="ViewModels\SurveyPropertiesViewModel.cs" />
     <Compile Include="ViewModels\ToolbarViewModel.cs" />
     <Compile Include="Views\MainCtrl.xaml.cs">
       <DependentUpon>MainCtrl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\OptionsCtrl.xaml.cs">
       <DependentUpon>OptionsCtrl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SurveyPropertiesCtrl.xaml.cs">
+      <DependentUpon>SurveyPropertiesCtrl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ToolbarCtrl.xaml.cs">
       <DependentUpon>ToolbarCtrl.xaml</DependentUpon>
@@ -93,6 +97,10 @@
     <Page Include="Views\OptionsCtrl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SurveyPropertiesCtrl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ToolbarCtrl.xaml">
       <Generator>MSBuild:Compile</Generator>

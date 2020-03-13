@@ -21,13 +21,7 @@ namespace ProcessingModule.Processing.CmpScan
             }
         }
 
-        public int OrderIndex { get; }
-
-
-        public RemoveLeftAscans(int orderIndex)
-        {
-            OrderIndex = orderIndex;
-        }
+        public int OrderIndex { get; } = 0;
 
 
         public void Process(ICmpScan cmpScan)

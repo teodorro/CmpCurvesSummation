@@ -9,16 +9,9 @@ namespace ProcessingModule.Views.CmpScan
     /// </summary>
     public partial class StraightenSynchronizationLineCtrl : UserControl
     {
-        private StraightenSynchronizationLineViewModel _viewModel;
-        public double MinAmplitudeToCheck => _viewModel.MinAmplitudeToCheck;
-
-        public StraightenSynchronizationLineCtrl(CmpProcessingListChangedHandler onCmpProcessingListChanged, StraightenSynchronizationLine processing)
+        public StraightenSynchronizationLineCtrl()
         {
             InitializeComponent();
-
-            _viewModel = new StraightenSynchronizationLineViewModel(processing);
-            _viewModel.ProcessingListChanged += onCmpProcessingListChanged;
-            DataContext = _viewModel;
         }
     }
 }

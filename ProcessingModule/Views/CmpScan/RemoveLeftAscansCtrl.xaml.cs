@@ -9,16 +9,9 @@ namespace ProcessingModule.Views.CmpScan
     /// </summary>
     public partial class RemoveLeftAscansCtrl : UserControl
     {
-        private RemoveLeftAscansViewModel _viewModel;
-//        public int NumberOfOffsetAscans => _viewModel.NumberOfAscans;
-
-        public RemoveLeftAscansCtrl(CmpProcessingListChangedHandler onCmpProcessingListChanged, RemoveLeftAscans processing)
+        public RemoveLeftAscansCtrl()
         {
             InitializeComponent();
-
-            _viewModel = new RemoveLeftAscansViewModel(processing);
-            _viewModel.ProcessingListChanged += onCmpProcessingListChanged;
-            DataContext = _viewModel;
         }
     }
 }

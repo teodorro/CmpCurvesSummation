@@ -1,23 +1,44 @@
-﻿<UserControl x:Class="ProcessingModule.Views.CmpScan.StraightenSynchronizationLineCtrl"
+﻿<UserControl x:Name="straightenSynchronizationLineCtrl" x:Class="ProcessingModule.Views.CmpScan.StraightenSynchronizationLineCtrl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ProcessingModule.Views"
+             xmlns:viewModels="clr-namespace:ProcessingModule.ViewModels"
              mc:Ignorable="d" 
-        d:DesignHeight="200" d:DesignWidth="270">
+             d:DesignHeight="100" d:DesignWidth="270">
+    <Control.DataContext>
+        <viewModels:StraightenSynchronizationLineViewModel x:Name="straightenSynchronizationLineViewModel"></viewModels:StraightenSynchronizationLineViewModel>
+    </Control.DataContext>
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="50"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <Label Content="Минимальная амплитуда" HorizontalAlignment="Left" Margin="20,10,0,5" VerticalAlignment="Bottom"
-               Grid.Row="1"/>
-        <Label x:Name="MinAmpToCheckLabel"  HorizontalAlignment="Left" Margin="200,10,0,5" VerticalAlignment="Bottom"
-               Content="{Binding MinAmplitudeToCheck}" Grid.Row="1"/>
-        <Slider  Margin="10,12,10,0" VerticalAlignment="Top" Maximum="{Binding MaxAmplitude}" Minimum="{Binding MinAmplitude}" 
-                 Value="{Binding MinAmplitudeToCheck}" Grid.Row="2"/>
+        <Label Content="Спад" Margin="5,5,15,10"
+               Grid.Column="0" Grid.Row="0"/>
+        <Slider  Margin="10,12,5,0" VerticalAlignment="Top" Maximum="10" Minimum="{Binding MinAmplitude}" 
+                 Value="{Binding MinAmplitudeToCheck}" 
+                 Grid.Column="1" Grid.Row="0"/>
+        <Label x:Name="MinAmpToCheckLabel"  HorizontalAlignment="Left" Margin="5,5,5,10"
+               VerticalAlignment="Center" HorizontalContentAlignment="Left"
+               Content="{Binding MinAmplitudeToCheck}" 
+               Grid.Column="2" Grid.Row="0"/>
+
+        <Label Content="Подъем" Margin="5,5,15,10"
+               Grid.Column="0" Grid.Row="1"/>
+        <Slider  Margin="10,12,5,0" VerticalAlignment="Top" Maximum="{Binding MaxAmplitude}"  Minimum="0"
+                 Value="{Binding MaxAmpToBack}" 
+                 Grid.Column="1" Grid.Row="1"/>
+        <Label x:Name="MaxAmpToBackLabel"  HorizontalAlignment="Left" Margin="5,5,5,10"
+               VerticalAlignment="Center" HorizontalContentAlignment="Left"
+               Content="{Binding MaxAmpToBack}" 
+               Grid.Column="2" Grid.Row="1"/>
+
     </Grid>
 </UserControl>

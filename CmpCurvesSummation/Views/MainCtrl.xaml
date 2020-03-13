@@ -17,20 +17,37 @@
     </Control.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="450"/>
+            <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="550"/>
+            <ColumnDefinition Width="500"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="1">
-            <local:ToolbarCtrl x:Name="ToolbarControl"></local:ToolbarCtrl>
-            <local:OptionsCtrl x:Name="OptionsControl" Margin="0,20,0,0"></local:OptionsCtrl>
-            <views:CmpScanProcessingCtrl x:Name="ProcessingControl" Margin="10,5,5,10"></views:CmpScanProcessingCtrl>
-        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <local:ToolbarCtrl x:Name="ToolbarControl" Grid.Row="0"></local:ToolbarCtrl>
+            <TabControl Grid.Row="1">
+                <TabItem Header="Начальные данные">
+                    <Grid >
+                        <StackPanel Orientation="Vertical">
+                        <local:SurveyPropertiesCtrl Margin="10,5,5,10"></local:SurveyPropertiesCtrl>
+                        <views:CmpScanProcessingCtrl x:Name="ProcessingControl" Margin="10,5,5,10"></views:CmpScanProcessingCtrl>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Визуальные свойства">
+                    <Grid >
+                        <local:OptionsCtrl x:Name="OptionsControl" Margin="0,20,0,0"></local:OptionsCtrl>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
         <views1:CmpScanCtrl x:Name="CmpScanControl" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="0,0,0,5"></views1:CmpScanCtrl>
         <views2:SummedScanCtrl x:Name="SummedOverCurveScanControl" Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" Margin="0,0,0,5"></views2:SummedScanCtrl>
         <StackPanel Grid.Row="1" Grid.Column="4" Grid.RowSpan="2">
@@ -41,4 +58,6 @@
         </StackPanel>
     </Grid>
 </UserControl>
+
+
 

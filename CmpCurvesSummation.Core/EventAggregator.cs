@@ -24,6 +24,10 @@ namespace CmpCurvesSummation.Core
 
     public delegate void RefreshLayersHandler(object obj, RefreshLayersEventArgs e);
 
+    public delegate void CmpProcessingListChangedHandler(object obj, CmpProcessingListChangedEventArgs e);
+
+    public delegate void CmpProcessingValuesChangedHandler(object obj, CmpProcessingValuesChangedEventArgs e);
+
 
     public interface IEventAggregator
     {
@@ -37,6 +41,8 @@ namespace CmpCurvesSummation.Core
         event SummationFinishedHandler SummationFinished;
         event SumDataProcessedHandler SumDataProcessed;
         event SumScanOptionsChangedHandler SumScanOptionsChanged;
+        event CmpProcessingListChangedHandler CmpProcessingListChanged;
+        event CmpProcessingValuesChangedHandler CmpProcessingValuesChanged;
     }
 
 
@@ -54,6 +60,8 @@ namespace CmpCurvesSummation.Core
         public event SummationFinishedHandler SummationFinished;
         public event SumDataProcessedHandler SumDataProcessed;
         public event SumScanOptionsChangedHandler SumScanOptionsChanged;
+        public event CmpProcessingListChangedHandler CmpProcessingListChanged;
+        public event CmpProcessingValuesChangedHandler CmpProcessingValuesChanged;
 
         public void Invoke(object obj, EventArgs e)
         {
@@ -85,6 +93,12 @@ namespace CmpCurvesSummation.Core
                     break;
                 case SumScanOptionsChangedEventArgs args:
                     SumScanOptionsChanged?.Invoke(obj, args);
+                    break;
+                case CmpProcessingListChangedEventArgs args:
+                    CmpProcessingListChanged?.Invoke(obj, args);
+                    break;
+                case CmpProcessingValuesChangedEventArgs args:
+                    CmpProcessingValuesChanged?.Invoke(obj, args);
                     break;
             }
         }
@@ -212,5 +226,15 @@ namespace CmpCurvesSummation.Core
         }
 
         public IEnumerable<Tuple<double, double>> Layers { get; }
+    }
+
+    public class CmpProcessingListChangedEventArgs : EventArgs
+    {
+        public object Processing { get; set; }
+        public bool? Enabled { get; set; }
+    }
+
+    public class CmpProcessingValuesChangedEventArgs : EventArgs
+    {
     }
 }

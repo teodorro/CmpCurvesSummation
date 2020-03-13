@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using CmpCurvesSummation.Core;
 using ProcessingModule.Annotations;
 using ProcessingModule.Processing;
 using ProcessingModule.Processing.CmpScan;
@@ -8,9 +9,7 @@ namespace ProcessingModule.ViewModels
 {
     public class RemoveRightAscansViewModel : INotifyPropertyChanged
     {
-        public event CmpProcessingListChangedHandler ProcessingListChanged;
-
-        private RemoveRightAscans _processing;
+        private RemoveRightAscans _processing = new RemoveRightAscans();
 
         public int NumberOfAscans
         {
@@ -19,7 +18,7 @@ namespace ProcessingModule.ViewModels
             {
                 _processing.NumberOfAscans = value;
                 OnPropertyChanged(nameof(NumberOfAscans));
-                ProcessingListChanged(this, new CmpProcessingListChangedEventArgs() { Enabled = true, Processing = _processing });
+                EventAggregator.Instance.Invoke(this, new CmpProcessingValuesChangedEventArgs());
             }
         }
 
@@ -30,15 +29,36 @@ namespace ProcessingModule.ViewModels
             {
                 _processing.MaximumNumberOfAscans = value;
                 OnPropertyChanged(nameof(MaximumNumberOfAscans));
-                ProcessingListChanged(this, new CmpProcessingListChangedEventArgs() { Enabled = true, Processing = _processing });
             }
         }
 
 
-        public RemoveRightAscansViewModel(RemoveRightAscans processing)
+        public RemoveRightAscansViewModel()
         {
-            _processing = processing;
+            EventAggregator.Instance.FileLoaded += Tune;
+            EventAggregator.Instance.CmpProcessingListChanged += OnProcessingListChanged;
         }
+
+
+        private void OnProcessingListChanged(object obj, CmpProcessingListChangedEventArgs e)
+        {
+            if (e.Processing.GetType() != typeof(RemoveRightAscans))
+                return;
+            _processing = (RemoveRightAscans)(e.Enabled == true ? e.Processing : null);
+            EventAggregator.Instance.Invoke(this, new CmpProcessingValuesChangedEventArgs());
+        }
+
+        private void Tune(object obj, FileLoadedEventArgs e)
+        {
+            MaximumNumberOfAscans = e.CmpScan.LengthDimensionless - 1;
+        }
+
+
+//        public void Invoke(bool visible)
+//        {
+//            EventAggregator.Instance.Invoke(this,
+//                new CmpProcessingListChangedEventArgs() { Enabled = visible, Processing = _processing });
+//        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

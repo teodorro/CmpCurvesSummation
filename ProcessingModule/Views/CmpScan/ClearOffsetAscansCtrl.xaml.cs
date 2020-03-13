@@ -9,17 +9,10 @@ namespace ProcessingModule.Views.CmpScan
     /// </summary>
     public partial class ClearOffsetAscansCtrl : UserControl
     {
-        private ClearOffsetAscansViewModel _viewModel;
-        public int NumberOfOffsetAscans => _viewModel.NumberOfOffsetAscans;
-
-
-        public ClearOffsetAscansCtrl(CmpProcessingListChangedHandler onCmpProcessingListChanged, ClearOffsetAscans processing)
+        public ClearOffsetAscansCtrl()
         {
             InitializeComponent();
-
-            _viewModel = new ClearOffsetAscansViewModel(processing);
-            _viewModel.ProcessingListChanged += onCmpProcessingListChanged;
-            DataContext = _viewModel;
         }
+
     }
 }

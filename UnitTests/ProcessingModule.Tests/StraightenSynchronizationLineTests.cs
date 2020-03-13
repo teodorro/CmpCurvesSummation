@@ -58,7 +58,7 @@ namespace ProcessingModule.Tests
         {
             var cmpScan = GetSimpleCmpScan();
             cmpScan.CopyRawDataToProcessed();
-            var processing = new StraightenSynchronizationLine(0);
+            var processing = new StraightenSynchronizationLine();
 
             processing.Process(cmpScan);
 
@@ -72,7 +72,7 @@ namespace ProcessingModule.Tests
         {
             var cmpScan = GetSimpleCmpScanMinus();
             cmpScan.CopyRawDataToProcessed();
-            var processing = new StraightenSynchronizationLine(0);
+            var processing = new StraightenSynchronizationLine();
 
             processing.Process(cmpScan);
 
@@ -86,7 +86,7 @@ namespace ProcessingModule.Tests
         {
             var cmpScan = GetSimpleCmpScanFlat();
             cmpScan.CopyRawDataToProcessed();
-            var processing = new StraightenSynchronizationLine(0);
+            var processing = new StraightenSynchronizationLine();
 
             processing.Process(cmpScan);
             

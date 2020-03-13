@@ -26,7 +26,7 @@ namespace ProcessingModule.Tests
         {
             var cmpScan = GetCmpScan1();
             cmpScan.CopyRawDataToProcessed();
-            var processing = new StraightenSynchronizationLine2(0);
+            var processing = new StraightenSynchronizationLine();
 
             processing.Process(cmpScan);
 

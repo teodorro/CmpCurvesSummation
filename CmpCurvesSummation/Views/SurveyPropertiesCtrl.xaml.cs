@@ -12,21 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using CmpCurvesSummation.Core;
-using CmpCurvesSummation.ViewModels;
 
 namespace CmpCurvesSummation.Views
 {
     /// <summary>
-    /// Interaction logic for MainCtrl.xaml
+    /// Interaction logic for SurveyPropertiesCtrl.xaml
     /// </summary>
-    public partial class MainCtrl : UserControl
+    public partial class SurveyPropertiesCtrl : UserControl
     {
-
-        public MainCtrl()
+        public SurveyPropertiesCtrl()
         {
             InitializeComponent();
-            ToolbarControl.ViewModel.OpenFile();
         }
     }
 }

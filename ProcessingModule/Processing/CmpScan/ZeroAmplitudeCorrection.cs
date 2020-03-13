@@ -20,13 +20,7 @@ namespace ProcessingModule.Processing.CmpScan
         
         public override string ToString() => Name;
 
-        public int OrderIndex { get; }
-
-
-        public ZeroAmplitudeCorrection(int orderIndex)
-        {
-            OrderIndex = orderIndex;
-        }
+        public int OrderIndex { get; } = 3;
 
 
         public void Process(ICmpScan cmpScan)

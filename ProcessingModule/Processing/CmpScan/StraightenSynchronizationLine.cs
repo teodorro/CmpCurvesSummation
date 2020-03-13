@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using CmpCurvesSummation.Core;
 
@@ -7,122 +6,66 @@ namespace ProcessingModule.Processing.CmpScan
 {
     public class StraightenSynchronizationLine : ICmpScanProcessing
     {
-        public string Name { get; } = "Выпрямление линии синхронизации";
+        public string Name { get; } = "Выпрямление линии синхронизации 2";
 
         public override string ToString() => Name;
 
-        public double MinAmplitudeToCheck { get; set; } = 1;
+        public double MinNegativeAmplitudeToBegin { get; set; } = -2;
+        public double MinPositiveAmplitudeToStop { get; set; } = 2;
 
-        public int OrderIndex { get; }
-
-
-        public StraightenSynchronizationLine(int orderIndex)
-        {
-            OrderIndex = orderIndex;
-        }
+        public int OrderIndex { get; } = 6;
 
 
         public void Process(ICmpScan cmpScan)
         {
-            var firstExtremumIndices = GetFirstExtremumIndices2(cmpScan.Data);
-            MakeFirstExtremumIndexSame(firstExtremumIndices, cmpScan.Data);
+            var negativeIndices = GetNegativeIndicesCmpScan(cmpScan.Data);
+            var positiveIndices = GetPositiveIndicesCmpScan(cmpScan.Data, negativeIndices);
+            MakeOffsetsSame(cmpScan.Data, positiveIndices);
         }
 
-        private void MakeFirstExtremumIndexSame(int[] firstExtremumIndices, List<double[]> cmpScanData)
+        private void MakeOffsetsSame(List<double[]> cmpScanData, int[] positiveIndices)
         {
-            var maxIndex = firstExtremumIndices.Max();
+            var max = positiveIndices.Max();
             for (int i = 0; i < cmpScanData.Count; i++)
-            {
-                var ascan = cmpScanData[i];
-                var offset = maxIndex - firstExtremumIndices[i];
-                for (int j = ascan.Length - 1; j >= 0; j--)
-                {
-                    ascan[j] = j - offset >= 0 ? ascan[j - offset] : 0;
-                }
-            }
+            for (int j = cmpScanData[i].Length - 1; j >= 0; j--)
+                if (j - max + positiveIndices[i] >= 0)
+                    cmpScanData[i][j] = cmpScanData[i][j - max + positiveIndices[i]];
+                else
+                    cmpScanData[i][j] = 0;
         }
 
-        private int[] GetFirstExtremumIndices(List<double[]> cmpScanData)
+        private int[] GetPositiveIndicesCmpScan(List<double[]> cmpScanData, int[] negativeIndices)
         {
-            var firstExtremumIndices = new int[cmpScanData.Count];
+            var indices = new int[cmpScanData.Count];
             for (int i = 0; i < cmpScanData.Count; i++)
-            {
-                var ascan = cmpScanData[i];
-                var firstExtremumIndex = 0;
+                indices[i] = GetPositiveIndexAscan(cmpScanData[i], negativeIndices[i]);
 
-                for (int j = 1; j < ascan.Length - 1; j++)
-                {
-                    if (ascan[j] > ascan[j - 1] && ascan[j] > ascan[j + 1] // max
-                    || ascan[j] < ascan[j - 1] && ascan[j] < ascan[j + 1]) // min
-                    {
-                        firstExtremumIndex = j;
-                        break;
-                    }
-                }
-
-                firstExtremumIndices[i] = firstExtremumIndex;
-            }
-
-            return firstExtremumIndices;
+            return indices;
         }
 
-        private int[] GetFirstExtremumIndices2(List<double[]> cmpScanData)
+        private int GetPositiveIndexAscan(double[] ascan, int negativeIndex)
         {
-            var firstExtremumIndices = new int[cmpScanData.Count];
+            for (int i = negativeIndex; i >= 0; i--)
+                if (ascan[i] >= MinPositiveAmplitudeToStop)
+                    return i;
+            return negativeIndex - 1;
+        }
+
+        private int[] GetNegativeIndicesCmpScan(List<double[]> cmpScanData)
+        {
+            var indices = new int[cmpScanData.Count];
             for (int i = 0; i < cmpScanData.Count; i++)
-            {
-                var ascan = cmpScanData[i];
-                firstExtremumIndices[i] = GetFirstExtremumIndex(ascan);
-            }
+                indices[i] = GetNegativeIndexAscan(cmpScanData[i]);
 
-            return firstExtremumIndices;
+            return indices;
         }
 
-
-        private int GetFirstExtremumIndex(double[] ascan)
+        private int GetNegativeIndexAscan(double[] ascan)
         {
-            if (Math.Abs(ascan[0]) > Math.Abs(ascan[1]) && Math.Abs(ascan[0]) >= MinAmplitudeToCheck)
-                return 0;
-            for (int i = 1; i < ascan.Length; i++)
-            {
-                if (Math.Abs(ascan[i]) > Math.Abs(ascan[i - 1]) && Math.Abs(ascan[i]) >= MinAmplitudeToCheck)
-                {
-                    if (Math.Abs(ascan[i + 1]) > Math.Abs(ascan[i]))
-                        continue;
-                    if (Math.Abs(ascan[i + 1]) < Math.Abs(ascan[i]))
-                        return i;
-                    for (int j = i + 1; j < ascan.Length; j++)
-                    {
-                        if (Math.Abs(ascan[j]) < Math.Abs(ascan[i]))
-                            return i + (j - i) / 2;
-                        if (Math.Abs(ascan[j]) > Math.Abs(ascan[i]))
-                            break;
-                    }
-                }
-                else if (ascan[i] < ascan[i - 1] && Math.Abs(ascan[i]) >= MinAmplitudeToCheck)
-                {
-                    if (Math.Abs(ascan[i + 1]) < Math.Abs(ascan[i]))
-                        continue;
-                    if (Math.Abs(ascan[i + 1]) > Math.Abs(ascan[i]))
-                        return i;
-                    for (int j = i + 1; j < ascan.Length; j++)
-                    {
-                        if (Math.Abs(ascan[j]) > Math.Abs(ascan[i]))
-                            return i + (j - i) / 2;
-                        if (Math.Abs(ascan[j]) < Math.Abs(ascan[i]))
-                            break;
-                    }
-                }
-            }
-
+            for (int i = 0; i < ascan.Length; i++)
+                if (ascan[i] <= MinNegativeAmplitudeToBegin)
+                    return i;
             return 0;
-        }
-
-
-        
-        private bool AreEqual(double x, double y)
-        {
-            return Math.Abs(x - y) < 0.0001;
         }
     }
 }

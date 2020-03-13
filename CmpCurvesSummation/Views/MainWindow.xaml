@@ -6,7 +6,7 @@
         xmlns:views7="clr-namespace:CmpCurvesSummation.Views"
         xmlns:viewModels="clr-namespace:CmpCurvesSummation.ViewModels"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="900" Width="1400">
+        Title="{Binding Title}" Height="700" Width="1400">
     <Control.DataContext>
         <viewModels:MainWindowViewModel/>
     </Control.DataContext>

@@ -10,7 +10,7 @@ namespace ProcessingModule.Processing.CmpScan
 
         public int NumberOfAscans { get; set; } = 4;
 
-        public int OrderIndex { get; }
+        public int OrderIndex { get; } = 5;
 
         public void Process(ICmpScan cmpScan)
         {
@@ -19,13 +19,7 @@ namespace ProcessingModule.Processing.CmpScan
             for (int j = 0; j < data[i].Length; j++)
                 data[i][j] = 0;
         }
-
-
-        public ClearOffsetAscans(int orderIndex)
-        {
-            OrderIndex = orderIndex;
-        }
-
+        
 
         /// <summary>
         /// Better to make it working

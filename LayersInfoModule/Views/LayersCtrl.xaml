@@ -6,8 +6,7 @@
              xmlns:local="clr-namespace:LayersInfoModule.Views"
              xmlns:viewModels="clr-namespace:LayersInfoModule.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="55
-             0" IsEnabled="False">
+             d:DesignHeight="250" d:DesignWidth="500" IsEnabled="False">
     <Control.DataContext>
         <viewModels:LayersViewModel/>
     </Control.DataContext>
@@ -51,7 +50,7 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Path=LayerVelocityDisplay}" Header="Скорость(слой), см/нс">
+                <DataGridTextColumn Binding="{Binding Path=LayerVelocityDisplay}" Header="Скорость, см/нс">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Style.Triggers>

@@ -9,14 +9,8 @@ namespace ProcessingModule.Processing.CmpScan
 
         public override string ToString() => Name;
 
-        public int OrderIndex { get; }
-
-
-        public LogarithmProcessing(int orderIndex)
-        {
-            OrderIndex = orderIndex;
-        }
-
+        public int OrderIndex { get; } = 4;
+        
 
         public void Process(ICmpScan cmpScan)
         {

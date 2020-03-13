@@ -1,5 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
+using CmpCurvesSummation.Core;
 using ProcessingModule.Annotations;
 using ProcessingModule.Processing.CmpScan;
 
@@ -7,26 +10,40 @@ namespace ProcessingModule.ViewModels
 {
     public class AddOffsetAscansViewModel : INotifyPropertyChanged
     {
-        public event CmpProcessingListChangedHandler ProcessingListChanged;
-
         private AddOffsetAscans _processing;
 
         public int NumberOfOffsetAscans
         {
-            get => _processing.NumberOfAscans;
+            get => Convert.ToInt32(_processing?.NumberOfAscans);
             set
             {
                 _processing.NumberOfAscans = value;
                 OnPropertyChanged(nameof(NumberOfOffsetAscans));
-                ProcessingListChanged(this, new CmpProcessingListChangedEventArgs() { Enabled = true, Processing = _processing });
+                EventAggregator.Instance.Invoke(this, new CmpProcessingValuesChangedEventArgs());
             }
         }
 
 
-        public AddOffsetAscansViewModel(AddOffsetAscans processing)
+        public AddOffsetAscansViewModel()
         {
-            _processing = processing;
+            EventAggregator.Instance.CmpProcessingListChanged += OnProcessingListChanged;
         }
+
+
+        private void OnProcessingListChanged(object obj, CmpProcessingListChangedEventArgs e)
+        {
+            if (e.Processing.GetType() != typeof(AddOffsetAscans))
+                return;
+            _processing = (AddOffsetAscans) (e.Enabled == true ? e.Processing : null);
+            EventAggregator.Instance.Invoke(this, new CmpProcessingValuesChangedEventArgs());
+        }
+
+
+//        public void Invoke(bool visible)
+//        {
+//            EventAggregator.Instance.Invoke(this, 
+//                new CmpProcessingListChangedEventArgs() { Enabled = visible, Processing = _processing });
+//        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

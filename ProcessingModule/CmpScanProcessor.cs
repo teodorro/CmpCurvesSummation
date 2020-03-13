@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using CmpCurvesSummation.Core;
-using ProcessingModule.Processing;
 using ProcessingModule.Processing.CmpScan;
 
 namespace ProcessingModule
@@ -40,6 +39,13 @@ namespace ProcessingModule
         public List<ICmpScanProcessing> OperationsToProcess { get; } =
             new List<ICmpScanProcessing>();
 
+
+        public CmpScanProcessor()
+        {
+            InitOperationList();
+        }
+
+
         public void Process(ICmpScan cmpScan)
         {
             if (cmpScan == null)
@@ -58,14 +64,13 @@ namespace ProcessingModule
 
         public void InitOperationList()
         {
-            OperationsAvailable.Add(new RemoveLeftAscans(0));
-            OperationsAvailable.Add(new RemoveRightAscans(1));
-            OperationsAvailable.Add(new ZeroAmplitudeCorrection(2));
-            OperationsAvailable.Add(new LogarithmProcessing(3));
-            OperationsAvailable.Add(new AddOffsetAscans(4));
-            OperationsAvailable.Add(new ClearOffsetAscans(5));
-//            OperationsAvailable.Add(new StraightenSynchronizationLine());
-            OperationsAvailable.Add(new StraightenSynchronizationLine2(6));
+            OperationsAvailable.Add(new RemoveLeftAscans());
+            OperationsAvailable.Add(new RemoveRightAscans());
+            OperationsAvailable.Add(new ZeroAmplitudeCorrection());
+            OperationsAvailable.Add(new LogarithmProcessing());
+            OperationsAvailable.Add(new AddOffsetAscans());
+            OperationsAvailable.Add(new ClearOffsetAscans());
+            OperationsAvailable.Add(new StraightenSynchronizationLine());
         }
 
         public void RefreshOperations(ICmpScan cmpScan)

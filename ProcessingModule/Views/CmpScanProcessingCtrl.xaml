@@ -5,36 +5,79 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ProcessingModule.Views"
              xmlns:viewModels="clr-namespace:ProcessingModule.ViewModels"
+             xmlns:toggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
+             xmlns:cmpScan="clr-namespace:ProcessingModule.Views.CmpScan"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="270" IsEnabled="False">
+             d:DesignHeight="450" d:DesignWidth="280" IsEnabled="False">
     <Control.DataContext>
-        <viewModels:CmpScanProcessingViewModel/>
+        <viewModels:CmpScanProcessing2ViewModel/>
     </Control.DataContext>
     <Grid >
         <StackPanel Name="UiElementsStack">
-        <Label Content="Текущая последовательность обработок" VerticalAlignment="Bottom" FontWeight="Bold" Margin="0,20,0,0"/>
-        <DataGrid x:Name="ProcessingListDataGrid" CanUserAddRows="False" CanUserSortColumns="False" CanUserDeleteRows="False"
-                  AutoGenerateColumns="False" IsReadOnly="True"
-                  ItemsSource="{Binding ProcessingRowList}" ColumnWidth="*" 
-                  >
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Name}" ClipboardContentBinding="{x:Null}" Header="Название"/>
-                <DataGridTemplateColumn Header="Вкл." Width="40">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <CheckBox IsChecked="{Binding Path=Enabled, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,0,0"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-            <DataGrid.ItemContainerStyle>
-                <Style TargetType="DataGridRow">
-                    <EventSetter Event="Selected" Handler="EventSetter_OnHandler"></EventSetter>
-                </Style>
+            <Label Content="Обработка начальных данных" VerticalAlignment="Bottom" FontWeight="Bold" Margin="0,20,0,0"/>
 
-            </DataGrid.ItemContainerStyle>
-        </DataGrid>
+            <DockPanel>
+                <toggleSwitch:HorizontalToggleSwitch Margin="5" VerticalAlignment="Center" 
+                                                     Width="50" Height="20" ThumbSize="30" CheckedContent="" UncheckedContent=""  
+                                                     IsChecked="{Binding RemoveLeftAscansEnabled, Mode=TwoWay}"/>
+                <Label Content="Удалить измерения слева" VerticalAlignment="Center"></Label>
+            </DockPanel>
+            <cmpScan:RemoveLeftAscansCtrl x:Name="removeLeftAscansCtrl" 
+                                          Visibility="{Binding DataContext.RemoveLeftAscansEnabledVisible, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+            <DockPanel>
+                <toggleSwitch:HorizontalToggleSwitch Margin="5" VerticalAlignment="Center" 
+                                                     Width="50" Height="20" ThumbSize="30" CheckedContent="" UncheckedContent=""  
+                                                     IsChecked="{Binding RemoveRightAscansEnabled, Mode=TwoWay}" />
+                <Label Content="Удалить измерения справа" VerticalAlignment="Center"></Label>
+            </DockPanel>
+            <cmpScan:RemoveRightAscansCtrl x:Name="removeRightAscansCtrl" 
+                                           Visibility="{Binding DataContext.RemoveRightAscansEnabledVisible, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"/>
+
+            <DockPanel>
+                <toggleSwitch:HorizontalToggleSwitch Margin="5" VerticalAlignment="Center"
+                                                     Width="50" Height="20" ThumbSize="30" CheckedContent="" UncheckedContent=""  
+                                                     IsChecked="{Binding ZeroAmplitudeCorrectionEnabled, Mode=TwoWay}" />
+                <Label Content="Корректировка нулевой амплитуды" VerticalAlignment="Center"></Label>
+            </DockPanel>
+
+            <DockPanel>
+                <toggleSwitch:HorizontalToggleSwitch Margin="5" VerticalAlignment="Center"
+                                                     Width="50" Height="20" ThumbSize="30" CheckedContent="" UncheckedContent=""  
+                                                     IsChecked="{Binding LogarithmProcessingEnabled, Mode=TwoWay}" />
+                <Label Content="Логарифм амплитуды" VerticalAlignment="Center"></Label>
+            </DockPanel>
+
+            <DockPanel>
+                <toggleSwitch:HorizontalToggleSwitch Margin="5" VerticalAlignment="Center" HorizontalAlignment="Right"
+                                                     Width="50" Height="20" ThumbSize="30" CheckedContent="" UncheckedContent=""  
+                                                     IsChecked="{Binding AddOffsetAscansEnabled, Mode=TwoWay}" />
+                <Label Content="Добавить измерения отступа" VerticalAlignment="Center"></Label>
+            </DockPanel>
+            <cmpScan:AddOffsetAscansCtrl x:Name="addOffsetAscansCtrl"
+                                         Visibility="{Binding DataContext.AddOffsetAscansEnabledVisible, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"/>
+
+            <DockPanel>
+                <toggleSwitch:HorizontalToggleSwitch Margin="5" VerticalAlignment="Center" HorizontalAlignment="Right"
+                                                     Width="50" Height="20" ThumbSize="30" CheckedContent="" UncheckedContent=""  
+                                                     IsChecked="{Binding ClearOffsetAscansEnabled, Mode=TwoWay}" />
+                <Label Content="Очистить измерения отступа" VerticalAlignment="Center"></Label>
+            </DockPanel>
+            <cmpScan:ClearOffsetAscansCtrl x:Name="clearOffsetAscansCtrl"
+                                           Visibility="{Binding DataContext.ClearOffsetAscansEnabledVisible, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"/>
+
+            <DockPanel>
+                <toggleSwitch:HorizontalToggleSwitch Margin="5" VerticalAlignment="Center" HorizontalAlignment="Right"
+                                                     Width="50" Height="20" ThumbSize="30" CheckedContent="" UncheckedContent=""  
+                                                     IsChecked="{Binding StraightenSynchronizationLineEnabled, Mode=TwoWay}" />
+                <Label Content="Выпрямление линии синхронизации" VerticalAlignment="Center"></Label>
+            </DockPanel>
+            <cmpScan:StraightenSynchronizationLineCtrl x:Name="straightenSynchronizationLineCtrl"
+                                                       Visibility="{Binding DataContext.StraightenSynchronizationLineEnabledVisible, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"/>
+            
+
         </StackPanel>
     </Grid>
 </UserControl>
+
+
 

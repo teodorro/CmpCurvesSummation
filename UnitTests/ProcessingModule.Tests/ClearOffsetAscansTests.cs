@@ -26,7 +26,7 @@ namespace ProcessingModule.Tests
         {
             var cmpScan = GetSimpleCmpScan();
             cmpScan.CopyRawDataToProcessed();
-            var processing = new ClearOffsetAscans(0);
+            var processing = new ClearOffsetAscans();
             processing.NumberOfAscans = 2;
 
             processing.Process(cmpScan);

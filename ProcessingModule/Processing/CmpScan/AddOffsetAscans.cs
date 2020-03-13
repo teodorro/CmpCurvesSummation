@@ -9,15 +9,9 @@ namespace ProcessingModule.Processing.CmpScan
 
         public int NumberOfAscans { get; set; } = 5;
 
-        public int OrderIndex { get; }
+        public int OrderIndex { get; } = 4;
 
-
-        public AddOffsetAscans(int orderIndex)
-        {
-            OrderIndex = orderIndex;
-        }
-
-
+        
         public void Process(ICmpScan cmpScan)
         {
             var data = cmpScan.Data;
