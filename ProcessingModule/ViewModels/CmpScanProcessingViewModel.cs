@@ -11,14 +11,14 @@ using ProcessingModule.Processing.CmpScan;
 
 namespace ProcessingModule.ViewModels
 {
-    public class CmpScanProcessing2ViewModel : INotifyPropertyChanged
+    public class CmpScanProcessingViewModel : INotifyPropertyChanged
     {
         private ICmpScan _cmpScan;
 
         public ICmpScanProcessor Processor { get; }
 
 
-        public CmpScanProcessing2ViewModel()
+        public CmpScanProcessingViewModel()
         {
             Processor = DiContainer.Instance.Container.GetInstance<ICmpScanProcessor>();
             EventAggregator.Instance.FileLoaded += OnFileLoaded;
@@ -144,7 +144,6 @@ namespace ProcessingModule.ViewModels
             Processor.RefreshOperations(_cmpScan);
             Processor.Process(_cmpScan);
             SetDefaultValues();
-//            EventAggregator.Instance.Invoke(this, new CmpDataProcessedEventArgs(_cmpScan));
         }
 
         private void SetDefaultValues()

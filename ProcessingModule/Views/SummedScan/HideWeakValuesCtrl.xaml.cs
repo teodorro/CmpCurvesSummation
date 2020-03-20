@@ -23,15 +23,9 @@ namespace ProcessingModule.Views.SummedScan
     /// </summary>
     public partial class HideWeakValuesCtrl : UserControl
     {
-        private HideWeakValuesViewModel _viewModel;
-
-        public HideWeakValuesCtrl(SumProcessingListChangedHandler onSumProcessingListChanged, HideWeakValues processing)
+        public HideWeakValuesCtrl()
         {
             InitializeComponent();
-
-            _viewModel = new HideWeakValuesViewModel(processing);
-            _viewModel.ProcessingListChanged += onSumProcessingListChanged;
-            DataContext = _viewModel;
         }
     }
 }

@@ -15,14 +15,8 @@ namespace ProcessingModule.Processing.SummedScan
             set => _power = value;
         }
 
-        public int OrderIndex { get; }
-
-
-        public RaiseToPower(int orderIndex)
-        {
-            OrderIndex = orderIndex;
-        }
-
+        public int OrderIndex { get; } = 3;
+        
 
         public void Process(ISummedScanVT summedScan)
         {

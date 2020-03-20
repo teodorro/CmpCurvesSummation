@@ -64,7 +64,7 @@
     <Compile Include="Processing\SummedScan\RaiseToPower.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="SummedScanProcessor.cs" />
-    <Compile Include="ViewModels\CmpScanProcessing2ViewModel.cs" />
+    <Compile Include="ViewModels\CmpScanProcessingViewModel.cs" />
     <Compile Include="ViewModels\CmpScan\AddOffsetAscansViewModel.cs" />
     <Compile Include="ViewModels\CmpScan\ClearOffsetAscansViewModel.cs" />
     <Compile Include="ViewModels\CmpScan\RemoveLeftAscansViewModel.cs" />

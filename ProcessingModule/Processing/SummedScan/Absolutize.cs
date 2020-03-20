@@ -8,14 +8,8 @@ namespace ProcessingModule.Processing.SummedScan
         public string Name { get; } = "Модуль";
         public override string ToString() => Name;
 
-        public int OrderIndex { get; }
-
+        public int OrderIndex { get; } = 1;
         
-        public Absolutize(int orderIndex)
-        {
-            OrderIndex = orderIndex;
-        }
-
 
         public void Process(ISummedScanVT summedScan)
         {

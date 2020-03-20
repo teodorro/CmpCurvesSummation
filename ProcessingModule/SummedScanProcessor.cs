@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using CmpCurvesSummation.Core;
 using ProcessingModule.Processing.SummedScan;
 
@@ -16,7 +17,7 @@ namespace ProcessingModule
     {
         void InitOperationList();
         ObservableCollection<ISumScanProcessing> OperationsAvailable { get; }
-        ObservableCollection<ISumScanProcessing> OperationsToProcess { get; }
+        List<ISumScanProcessing> OperationsToProcess { get; }
         void Process(ISummedScanVT summedScan);
         void AutoDetectOperationsNeeded(ISummedScanVT summedScan);
         void RefreshOperations(ISummedScanVT summedScan);
@@ -25,16 +26,23 @@ namespace ProcessingModule
 
     public class SummedScanProcessor : ISummedScanProcessor
     {
-        public void InitOperationList()
+        public SummedScanProcessor()
         {
-            OperationsAvailable.Add(new ChangeMaxVelocity(0));
-            OperationsAvailable.Add(new HideWeakValues(1));
-            OperationsAvailable.Add(new RaiseToPower(2));
-            OperationsAvailable.Add(new Absolutize(3));
+            InitOperationList();
         }
 
+
         public ObservableCollection<ISumScanProcessing> OperationsAvailable { get; } = new ObservableCollection<ISumScanProcessing>();
-        public ObservableCollection<ISumScanProcessing> OperationsToProcess { get; } = new ObservableCollection<ISumScanProcessing>();
+        public List<ISumScanProcessing> OperationsToProcess { get; } = new List<ISumScanProcessing>();
+
+
+        public void InitOperationList()
+        {
+            OperationsAvailable.Add(new ChangeMaxVelocity());
+            OperationsAvailable.Add(new HideWeakValues());
+            OperationsAvailable.Add(new RaiseToPower());
+            OperationsAvailable.Add(new Absolutize());
+        }
 
         public void Process(ISummedScanVT summedScan)
         {

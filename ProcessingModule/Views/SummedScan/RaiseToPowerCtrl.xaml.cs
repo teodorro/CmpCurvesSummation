@@ -23,15 +23,9 @@ namespace ProcessingModule.Views.SummedScan
     /// </summary>
     public partial class RaiseToPowerCtrl : UserControl
     {
-        private RaiseToPowerViewModel _viewModel;
-
-        public RaiseToPowerCtrl(SumProcessingListChangedHandler onSumProcessingListChanged, RaiseToPower processing)
+        public RaiseToPowerCtrl()
         {
             InitializeComponent();
-
-            _viewModel = new RaiseToPowerViewModel(processing);
-            _viewModel.ProcessingListChanged += onSumProcessingListChanged;
-            DataContext = _viewModel;
         }
     }
 }

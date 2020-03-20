@@ -9,9 +9,7 @@ namespace ProcessingModule.ViewModels.SummedScan
 {
     public class ChangeMaxVelocityViewModel : INotifyPropertyChanged
     {
-        public event SumProcessingListChangedHandler ProcessingListChanged;
-
-        private ChangeMaxVelocity _processing;
+        private ChangeMaxVelocity _processing = new ChangeMaxVelocity();
 
         public double MaxVelocity
         {
@@ -21,7 +19,7 @@ namespace ProcessingModule.ViewModels.SummedScan
                 _processing.MaxVelocity = value;
                 OnPropertyChanged(nameof(MaxVelocity));
                 OnPropertyChanged(nameof(MaxVelocityCm));
-                ProcessingListChanged(this, new SumProcessingListChangedEventArgs() { Enabled = true, Processing = _processing });
+                EventAggregator.Instance.Invoke(this, new SumProcessingValuesChangedEventArgs());
             }
         }
         public double MaxVelocityCm => Math.Round(MaxVelocity * 100, 2);
@@ -30,9 +28,18 @@ namespace ProcessingModule.ViewModels.SummedScan
         public double PlotMinVelocity => CmpMath.PlotMinVelocity;
 
 
-        public ChangeMaxVelocityViewModel(ChangeMaxVelocity processing)
+        public ChangeMaxVelocityViewModel()
         {
-            _processing = processing;
+            EventAggregator.Instance.SumProcessingListChanged += OnProcessingListChanged;
+        }
+
+
+        private void OnProcessingListChanged(object obj, CmpCurvesSummation.Core.SumProcessingListChangedEventArgs e)
+        {
+            if (e.Processing.GetType() != typeof(ChangeMaxVelocity))
+                return;
+            _processing = (ChangeMaxVelocity)(e.Enabled == true ? e.Processing : null);
+            EventAggregator.Instance.Invoke(this, new SumProcessingValuesChangedEventArgs());
         }
 
 

@@ -23,16 +23,9 @@ namespace ProcessingModule.Views.SummedScan
     /// </summary>
     public partial class ChangeMaxVelocityCtrl : UserControl
     {
-        private ChangeMaxVelocityViewModel _viewModel;
-
-
-        public ChangeMaxVelocityCtrl(SumProcessingListChangedHandler onSumProcessingListChanged, ChangeMaxVelocity processing)
+        public ChangeMaxVelocityCtrl()
         {
             InitializeComponent();
-
-            _viewModel = new ChangeMaxVelocityViewModel(processing);
-            _viewModel.ProcessingListChanged += onSumProcessingListChanged;
-            DataContext = _viewModel;
         }
     }
 }

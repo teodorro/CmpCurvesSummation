@@ -5,11 +5,6 @@ namespace ProcessingModule.Processing.SummedScan
 {
     public class HideWeakValues : ISumScanProcessing
     {
-        public HideWeakValues(int orderIndex)
-        {
-            OrderIndex = orderIndex;
-        }
-
         public string Name { get; } = "Скрыть слабые амплитуды";
         public override string ToString() => Name;
 
@@ -46,6 +41,6 @@ namespace ProcessingModule.Processing.SummedScan
                     ascan[i] = Math.Abs(ascan[i]) <= WeakValue ? 0 : ascan[i];
         }
 
-        public int OrderIndex { get; }
+        public int OrderIndex { get; } = 2;
     }
 }

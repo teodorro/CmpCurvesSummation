@@ -1,38 +1,61 @@
 ﻿<UserControl x:Class="ProcessingModule.Views.SummedScanProcessingCtrl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ProcessingModule.Views"
              xmlns:viewModels="clr-namespace:ProcessingModule.ViewModels"
-             mc:Ignorable="d" 
+             xmlns:toggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
+             xmlns:cmpScan="clr-namespace:ProcessingModule.Views.CmpScan"
+             xmlns:summedScan="clr-namespace:ProcessingModule.Views.SummedScan"
+             mc:Ignorable="d"
              Height="250" d:DesignWidth="400" IsEnabled="False">
     <Control.DataContext>
         <viewModels:SummedScanProcessingViewModel/>
     </Control.DataContext>
     <Grid>
         <StackPanel Name="UiElementsStack">
-            <Label Content="" VerticalAlignment="Bottom" FontWeight="Bold" />
-            <Label Content="Обработка суммированной картины" VerticalAlignment="Bottom" FontWeight="Bold" />
-            <DataGrid x:Name="ProcessingListDataGrid" CanUserAddRows="False" CanUserSortColumns="False" CanUserDeleteRows="False"
-                      AutoGenerateColumns="False" IsReadOnly="True"
-                      ItemsSource="{Binding ProcessingRowList}" ColumnWidth="*">
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Вкл." Width="40">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding Path=Enabled, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,0,0"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn Binding="{Binding Path=Name}" ClipboardContentBinding="{x:Null}" Header="Название"/>
-                </DataGrid.Columns>
-                <DataGrid.ItemContainerStyle>
-                    <Style TargetType="DataGridRow">
-                        <EventSetter Event="Selected" Handler="EventSetter_OnHandler"></EventSetter>
-                    </Style>
-                </DataGrid.ItemContainerStyle>
-            </DataGrid>
+            <Label Content="Обработка данных после суммирования" VerticalAlignment="Bottom" FontWeight="Bold"
+                   Margin="0,20,0,0" />
+
+            <DockPanel>
+                <toggleSwitch:HorizontalToggleSwitch Margin="5" VerticalAlignment="Center"
+                                                     Width="50" Height="20" ThumbSize="30" CheckedContent=""
+                                                     UncheckedContent=""
+                                                     IsChecked="{Binding ChangeMaxVelocityEnabled, Mode=TwoWay}" />
+                <Label Content="Максимальная скорость" VerticalAlignment="Center" />
+            </DockPanel>
+            <summedScan:ChangeMaxVelocityCtrl x:Name="changeMaxVelocityCtrl"
+                                              Visibility="{Binding DataContext.ChangeMaxVelocityEnabledVisible, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+            <DockPanel>
+                <toggleSwitch:HorizontalToggleSwitch Margin="5" VerticalAlignment="Center"
+                                                     Width="50" Height="20" ThumbSize="30" CheckedContent=""
+                                                     UncheckedContent=""
+                                                     IsChecked="{Binding RaiseToPowerEnabled, Mode=TwoWay}" />
+                <Label Content="Степень" VerticalAlignment="Center" />
+            </DockPanel>
+            <summedScan:RaiseToPowerCtrl x:Name="raiseToPowerCtrl"
+                                           Visibility="{Binding DataContext.RaiseToPowerEnabledVisible, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+
+            <DockPanel>
+                <toggleSwitch:HorizontalToggleSwitch Margin="5" VerticalAlignment="Center"
+                                                     Width="50" Height="20" ThumbSize="30" CheckedContent=""
+                                                     UncheckedContent=""
+                                                     IsChecked="{Binding AbsolutizeEnabled, Mode=TwoWay}" />
+                <Label Content="Модуль амплитуды" VerticalAlignment="Center" />
+            </DockPanel>
+
+            <DockPanel>
+                <toggleSwitch:HorizontalToggleSwitch Margin="5" VerticalAlignment="Center" HorizontalAlignment="Right"
+                                                     Width="50" Height="20" ThumbSize="30" CheckedContent=""
+                                                     UncheckedContent=""
+                                                     IsChecked="{Binding HideWeakValuesEnabled, Mode=TwoWay}" />
+                <Label Content="Скрывать малые значения" VerticalAlignment="Center" />
+            </DockPanel>
+            <summedScan:HideWeakValuesCtrl x:Name="hideWeakValuesCtrl"
+                                           Visibility="{Binding DataContext.HideWeakValuesEnabledVisible, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+
+
         </StackPanel>
     </Grid>
 </UserControl>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using CmpCurvesSummation.Core;
 using ProcessingModule.Annotations;
 using ProcessingModule.Processing.SummedScan;
 
@@ -8,8 +9,7 @@ namespace ProcessingModule.ViewModels.SummedScan
 {
     public class HideWeakValuesViewModel : INotifyPropertyChanged
     {
-        public event SumProcessingListChangedHandler ProcessingListChanged;
-        private HideWeakValues _processing;
+        private HideWeakValues _processing = new HideWeakValues();
 
         public double WeakValue
         {
@@ -18,7 +18,7 @@ namespace ProcessingModule.ViewModels.SummedScan
             {
                 _processing.WeakValue = Math.Round(value, 3);
                 OnPropertyChanged(nameof(WeakValue));
-                ProcessingListChanged(this, new SumProcessingListChangedEventArgs() { Enabled = true, Processing = _processing });
+                EventAggregator.Instance.Invoke(this, new SumProcessingValuesChangedEventArgs());
             }
         }
 
@@ -29,14 +29,23 @@ namespace ProcessingModule.ViewModels.SummedScan
             {
                 _processing.MaxValue = Math.Round(value, 3);
                 OnPropertyChanged(nameof(MaxValue));
-                ProcessingListChanged(this, new SumProcessingListChangedEventArgs() { Enabled = true, Processing = _processing });
+                EventAggregator.Instance.Invoke(this, new SumProcessingValuesChangedEventArgs());
             }
         }
 
 
-        public HideWeakValuesViewModel(HideWeakValues processing)
+        public HideWeakValuesViewModel()
         {
-            _processing = processing;
+            EventAggregator.Instance.SumProcessingListChanged += OnProcessingListChanged;
+        }
+
+
+        private void OnProcessingListChanged(object obj, CmpCurvesSummation.Core.SumProcessingListChangedEventArgs e)
+        {
+            if (e.Processing.GetType() != typeof(HideWeakValues))
+                return;
+            _processing = (HideWeakValues)(e.Enabled == true ? e.Processing : null);
+            EventAggregator.Instance.Invoke(this, new SumProcessingValuesChangedEventArgs());
         }
 
 

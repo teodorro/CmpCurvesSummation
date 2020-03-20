@@ -28,6 +28,10 @@ namespace CmpCurvesSummation.Core
 
     public delegate void CmpProcessingValuesChangedHandler(object obj, CmpProcessingValuesChangedEventArgs e);
 
+    public delegate void SumProcessingListChangedHandler(object obj, SumProcessingListChangedEventArgs e);
+
+    public delegate void SumProcessingValuesChangedHandler(object obj, SumProcessingValuesChangedEventArgs e);
+
 
     public interface IEventAggregator
     {
@@ -43,6 +47,8 @@ namespace CmpCurvesSummation.Core
         event SumScanOptionsChangedHandler SumScanOptionsChanged;
         event CmpProcessingListChangedHandler CmpProcessingListChanged;
         event CmpProcessingValuesChangedHandler CmpProcessingValuesChanged;
+        event SumProcessingListChangedHandler SumProcessingListChanged;
+        event SumProcessingValuesChangedHandler SumProcessingValuesChanged;
     }
 
 
@@ -62,6 +68,8 @@ namespace CmpCurvesSummation.Core
         public event SumScanOptionsChangedHandler SumScanOptionsChanged;
         public event CmpProcessingListChangedHandler CmpProcessingListChanged;
         public event CmpProcessingValuesChangedHandler CmpProcessingValuesChanged;
+        public event SumProcessingListChangedHandler SumProcessingListChanged;
+        public event SumProcessingValuesChangedHandler SumProcessingValuesChanged;
 
         public void Invoke(object obj, EventArgs e)
         {
@@ -99,6 +107,12 @@ namespace CmpCurvesSummation.Core
                     break;
                 case CmpProcessingValuesChangedEventArgs args:
                     CmpProcessingValuesChanged?.Invoke(obj, args);
+                    break;
+                case SumProcessingListChangedEventArgs args:
+                    SumProcessingListChanged?.Invoke(obj, args);
+                    break;
+                case SumProcessingValuesChangedEventArgs args:
+                    SumProcessingValuesChanged?.Invoke(obj, args);
                     break;
             }
         }
@@ -184,23 +198,26 @@ namespace CmpCurvesSummation.Core
     public class PlotVisualOptionsChangedEventArgs : EventArgs
     {
         public PaletteType Palette { get; }
-        public Color ColorHodograph { get; }
-        public Color ColorLayerLine { get; }
         public bool Interpolation { get; }
+        public int Alpha { get; }
         public bool ShowHodographs { get; }
         public bool ShowLayersProperties { get; }
         public bool ShowAverageProperties { get; }
+        public Color ColorHodograph { get; }
+        public Color ColorLayerLine { get; }
 
-        public PlotVisualOptionsChangedEventArgs(PaletteType palette, Color colorHodograph, Color colorLayerLine, bool interpolation,
-            bool showHodographs, bool showLayersProperties, bool showAverageProperties)
+        public PlotVisualOptionsChangedEventArgs(PaletteType palette, bool interpolation, int alpha,
+            bool showHodographs, bool showLayersProperties, bool showAverageProperties, Color colorHodograph, Color colorLayerLine)
         {
             Palette = palette;
-            ColorHodograph = colorHodograph;
-            ColorLayerLine = colorLayerLine;
             Interpolation = interpolation;
+            Alpha = alpha;
+
             ShowHodographs = showHodographs;
             ShowLayersProperties = showLayersProperties;
             ShowAverageProperties = showAverageProperties;
+            ColorHodograph = colorHodograph;
+            ColorLayerLine = colorLayerLine;
         }
     }
 
@@ -235,6 +252,16 @@ namespace CmpCurvesSummation.Core
     }
 
     public class CmpProcessingValuesChangedEventArgs : EventArgs
+    {
+    }
+
+    public class SumProcessingListChangedEventArgs : EventArgs
+    {
+        public object Processing { get; set; }
+        public bool? Enabled { get; set; }
+    }
+
+    public class SumProcessingValuesChangedEventArgs : EventArgs
     {
     }
 }

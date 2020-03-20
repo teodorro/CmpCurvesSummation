@@ -1,12 +1,10 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CmpCurvesSummation.Core;
 using ProcessingModule.Annotations;
-using ProcessingModule.Processing;
 using ProcessingModule.Processing.CmpScan;
 
-namespace ProcessingModule.ViewModels
+namespace ProcessingModule.ViewModels.CmpScan
 {
     public class ClearOffsetAscansViewModel : INotifyPropertyChanged
     {
@@ -36,12 +34,6 @@ namespace ProcessingModule.ViewModels
             _processing = (ClearOffsetAscans)(e.Enabled == true ? e.Processing : null);
             EventAggregator.Instance.Invoke(this, new CmpProcessingValuesChangedEventArgs());
         }
-
-//        public void Invoke(bool visible)
-//        {
-//            EventAggregator.Instance.Invoke(this,
-//                new CmpProcessingListChangedEventArgs() { Enabled = visible, Processing = _processing });
-//        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

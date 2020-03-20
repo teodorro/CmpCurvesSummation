@@ -1,20 +1,19 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using CmpCurvesSummation.Core;
 using ProcessingModule.Annotations;
 using ProcessingModule.Processing.CmpScan;
 
-namespace ProcessingModule.ViewModels
+namespace ProcessingModule.ViewModels.CmpScan
 {
     public class AddOffsetAscansViewModel : INotifyPropertyChanged
     {
-        private AddOffsetAscans _processing;
+        private AddOffsetAscans _processing = new AddOffsetAscans();
 
         public int NumberOfOffsetAscans
         {
-            get => Convert.ToInt32(_processing?.NumberOfAscans);
+            get => _processing.NumberOfAscans;
             set
             {
                 _processing.NumberOfAscans = value;
@@ -37,13 +36,6 @@ namespace ProcessingModule.ViewModels
             _processing = (AddOffsetAscans) (e.Enabled == true ? e.Processing : null);
             EventAggregator.Instance.Invoke(this, new CmpProcessingValuesChangedEventArgs());
         }
-
-
-//        public void Invoke(bool visible)
-//        {
-//            EventAggregator.Instance.Invoke(this, 
-//                new CmpProcessingListChangedEventArgs() { Enabled = visible, Processing = _processing });
-//        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

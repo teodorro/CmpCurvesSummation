@@ -24,10 +24,6 @@ namespace ProcessingModule.Views
     /// </summary>
     public partial class SummedScanProcessingCtrl : UserControl
     {
-        public SummedScanProcessingViewModel ViewModel => DataContext as SummedScanProcessingViewModel;
-
-        private const int _tempCtrlIndex = 3;
-
         public SummedScanProcessingCtrl()
         {
             InitializeComponent();
@@ -35,46 +31,7 @@ namespace ProcessingModule.Views
             EventAggregator.Instance.FileLoaded += (o, args) => { IsEnabled = false; };
             EventAggregator.Instance.SummationFinished += (o, args) => { IsEnabled = true; };
 
-            ProcessingListDataGrid.SelectedIndex = 0;
 
-        }
-
-
-        private void RemoveIrrelevantCtrls()
-        {
-            if (UiElementsStack.Children.Count > _tempCtrlIndex)
-                UiElementsStack.Children.RemoveAt(_tempCtrlIndex);
-        }
-
-        private void EventSetter_OnHandler(object sender, RoutedEventArgs e)
-        {
-            RemoveIrrelevantCtrls();
-
-            var dataRow = ((DataGridRow)e.Source).Item as SumProcessingDataRow;
-            if (dataRow == null)
-                return;
-
-            if (dataRow.Processing is ChangeMaxVelocity changeMaxVelocity)
-                ManageChangeMaxVelocity(changeMaxVelocity);
-            else if (dataRow.Processing is RaiseToPower raiseToPower)
-                ManageRaiseToPower(raiseToPower);
-            else if (dataRow.Processing is HideWeakValues hideWeakValues)
-                ManageHideWeakValues(hideWeakValues);
-        }
-        
-        private void ManageChangeMaxVelocity(ChangeMaxVelocity processing)
-        {
-            UiElementsStack.Children.Add(new ChangeMaxVelocityCtrl(ViewModel.OnProcessingListChanged, processing));
-        }
-
-        private void ManageRaiseToPower(RaiseToPower processing)
-        {
-            UiElementsStack.Children.Add(new RaiseToPowerCtrl(ViewModel.OnProcessingListChanged, processing));
-        }
-
-        private void ManageHideWeakValues(HideWeakValues processing)
-        {
-            UiElementsStack.Children.Add(new HideWeakValuesCtrl(ViewModel.OnProcessingListChanged, processing));
         }
     }
 }

@@ -10,7 +10,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="280" IsEnabled="False">
     <Control.DataContext>
-        <viewModels:CmpScanProcessing2ViewModel/>
+        <viewModels:CmpScanProcessingViewModel/>
     </Control.DataContext>
     <Grid >
         <StackPanel Name="UiElementsStack">

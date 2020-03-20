@@ -120,15 +120,6 @@ namespace CmpCurvesSummation.ViewModels
             }
         }
 
-        private void InvokeVisualOptionsChangedEvent()
-        {
-            var palette = (PaletteType) new StringToPaletteConverter().Convert(_palette, null, null, null);
-            EventAggregator.Instance.Invoke(this,
-                new PlotVisualOptionsChangedEventArgs(palette, SelectedItemHodographColor.Value, SelectedPointColor.Value,
-                    _interpolationEnabled,
-                    _showHodographs, _showLayersProperties, _showAverageProperties));
-        }
-
         private bool _showHodographs = true;
         public bool ShowHodographs
         {
@@ -163,6 +154,26 @@ namespace CmpCurvesSummation.ViewModels
                 OnPropertyChanged(nameof(ShowAverageProperties));
                 InvokeVisualOptionsChangedEvent();
             }
+        }
+
+        private byte _alpha;
+        public byte Alpha
+        {
+            get => _alpha;
+            set
+            {
+                _alpha = value;
+                OnPropertyChanged(nameof(Alpha));
+                InvokeVisualOptionsChangedEvent();
+            }
+        }
+
+        private void InvokeVisualOptionsChangedEvent()
+        {
+            var palette = (PaletteType)new StringToPaletteConverter().Convert(_palette, null, null, null);
+            EventAggregator.Instance.Invoke(this,
+                new PlotVisualOptionsChangedEventArgs(palette, _interpolationEnabled, _alpha,
+                    _showHodographs, _showLayersProperties, _showAverageProperties, SelectedItemHodographColor.Value, SelectedPointColor.Value));
         }
 
         private void InitPalettes()

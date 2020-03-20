@@ -5,10 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ProcessingModule.Views"
              xmlns:viewModels="clr-namespace:ProcessingModule.ViewModels"
+             xmlns:cmpScan="clr-namespace:ProcessingModule.ViewModels.CmpScan"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="300">
     <Control.DataContext>
-        <viewModels:RemoveRightAscansViewModel x:Name="removeRightAscansViewModel"></viewModels:RemoveRightAscansViewModel>
+        <cmpScan:RemoveRightAscansViewModel x:Name="removeRightAscansViewModel"></cmpScan:RemoveRightAscansViewModel>
     </Control.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>

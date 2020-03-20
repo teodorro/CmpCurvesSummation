@@ -20,14 +20,8 @@ namespace ProcessingModule.Processing.SummedScan
             }
         }
 
-        public int OrderIndex { get; }
-
-
-        public ChangeMaxVelocity(int orderIndex)
-        {
-            OrderIndex = orderIndex;
-        }
-
+        public int OrderIndex { get; } = 0;
+        
 
         public void Process(ISummedScanVT summedScan)
         {
