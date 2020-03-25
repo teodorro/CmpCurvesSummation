@@ -184,8 +184,47 @@ namespace CmpScanModule.ViewModels
             if (HeatMap != null)
                 HeatMap.Interpolate = e.Interpolation;
 
+            AddAlpha(e.Alpha);
+
             Plot.InvalidatePlot(true);
         }
+
+        private void AddAlpha(byte alpha)
+        {
+            var c = OxyColor.FromArgb(alpha, 255, 255, 255);
+            var alphaRect = Plot.Annotations.FirstOrDefault(x => x.GetType() == typeof(RectangleAnnotation));
+
+            if (alphaRect == null)
+            {
+                var rect = new RectangleAnnotation
+                {
+                    MaximumX = _cmpScan.Length,
+                    MinimumX = 0,
+                    MinimumY = _cmpScan.MinTime,
+                    MaximumY = _cmpScan.MaxTime,
+                    Fill = c
+                };
+                Plot.Annotations.Add(rect);
+            }
+            else
+            {
+                (alphaRect as RectangleAnnotation).Fill = c;
+            }
+        }
+
+        //        private void AddAlpha()
+        //        {
+        //            var c = OxyColor.FromArgb(_alpha, 255, 255, 255);
+        //            var rect = new RectangleAnnotation
+        //            {
+        //                MaximumX = _summedScan.MaxVelocity * 100,
+        //                MinimumX = _summedScan.MinVelocity * 100,
+        //                MinimumY = _summedScan.MinTime,
+        //                MaximumY = _summedScan.MaxTime,
+        //                Fill = c
+        //            };
+        //            _plot.Annotations.Add(rect);
+        //        }
 
         private void PlotOnMouseDown(object sender, OxyMouseDownEventArgs e)
         {

@@ -21,18 +21,6 @@ namespace SummedScanModule.ViewModels
             }
         }
 
-        private byte _alpha;
-        public byte Alpha
-        {
-            get => _alpha;
-            set
-            {
-                _alpha = value;
-                OnPropertyChanged(nameof(Alpha));
-                InvokeSumScanOptionsChangedEvent();
-            }
-        }
-
         private int _halfWaveSize = 5;
         public int HalfWaveSize
         {
@@ -48,7 +36,7 @@ namespace SummedScanModule.ViewModels
         private void InvokeSumScanOptionsChangedEvent()
         {
             EventAggregator.Instance.Invoke(this,
-                new SumScanOptionsChangedEventArgs(_autoCorrection, _alpha, _halfWaveSize));
+                new SumScanOptionsChangedEventArgs(_autoCorrection, _halfWaveSize));
         }
 
 

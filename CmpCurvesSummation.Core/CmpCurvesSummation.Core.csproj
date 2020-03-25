@@ -48,7 +48,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CmpEvents.cs" />
     <Compile Include="CmpMath.cs" />
     <Compile Include="CmpProgressBar.cs" />
     <Compile Include="CmpScan.cs" />

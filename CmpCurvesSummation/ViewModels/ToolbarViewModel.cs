@@ -86,7 +86,7 @@ namespace CmpCurvesSummation.ViewModels
                             break;
                         case "geo":
                             geo = true;
-                            data = _fileOpener.OpenGeo2(fileDialog.FileName);
+                            data = _fileOpener.OpenGeo1(fileDialog.FileName);
                             break;
                         case "gem":
                             data = _fileOpener.OpenGem(fileDialog.FileName);
@@ -98,8 +98,8 @@ namespace CmpCurvesSummation.ViewModels
 
                     EventAggregator.Instance.Invoke(this, new FileLoadedEventArgs(data, fileDialog.FileName));
 
-                    if (geo)
-                        SecondAttemptForGeo(fileDialog);
+//                    if (geo)
+//                        SecondAttemptForGeo(fileDialog);
                 }
             }
             catch (Exception ex)

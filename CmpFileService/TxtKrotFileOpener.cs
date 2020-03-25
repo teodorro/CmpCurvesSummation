@@ -6,7 +6,7 @@ using CmpCurvesSummation.Core;
 
 namespace GprFileService
 {
-    public class TxtKrotFileOpener : IFileTypeOpener
+    public class TxtKrotFileOpener
     {
         public ICmpScan OpenFile(string filepath)
         {

@@ -43,12 +43,10 @@ namespace SummedScanModule.ViewModels
             _summedScan = summedScan;
             _cmpScan = cmpScan;
             _avgLinesColor = avgLinesColor;
-            if (alpha != null)
-                _alpha = (byte) alpha;
             
             _plot.Annotations.Clear();
 
-            AddAlpha();
+//            AddAlpha();
             RefreshAvgHodographLines();
             RefreshAvgHodographPoints();
             RefreshLayerHodographLines();
@@ -110,20 +108,6 @@ namespace SummedScanModule.ViewModels
             layersStructure.Points.Add(new DataPoint(velocity, _cmpScan.MaxTime));
 
             _plot.Annotations.Add(layersStructure);
-        }
-
-        private void AddAlpha()
-        {
-            var c = OxyColor.FromArgb(_alpha, 255, 255, 255);
-            var rect = new RectangleAnnotation
-            {
-                MaximumX = _summedScan.MaxVelocity * 100,
-                MinimumX = _summedScan.MinVelocity * 100,
-                MinimumY = _summedScan.MinTime,
-                MaximumY = _summedScan.MaxTime,
-                Fill = c
-            };
-            _plot.Annotations.Add(rect);
         }
 
         private void RefreshAvgHodographLines()
