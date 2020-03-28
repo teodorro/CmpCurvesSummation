@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Annotations;
 using CmpCurvesSummation.Core;
 using OxyPlot;
 using OxyPlot.Annotations;
@@ -16,7 +17,7 @@ namespace SummedScanModule.ViewModels
     public class LayersLoader : ILayersLoader
     {
         private const double _layersStructureStrokeThickness = 1;
-        private const double _avgLayersStructureStrokeThickness = 0.5;
+        private const double _avgLayersStructureStrokeThickness = 1;
         private const int _pointSize = 1;
 
         private ISummedScanVT _summedScan;
@@ -43,15 +44,21 @@ namespace SummedScanModule.ViewModels
             _summedScan = summedScan;
             _cmpScan = cmpScan;
             _avgLinesColor = avgLinesColor;
-            
-            _plot.Annotations.Clear();
 
-//            AddAlpha();
+            RemoveAnnotationsExceptRectangle();
+
             RefreshAvgHodographLines();
             RefreshAvgHodographPoints();
             RefreshLayerHodographLines();
 
             _plot.InvalidatePlot(true);
+        }
+
+        private void RemoveAnnotationsExceptRectangle()
+        {
+            var annotations = _plot.Annotations.Where(x => x.GetType() != typeof(RectangleAnnotation)).ToList();
+            foreach (var a in annotations)
+                _plot.Annotations.Remove(a);
         }
 
         private void RefreshLayerHodographLines()

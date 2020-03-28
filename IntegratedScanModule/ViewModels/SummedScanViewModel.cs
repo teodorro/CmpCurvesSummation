@@ -51,6 +51,8 @@ namespace SummedScanModule.ViewModels
         }
 
         private OxyColor _linesColor = OxyColor.FromRgb(0, 0, 0);
+        private byte _alpha;
+
         public OxyColor LinesColor
         {
             get => _linesColor;
@@ -122,6 +124,7 @@ namespace SummedScanModule.ViewModels
 
         private void OnRefreshLayers(object o, RefreshLayersEventArgs e)
         {
+            AddAlpha(_alpha);
             _layersLoader.LoadLayers(AvgLinesColor, _summedScan, _cmpScan);
         }
 
@@ -242,14 +245,14 @@ namespace SummedScanModule.ViewModels
                 return;
             (heatmap as HeatMapSeries).Interpolate = e.Interpolation;
 
-            AddAlpha(e.Alpha);
+            _alpha = e.Alpha;
+            AddAlpha(_alpha);
 
             Plot.InvalidatePlot(true);
         }
 
         private void AddAlpha(byte alpha)
         {
-            
             var c = OxyColor.FromArgb(alpha, 255, 255, 255);
             var alphaRect = Plot.Annotations.FirstOrDefault(x => x.GetType() == typeof(RectangleAnnotation));
 

@@ -15,6 +15,8 @@ namespace ProcessingModule.ViewModels.CmpScan
             get => _processing.NumberOfAscans;
             set
             {
+                if (_processing == null)
+                    return;
                 _processing.NumberOfAscans = value;
                 OnPropertyChanged(nameof(NumberOfAscans));
                 EventAggregator.Instance.Invoke(this, new CmpProcessingValuesChangedEventArgs());
@@ -26,6 +28,8 @@ namespace ProcessingModule.ViewModels.CmpScan
             get => _processing.MaximumNumberOfAscans;
             set
             {
+                if (_processing == null)
+                    return;
                 _processing.MaximumNumberOfAscans = value;
                 OnPropertyChanged(nameof(MaximumNumberOfAscans));
             }
@@ -34,7 +38,6 @@ namespace ProcessingModule.ViewModels.CmpScan
 
         public RemoveRightAscansViewModel()
         {
-            EventAggregator.Instance.FileLoaded += Tune;
             EventAggregator.Instance.CmpProcessingListChanged += OnProcessingListChanged;
         }
 
@@ -44,12 +47,13 @@ namespace ProcessingModule.ViewModels.CmpScan
             if (e.Processing.GetType() != typeof(RemoveRightAscans))
                 return;
             _processing = (RemoveRightAscans)(e.Enabled == true ? e.Processing : null);
-            EventAggregator.Instance.Invoke(this, new CmpProcessingValuesChangedEventArgs());
-        }
+            if (_processing != null)
+            {
+                NumberOfAscans = _processing.NumberOfAscans;
+                MaximumNumberOfAscans = _processing.MaximumNumberOfAscans;
+            }
 
-        private void Tune(object obj, FileLoadedEventArgs e)
-        {
-            MaximumNumberOfAscans = e.CmpScan.LengthDimensionless - 1;
+            EventAggregator.Instance.Invoke(this, new CmpProcessingValuesChangedEventArgs());
         }
 
 

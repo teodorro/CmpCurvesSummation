@@ -4,12 +4,13 @@ namespace ProcessingModule.Processing.CmpScan
 {
     public class RemoveLeftAscans : ICmpScanProcessing
     {
+        public const int DefaultValue = 4;
         public string Name { get; } = "Удалить измерения слева";
         public override string ToString() => Name;
 
-        public int NumberOfAscans { get; set; } = 0;
+        public int NumberOfAscans { get; set; } = DefaultValue;
 
-        private int _maximumNumberOfAscans = 0;
+        private int _maximumNumberOfAscans;
         public int MaximumNumberOfAscans
         {
             get => _maximumNumberOfAscans;

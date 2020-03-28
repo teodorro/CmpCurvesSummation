@@ -25,8 +25,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Content="Слои" VerticalAlignment="Bottom" FontWeight="Bold" Grid.Row="6" />
-        <DataGrid x:Name="LayersListDataGrid" Grid.Row="7" CanUserAddRows="False" CanUserSortColumns="False" IsReadOnly="True"
+        <Label Content="Слои" VerticalAlignment="Bottom" FontWeight="Bold" Grid.Row="0" Margin="5"/>
+        <DataGrid x:Name="LayersListDataGrid" Grid.Row="1" CanUserAddRows="False" CanUserSortColumns="False" IsReadOnly="True"
                   ItemsSource="{Binding Layers}" AutoGenerateColumns="False" ToolTip="">
             <DataGrid.RowStyle >
                 <Style TargetType="{x:Type DataGridRow}">

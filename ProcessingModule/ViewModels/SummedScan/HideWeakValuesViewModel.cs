@@ -22,17 +22,6 @@ namespace ProcessingModule.ViewModels.SummedScan
             }
         }
 
-        public double MaxValue
-        {
-            get => _processing.MaxValue;
-            set
-            {
-                _processing.MaxValue = Math.Round(value, 3);
-                OnPropertyChanged(nameof(MaxValue));
-                EventAggregator.Instance.Invoke(this, new SumProcessingValuesChangedEventArgs());
-            }
-        }
-
 
         public HideWeakValuesViewModel()
         {

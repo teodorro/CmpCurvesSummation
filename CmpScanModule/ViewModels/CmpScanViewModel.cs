@@ -22,6 +22,7 @@ namespace CmpScanModule.ViewModels
         public PlotModel Plot { get; private set; }
 
         private OxyColor _hodographColor = OxyColor.FromRgb(0, 0, 0);
+        private byte _alpha = 0;
 
         public OxyColor HodographColor
         {
@@ -138,6 +139,7 @@ namespace CmpScanModule.ViewModels
         private void OnRefreshLayers(object o, RefreshLayersEventArgs e)
         {
             Plot.Annotations.Clear();
+            AddAlpha(_alpha);
             RefreshHodographCurves(e.Layers);
             Plot.InvalidatePlot(true);
         }
@@ -184,7 +186,8 @@ namespace CmpScanModule.ViewModels
             if (HeatMap != null)
                 HeatMap.Interpolate = e.Interpolation;
 
-            AddAlpha(e.Alpha);
+            _alpha = e.Alpha;
+            AddAlpha(_alpha);
 
             Plot.InvalidatePlot(true);
         }

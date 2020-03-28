@@ -23,6 +23,8 @@ namespace ProcessingModule.Processing.SummedScan
             foreach (var ascan in summedScan.Data)
                 for (int i = 0; i < ascan.Length; i++)
                     ascan[i] = ascan[i] == 0 ? 0 : Math.Sign(ascan[i]) * Math.Pow(Math.Abs(ascan[i]), Power);
+
+            summedScan.NormalizeVals();
         }
     }
 }

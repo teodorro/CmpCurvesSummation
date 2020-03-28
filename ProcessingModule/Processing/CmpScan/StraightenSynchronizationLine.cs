@@ -6,12 +6,14 @@ namespace ProcessingModule.Processing.CmpScan
 {
     public class StraightenSynchronizationLine : ICmpScanProcessing
     {
+        public const int DefaultValuePos = 2;
+        public const int DefaultValueNeg = -2;
         public string Name { get; } = "Выпрямление линии синхронизации 2";
 
         public override string ToString() => Name;
 
-        public double MinNegativeAmplitudeToBegin { get; set; } = -2;
-        public double MinPositiveAmplitudeToStop { get; set; } = 2;
+        public double MinNegativeAmplitudeToBegin { get; set; } = DefaultValueNeg;
+        public double MinPositiveAmplitudeToStop { get; set; } = DefaultValuePos;
 
         public int OrderIndex { get; } = 6;
 

@@ -30,6 +30,7 @@ namespace CmpCurvesSummation.Core
         void AddLayer(double velocity, double time);
         void RemoveLayersAround(double velocity, double time);
         void CopyRawDataToProcessed();
+        void NormalizeVals();
 
         event RefreshLayersHandler RefreshLayers;
     }
@@ -282,6 +283,22 @@ namespace CmpCurvesSummation.Core
 
         private double Velocity(int indexVelocity) => indexVelocity * StepVelocity + MinVelocity;
 
+        public void NormalizeVals()
+        {
+            var temp = 0d;
+            var maxValue = 0d;
+            foreach (var ascan in Data)
+                foreach (var val in ascan)
+                {
+                    temp = Math.Abs(val);
+                    if (temp > maxValue)
+                        maxValue = temp;
+                }
+
+            foreach (var ascan in Data)
+                for (int i = 0; i < ascan.Length; i++)
+                    ascan[i] = ascan[i] / maxValue;
+        }
         
     }
 

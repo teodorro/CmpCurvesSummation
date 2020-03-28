@@ -149,6 +149,12 @@ namespace ProcessingModule.ViewModels
         private void SetDefaultValues()
         {
             ZeroAmplitudeCorrectionEnabled = true;
+            AddOffsetAscansEnabled = false;
+            ClearOffsetAscansEnabled = false;
+            RemoveLeftAscansEnabled = false;
+            RemoveRightAscansEnabled = false;
+            StraightenSynchronizationLineEnabled = false;
+            LogarithmProcessingEnabled = false;
         }
 
         private void OnProcessingValuesChanged(object obj, CmpProcessingValuesChangedEventArgs e)

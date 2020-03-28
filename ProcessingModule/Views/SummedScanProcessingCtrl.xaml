@@ -9,7 +9,7 @@
              xmlns:cmpScan="clr-namespace:ProcessingModule.Views.CmpScan"
              xmlns:summedScan="clr-namespace:ProcessingModule.Views.SummedScan"
              mc:Ignorable="d"
-             Height="250" d:DesignWidth="400" IsEnabled="False">
+             d:DesignHeight="250" d:DesignWidth="400" IsEnabled="False">
     <Control.DataContext>
         <viewModels:SummedScanProcessingViewModel/>
     </Control.DataContext>

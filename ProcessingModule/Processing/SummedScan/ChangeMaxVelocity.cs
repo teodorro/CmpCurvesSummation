@@ -28,6 +28,7 @@ namespace ProcessingModule.Processing.SummedScan
             var indMaxVelocity = (int)Math.Round((_maxVelocity - summedScan.MinVelocity) / summedScan.StepVelocity);
             summedScan.Data.RemoveRange(indMaxVelocity, summedScan.RawData.Count - indMaxVelocity);
             summedScan.MaxVelocity = _maxVelocity;
+            summedScan.NormalizeVals();
         }
     }
 }

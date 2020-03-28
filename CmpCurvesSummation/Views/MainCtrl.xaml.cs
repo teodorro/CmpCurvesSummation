@@ -26,6 +26,10 @@ namespace CmpCurvesSummation.Views
         public MainCtrl()
         {
             InitializeComponent();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
             ToolbarControl.ViewModel.OpenFile();
         }
     }
