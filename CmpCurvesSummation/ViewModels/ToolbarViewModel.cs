@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
 using CmpCurvesSummation.Core;
 using CmpScanModule.Annotations;
 using GprFileService;
@@ -9,30 +10,26 @@ using Microsoft.Win32;
 
 namespace CmpCurvesSummation.ViewModels
 {
-
-
-    public interface IToolbarViewModel
+    public class ToolbarViewModel : INotifyPropertyChanged
     {
-        void OpenFile();
-    }
+        private readonly IFileOpener _fileOpener;
 
 
-
-    public class ToolbarViewModel : IToolbarViewModel, INotifyPropertyChanged
-    {
-        private IFileOpener _fileOpener;
-
-
-        public ToolbarViewModel(IFileOpener fileOpener)
+        public ToolbarViewModel()
         {
-            _fileOpener = fileOpener;
+            _fileOpener = DiContainer.Instance.Container.GetInstance<IFileOpener>(); ;
 
             EventAggregator.Instance.SummationInProcess += OnSummationInProcess;
             EventAggregator.Instance.SumDataProcessed += OnSumProcessed;
             EventAggregator.Instance.CmpDataProcessed += OnCmpDataProcessed;
+
+            OpenFileCommand = new RelayCommand<object>(_ => OpenFile());
+            LaunchSummationCommand = new RelayCommand<object>(_ => LaunchSummation());
         }
 
-
+        public ICommand OpenFileCommand { get; set; }
+        public ICommand LaunchSummationCommand { get; set; }
+        
         private bool _manualSummation;
         public bool ManualSummationPossible
         {
@@ -97,25 +94,11 @@ namespace CmpCurvesSummation.ViewModels
                     }
 
                     EventAggregator.Instance.Invoke(this, new FileLoadedEventArgs(data, fileDialog.FileName));
-
-//                    if (geo)
-//                        SecondAttemptForGeo(fileDialog);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void SecondAttemptForGeo(OpenFileDialog fileDialog)
-        {
-            ICmpScan data;
-            var isOk = MessageBox.Show("Нормально открылось?", "", MessageBoxButton.YesNo);
-            if (isOk == MessageBoxResult.No)
-            {
-                data = _fileOpener.OpenGeo1(fileDialog.FileName);
-                EventAggregator.Instance.Invoke(this, new FileLoadedEventArgs(data, fileDialog.FileName));
             }
         }
 
@@ -141,8 +124,9 @@ namespace CmpCurvesSummation.ViewModels
             ManualSummationPossible = true;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+        
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

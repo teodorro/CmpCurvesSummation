@@ -3,22 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewModels="clr-namespace:CmpCurvesSummation.ViewModels"
              xmlns:local="clr-namespace:CmpCurvesSummation.Views"
              mc:Ignorable="d" 
              d:DesignHeight="70" d:DesignWidth="300">
-    <!-- <Control.CommandBindings> -->
-    <!--     <CommandBinding Command="Open" Executed="OpenFile"></CommandBinding> -->
-    <!-- </Control.CommandBindings> -->
     <UserControl.Resources>
         <Image x:Key="PlayImage" Source="../Resources/Play-1-Normal-icon.png"/>
         <Image x:Key="OpenFileImage" Source="../Resources/Open-icon.png"/>
     </UserControl.Resources>
+    <Control.DataContext>
+        <viewModels:ToolbarViewModel/>
+    </Control.DataContext>
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding OpenFileCommand}" Key="O" Modifiers="Control"/>
+    </UserControl.InputBindings>
     <Grid>
-        <ToolBar>
-            <Button x:Name="ButtonOpenFile" Content="{StaticResource OpenFileImage}"   Click="ButtonOpenFile_Click"/>
-
+        <ToolBar Loaded="ToolBar_Loaded">
+            <Button x:Name="ButtonOpenFile" Content="{StaticResource OpenFileImage}" 
+                    Command="{Binding OpenFileCommand}"/>
             <Button x:Name="ButtonSummation" Content="{StaticResource PlayImage}"  
-                    IsEnabled="{Binding ManualSummationPossible}" Click="ButtonSummation_Click"  />
+                    IsEnabled="{Binding ManualSummationPossible}" 
+                    Command="{Binding LaunchSummationCommand}"/>
             <ProgressBar x:Name="progressBar" Margin="10,10,0,10" Width="120"
                          Visibility="{Binding ProgressBarVisible}" Value="{Binding ProgressValue}"/>
         </ToolBar> 
