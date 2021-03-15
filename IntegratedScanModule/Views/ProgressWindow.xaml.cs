@@ -13,24 +13,32 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CmpCurvesSummation.Core;
-using SummedScanModule.ViewModels;
 
 namespace IntegratedScanModule.Views
 {
     /// <summary>
-    /// Interaction logic for LaunchBar.xaml
+    /// Interaction logic for ProgressWindow.xaml
     /// </summary>
-    public partial class LaunchBar : UserControl
+    public partial class ProgressWindow : Window
     {
-        public LaunchBar()
+        private Action _funcToRun;
+
+        public ProgressWindow(Action funcToRun)
         {
             InitializeComponent();
-            EventAggregator.Instance.FileLoaded += (o, args) => { IsEnabled = true; };
+
+            _funcToRun = funcToRun;
+
+            EventAggregator.Instance.SummationFinished += (o, args) =>
+            {
+                //this.DialogResult = true;
+                this.Close();
+            };
         }
 
-        private void ButtonSummation_Click(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            (DataContext as LaunchViewModel).LaunchSummation();
+            _funcToRun.Invoke();
         }
     }
 }

@@ -27,8 +27,6 @@ namespace CmpCurvesSummation.ViewModels
         {
             _fileOpener = fileOpener;
 
-            EventAggregator.Instance.SummationInProcess += OnSummationInProcess;
-            EventAggregator.Instance.SumDataProcessed += OnSumProcessed;
             EventAggregator.Instance.CmpDataProcessed += OnCmpDataProcessed;
         }
 
@@ -41,28 +39,6 @@ namespace CmpCurvesSummation.ViewModels
             {
                 _manualSummation = value;
                 OnPropertyChanged(nameof(ManualSummationPossible));
-            }
-        }
-
-        private bool _progressBarVisible = false;
-        public Visibility ProgressBarVisible
-        {
-            get => _progressBarVisible ? Visibility.Visible : Visibility.Hidden;
-            set
-            {
-                _progressBarVisible = value == Visibility.Visible;
-                OnPropertyChanged(nameof(ProgressBarVisible));
-            }
-        }
-
-        private int _progressValue;
-        public int ProgressValue
-        {
-            get => _progressValue;
-            set
-            {
-                _progressValue = value;
-                OnPropertyChanged(nameof(ProgressValue));
             }
         }
 
@@ -119,26 +95,14 @@ namespace CmpCurvesSummation.ViewModels
             }
         }
 
-        public void LaunchSummation()
-        {
-            ProgressBarVisible = Visibility.Visible;
-            EventAggregator.Instance.Invoke(this, new SummationStartedEventArgs());
-        }
-
-        private void OnSumProcessed(object obj, SumDataProcessedEventArgs e)
-        {
-            ProgressBarVisible = Visibility.Hidden;
-            ProgressValue = 0;
-        }
-
-        private void OnSummationInProcess(object obj, SummationInProcessEventArgs e)
-        {
-            ProgressValue = e.Percent;
-        }
-
         private void OnCmpDataProcessed(object obj, CmpDataProcessedEventArgs args)
         {
             ManualSummationPossible = true;
+        }
+ 
+        public void LaunchSummation()
+        {
+            EventAggregator.Instance.Invoke(this, new SummationStartedEventArgs());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

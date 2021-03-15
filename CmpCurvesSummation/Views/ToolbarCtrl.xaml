@@ -19,8 +19,6 @@
 
             <Button x:Name="ButtonSummation" Content="{StaticResource PlayImage}"  
                     IsEnabled="{Binding ManualSummationPossible}" Click="ButtonSummation_Click"  />
-            <ProgressBar x:Name="progressBar" Margin="10,10,0,10" Width="120"
-                         Visibility="{Binding ProgressBarVisible}" Value="{Binding ProgressValue}"/>
         </ToolBar> 
 
     </Grid>

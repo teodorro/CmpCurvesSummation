@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows;
 using CmpCurvesSummation.Core;
+using IntegratedScanModule.Views;
 using LayersInfoModule.Annotations;
 using OxyPlot;
 using OxyPlot.Annotations;
@@ -33,6 +35,7 @@ namespace SummedScanModule.ViewModels
         private ILayersLoader _layersLoader;
         private int _halfWaveSize = 5;
         private bool _autoCorrection;
+        private double _timeOffset = 0;
 
         public PlotModel Plot { get; }
         public double MaxVelocity { get; private set; } = CmpMath.PlotMaxVelocity;
@@ -68,7 +71,6 @@ namespace SummedScanModule.ViewModels
             Plot = new PlotModel { Title = "График скоростей" };
             Plot.MouseDown += PlotOnMouseDown;
 
-            EventAggregator.Instance.CmpScanParametersChanged += OnTimeOffsetChanged;
             EventAggregator.Instance.CmpDataProcessed += OnCmpDataProcessed;
             EventAggregator.Instance.SumDataProcessed += OnSumProcessed;
             EventAggregator.Instance.SummationStarted += OnSummationStarted;
@@ -76,9 +78,17 @@ namespace SummedScanModule.ViewModels
             EventAggregator.Instance.PlotVisualOptionsChanged += OnPlotVisualOptionsChanged;
             EventAggregator.Instance.SumScanOptionsChanged += OnSumScanOptionsChanged;
             EventAggregator.Instance.CmpScanParametersChanged += OnCmpScanParametersChanged;
+            EventAggregator.Instance.SummationFinished += OnSummationFinished;
 
             _plotLoader = new PlotLoader(Plot, false, AddPalette);
             _layersLoader = new LayersLoader(Plot);
+        }
+
+        private void OnSummationFinished(object obj, SummationFinishedEventArgs e)
+        {
+            _summedScan = e.SummedScan;
+            _plotLoader.LoadSummedScan(_summedScan, _cmpScan, _palette);
+            _layersLoader.LoadLayers(AvgLinesColor, _summedScan, _cmpScan);
         }
 
 
@@ -216,7 +226,22 @@ namespace SummedScanModule.ViewModels
 
         private void OnSummationStarted(object obj, EventArgs e)
         {
-            Sum();
+            if (_timeOffset == 0)
+            {
+                if (MessageBox.Show("Начало измерений не смещено по времени. Как правило, это ошибка. Продолжить?", 
+                        "Предупреждение", 
+                        MessageBoxButton.OKCancel, 
+                        MessageBoxImage.Warning) 
+                    == MessageBoxResult.OK)
+                    StartSum();
+            }
+            else
+                StartSum();
+        }
+
+        private void StartSum()
+        {
+            new ProgressWindow(Sum).ShowDialog();
         }
 
         private void OnPlotVisualOptionsChanged(object o, PlotVisualOptionsChangedEventArgs e)
@@ -256,6 +281,7 @@ namespace SummedScanModule.ViewModels
             Plot.Axes.Clear();
             Plot.Annotations.Clear();
             Plot.InvalidatePlot(true);
+            _timeOffset = 0;
         }
 
         private void OnSumScanOptionsChanged(object o, SumScanOptionsChangedEventArgs e)
@@ -270,6 +296,7 @@ namespace SummedScanModule.ViewModels
         private void OnCmpScanParametersChanged(object o, CmpScanParametersChangedEventArgs e)
         {
             Clear();
+            _timeOffset = e.TimeOffset;
         }
         
         private void RepaintAvgPoints()
@@ -279,11 +306,6 @@ namespace SummedScanModule.ViewModels
             foreach (var point in Plot.Annotations.Where(x => x is PointAnnotation)) (point as PointAnnotation).Fill = AvgLinesColor;
 
             Plot.InvalidatePlot(true);
-        }
-
-        private void OnTimeOffsetChanged(object obj, CmpScanParametersChangedEventArgs e)
-        {
-            Clear();
         }
 
 

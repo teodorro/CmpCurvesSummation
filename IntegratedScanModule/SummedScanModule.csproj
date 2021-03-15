@@ -60,13 +60,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\LaunchViewModel.cs" />
     <Compile Include="ViewModels\LayersLoader.cs" />
     <Compile Include="ViewModels\PlotLoader.cs" />
+    <Compile Include="ViewModels\ProgressWindowViewModel.cs" />
     <Compile Include="ViewModels\SummedScanOptionsViewModel.cs" />
     <Compile Include="ViewModels\SummedScanViewModel.cs" />
-    <Compile Include="Views\LaunchBar.xaml.cs">
-      <DependentUpon>LaunchBar.xaml</DependentUpon>
+    <Compile Include="Views\ProgressWindow.xaml.cs">
+      <DependentUpon>ProgressWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SummedScanCtrl.xaml.cs">
       <DependentUpon>SummedScanCtrl.xaml</DependentUpon>
@@ -76,7 +76,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\LaunchBar.xaml">
+    <Page Include="Views\ProgressWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

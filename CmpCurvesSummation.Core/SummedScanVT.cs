@@ -81,7 +81,7 @@ namespace CmpCurvesSummation.Core
 
             for (int p = 0; p < _vLengthDimensionless; p++)
             {
-                CmpProgressBar.Instance.ProgressValue = p;
+                CmpProgressBar.Instance.ProgressValue = p * 100 / _vLengthDimensionless;
                 v = vStep * p + MinVelocity;
                 RawData.Add(new double[AscanLengthDimensionless]);
                 for (int j = 0; j < AscanLengthDimensionless; j++)
