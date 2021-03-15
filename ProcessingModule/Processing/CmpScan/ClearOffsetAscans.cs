@@ -5,10 +5,11 @@ namespace ProcessingModule.Processing.CmpScan
 {
     public class ClearOffsetAscans : ICmpScanProcessing
     {
+        public const int DefaultValue = 4;
         public string Name { get; } = "Очистить измерения отступа";
         public override string ToString() => Name;
 
-        public int NumberOfAscans { get; set; } = 4;
+        public int NumberOfAscans { get; set; } = DefaultValue;
 
         public int OrderIndex { get; } = 5;
 

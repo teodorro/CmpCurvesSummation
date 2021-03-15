@@ -21,7 +21,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="500"/>
+            <ColumnDefinition Width="510"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -41,7 +41,7 @@
                         </StackPanel>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Визуальные свойства">
+                <TabItem Header="Отображение">
                     <Grid >
                         <local:OptionsCtrl x:Name="OptionsControl" Margin="0,20,0,0"></local:OptionsCtrl>
                     </Grid>
@@ -51,10 +51,9 @@
         <views1:CmpScanCtrl x:Name="CmpScanControl" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="0,0,0,5"></views1:CmpScanCtrl>
         <views2:SummedScanCtrl x:Name="SummedOverCurveScanControl" Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" Margin="0,0,0,5"></views2:SummedScanCtrl>
         <StackPanel Grid.Row="1" Grid.Column="4" Grid.RowSpan="2">
-            <!--            <views4:LaunchBar></views4:LaunchBar>-->
-            <views4:SummedScanOptionsCtrl x:Name="SummedScanOptionsControl"></views4:SummedScanOptionsCtrl>
-            <views:SummedScanProcessingCtrl x:Name="SummedScanProcessingControl" Margin="10,5,5,10"></views:SummedScanProcessingCtrl>
-            <views3:LayersCtrl x:Name="LayersInfoControl" Margin="5,20,5,0"></views3:LayersCtrl>
+            <views4:SummedScanOptionsCtrl x:Name="SummedScanOptionsControl" Margin="10,5,5,0"></views4:SummedScanOptionsCtrl>
+            <views:SummedScanProcessingCtrl x:Name="SummedScanProcessingControl" Margin="10,0,5,0"></views:SummedScanProcessingCtrl>
+            <views3:LayersCtrl x:Name="LayersInfoControl" Margin="5,0,5,0"></views3:LayersCtrl>
         </StackPanel>
     </Grid>
 </UserControl>

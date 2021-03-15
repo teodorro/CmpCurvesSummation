@@ -4,10 +4,11 @@ namespace ProcessingModule.Processing.CmpScan
 {
     public class AddOffsetAscans : ICmpScanProcessing
     {
+        public const int DefaultValue = 4;
         public string Name { get; } = "Добавить измерения отступа";
         public override string ToString() => Name;
 
-        public int NumberOfAscans { get; set; } = 5;
+        public int NumberOfAscans { get; set; } = DefaultValue;
 
         public int OrderIndex { get; } = 4;
 

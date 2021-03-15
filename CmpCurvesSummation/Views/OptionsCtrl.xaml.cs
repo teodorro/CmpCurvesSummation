@@ -14,9 +14,6 @@ namespace CmpCurvesSummation.Views
     /// </summary>
     public partial class OptionsCtrl : UserControl
     {
-        public OptionsViewModel ViewModel => DataContext as OptionsViewModel;
-
-
         public OptionsCtrl()
         {
             InitializeComponent();

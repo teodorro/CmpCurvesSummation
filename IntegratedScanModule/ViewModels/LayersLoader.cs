@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Annotations;
 using CmpCurvesSummation.Core;
 using OxyPlot;
 using OxyPlot.Annotations;
@@ -16,7 +17,7 @@ namespace SummedScanModule.ViewModels
     public class LayersLoader : ILayersLoader
     {
         private const double _layersStructureStrokeThickness = 1;
-        private const double _avgLayersStructureStrokeThickness = 0.5;
+        private const double _avgLayersStructureStrokeThickness = 1;
         private const int _pointSize = 1;
 
         private ISummedScanVT _summedScan;
@@ -43,17 +44,21 @@ namespace SummedScanModule.ViewModels
             _summedScan = summedScan;
             _cmpScan = cmpScan;
             _avgLinesColor = avgLinesColor;
-            if (alpha != null)
-                _alpha = (byte) alpha;
-            
-            _plot.Annotations.Clear();
 
-            AddAlpha();
+            RemoveAnnotationsExceptRectangle();
+
             RefreshAvgHodographLines();
             RefreshAvgHodographPoints();
             RefreshLayerHodographLines();
 
             _plot.InvalidatePlot(true);
+        }
+
+        private void RemoveAnnotationsExceptRectangle()
+        {
+            var annotations = _plot.Annotations.Where(x => x.GetType() != typeof(RectangleAnnotation)).ToList();
+            foreach (var a in annotations)
+                _plot.Annotations.Remove(a);
         }
 
         private void RefreshLayerHodographLines()
@@ -110,20 +115,6 @@ namespace SummedScanModule.ViewModels
             layersStructure.Points.Add(new DataPoint(velocity, _cmpScan.MaxTime));
 
             _plot.Annotations.Add(layersStructure);
-        }
-
-        private void AddAlpha()
-        {
-            var c = OxyColor.FromArgb(_alpha, 255, 255, 255);
-            var rect = new RectangleAnnotation
-            {
-                MaximumX = _summedScan.MaxVelocity * 100,
-                MinimumX = _summedScan.MinVelocity * 100,
-                MinimumY = _summedScan.MinTime,
-                MaximumY = _summedScan.MaxTime,
-                Fill = c
-            };
-            _plot.Annotations.Add(rect);
         }
 
         private void RefreshAvgHodographLines()

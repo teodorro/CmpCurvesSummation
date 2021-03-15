@@ -16,6 +16,8 @@ namespace ProcessingModule.ViewModels.CmpScan
             get => _processing.NumberOfAscans;
             set
             {
+                if (_processing == null)
+                    return;
                 _processing.NumberOfAscans = value;
                 OnPropertyChanged(nameof(NumberOfOffsetAscans));
                 EventAggregator.Instance.Invoke(this, new CmpProcessingValuesChangedEventArgs());
@@ -26,15 +28,24 @@ namespace ProcessingModule.ViewModels.CmpScan
         public AddOffsetAscansViewModel()
         {
             EventAggregator.Instance.CmpProcessingListChanged += OnProcessingListChanged;
+            EventAggregator.Instance.FileLoaded += OnFileLoaded;
         }
 
 
+        private void OnFileLoaded(object obj, FileLoadedEventArgs e)
+        {
+            NumberOfOffsetAscans = AddOffsetAscans.DefaultValue;
+        }
+        
         private void OnProcessingListChanged(object obj, CmpProcessingListChangedEventArgs e)
         {
             if (e.Processing.GetType() != typeof(AddOffsetAscans))
                 return;
             _processing = (AddOffsetAscans) (e.Enabled == true ? e.Processing : null);
-            EventAggregator.Instance.Invoke(this, new CmpProcessingValuesChangedEventArgs());
+            if (_processing != null)
+                NumberOfOffsetAscans = _processing.NumberOfAscans;
+//            EventAggregator.Instance.Invoke(this, new CmpProcessingValuesChangedEventArgs());
+
         }
 
 

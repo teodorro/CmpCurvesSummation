@@ -49,6 +49,7 @@ namespace ProcessingModule
             if (summedScan == null)
                 return;
             summedScan.CopyRawDataToProcessed();
+            summedScan.NormalizeVals();
             foreach (var operation in OperationsToProcess)
             {
                 operation.Process(summedScan);

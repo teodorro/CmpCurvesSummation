@@ -12,38 +12,25 @@
         <viewModels:SummedScanOptionsViewModel/>
     </Control.DataContext>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-        </Grid.RowDefinitions>
-
-        
-
-        <Label Content="Автокоррекция клика" Grid.Row="1" Margin="5,5,5,0" ></Label>
-        <toggleSwitch:HorizontalToggleSwitch Margin="5,10,20,10" Grid.Row="1" Width="50" CheckedContent="" UncheckedContent="" HorizontalAlignment="Right"
-                                             IsChecked="{Binding AutoCorrection, Mode=TwoWay}" ThumbSize="30" ></toggleSwitch:HorizontalToggleSwitch>
-        <!--        <CheckBox x:Name="AutoCorrectionPointClickCheckBox" Content="Автокоррекция клика" Margin="5,0,15,10" Grid.Row="1" VerticalAlignment="Bottom" -->
-        <!--                  IsChecked="{Binding AutoCorrection}"/>-->
-        <Grid Grid.Row="2"  >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Label Content="Полупрозрачность" Margin="5,5,5,5" VerticalAlignment="Bottom"></Label>
-            <Slider Maximum="255" SmallChange="1" Margin="5,10,15,10" VerticalAlignment="Bottom" Grid.Column="1" Value="{Binding Alpha}"></Slider>
-        </Grid>
-        <Grid Grid.Row="3"  >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
-                <ColumnDefinition Width="40"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Label Content="Размер полуволны" VerticalAlignment="Bottom" Margin="5,5,5,5"></Label>
-            <Label Content="{Binding HalfWaveSize}" VerticalAlignment="Bottom" Margin="5,5,5,5" Grid.Column="1"></Label>
-            <Slider Maximum="100" SmallChange="1" VerticalAlignment="Bottom" Margin="5,10,15,10" Grid.Column="2" Value="{Binding HalfWaveSize}"></Slider>
-        </Grid>
+        <StackPanel Name="UiElementsStack">
+            <Label Content="Настройки анализа" VerticalAlignment="Bottom" FontWeight="Bold"
+                   Margin="0,20,0,0" />
+            <DockPanel>
+                <toggleSwitch:HorizontalToggleSwitch Margin="5" VerticalAlignment="Center"
+                                                     Width="50" Height="20" ThumbSize="30" CheckedContent=""
+                                                     UncheckedContent=""
+                                                     IsChecked="{Binding AutoCorrection, Mode=TwoWay}" />
+                <Label Content="Автокоррекция клика" VerticalAlignment="Center" />
+            </DockPanel>
+            <DockPanel>
+                <Label Content="Размер полуволны " Margin="10,5" />
+                <Label HorizontalAlignment="Left" Margin="10,5"
+                       VerticalAlignment="Center" HorizontalContentAlignment="Left"
+                       Content="{Binding HalfWaveSize}"/>
+                <Slider Height="25" Maximum="50" VerticalAlignment="Center" Margin="5,10,10,5"
+                        Value="{Binding HalfWaveSize}" />
+            </DockPanel>
+        </StackPanel>
     </Grid>
 </UserControl>
 

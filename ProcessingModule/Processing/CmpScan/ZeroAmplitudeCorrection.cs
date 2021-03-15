@@ -33,6 +33,10 @@ namespace ProcessingModule.Processing.CmpScan
             {
                 Convert128();
             }
+            else if (max < 256)
+            {
+                Convert256();
+            }
             else if (max < 6000)
             {
                 Convert6000();
@@ -46,6 +50,14 @@ namespace ProcessingModule.Processing.CmpScan
         private void Convert128()
         {
             var zeroAmp = 64;
+            foreach (var ascan in _data)
+                for (int i = 0; i < ascan.Length; i++)
+                    ascan[i] = ascan[i] - zeroAmp;
+        }
+
+        private void Convert256()
+        {
+            var zeroAmp = 128;
             foreach (var ascan in _data)
                 for (int i = 0; i < ascan.Length; i++)
                     ascan[i] = ascan[i] - zeroAmp;

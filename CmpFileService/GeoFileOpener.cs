@@ -5,9 +5,9 @@ using CmpCurvesSummation.Core;
 
 namespace GprFileService
 {
-    public class GeoFileOpener2 : IFileTypeOpener
+    public class GeoFileOpener
     {
-        public ICmpScan OpenFile(string filepath)
+        public ICmpScan OpenFile(string filepath, int ascanHeaderLength, int ascanLength)
         {
             try
             {
@@ -26,8 +26,8 @@ namespace GprFileService
 
                     for (int i = 0; i < bscanLength; i++)
                     {
-                        var ascanHeader = ReadScanHeader(out length, fs);
-                        var ascan = ReadAscan(out length, fs);
+                        var ascanHeader = ReadScanHeader(ascanHeaderLength, fs);
+                        var ascan = ReadAscan(ascanLength, fs);
                         data.Add(ascan);
                         fs.Read(unknown3, 0, 1);
                     }
@@ -48,17 +48,15 @@ namespace GprFileService
             }
         }
 
-        private byte[] ReadAscan(out int length, FileStream fs)
+        private byte[] ReadAscan(int length, FileStream fs)
         {
-            length = 256;
             var ascan = new byte[length];
             fs.Read(ascan, 0, length);
             return ascan;
         }
 
-        private byte[] ReadScanHeader(out int length, FileStream fs)
+        private byte[] ReadScanHeader(int length, FileStream fs)
         {
-            length = 13;
             var ascanHeader = new byte[length];
             fs.Read(ascanHeader, 0, length);
             return ascanHeader;

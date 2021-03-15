@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using CmpCurvesSummation.Core;
 using CmpCurvesSummation.ViewModels;
 using GprFileService;
@@ -11,32 +12,16 @@ namespace CmpCurvesSummation.Views
     /// </summary>
     public partial class ToolbarCtrl : UserControl
     {
-        private IToolbarViewModel _viewModel;
-        public IToolbarViewModel ViewModel => _viewModel;
-
-
         public ToolbarCtrl()
         {
             InitializeComponent();
-            var fileOpener = DiContainer.Instance.Container.GetInstance<IFileOpener>();
-            _viewModel = new ToolbarViewModel(fileOpener);
-            DataContext = _viewModel;
+            Focusable = true;
+            Loaded += (s, e) => Keyboard.Focus(this);
         }
 
-//        private void OpenFile(object sender, ExecutedRoutedEventArgs e)
-//        {
-//            _viewModel.OpenFile();
-//
-//        }
-
-        private void ButtonOpenFile_Click(object sender, RoutedEventArgs e)
+        private void ToolBar_Loaded(object sender, RoutedEventArgs e)
         {
-            _viewModel.OpenFile();
-        }
-
-        private void ButtonSummation_Click(object sender, RoutedEventArgs e)
-        {
-            (DataContext as ToolbarViewModel).LaunchSummation();
+            (this.DataContext as ToolbarViewModel).OpenFileCommand.Execute(null);
         }
     }
 }

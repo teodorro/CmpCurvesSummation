@@ -77,10 +77,27 @@ namespace ProcessingModule
         {
             var removeLeftAscans = OperationsAvailable.FirstOrDefault(x => x is RemoveLeftAscans) as RemoveLeftAscans;
             if (removeLeftAscans != null)
-                removeLeftAscans.MaximumNumberOfAscans = cmpScan.RawData.Count;
+            {
+                removeLeftAscans.NumberOfAscans = RemoveLeftAscans.DefaultValue;
+                removeLeftAscans.MaximumNumberOfAscans = cmpScan.RawData.Count - 1;
+            }
+
             var removeRightAscans = OperationsAvailable.FirstOrDefault(x => x is RemoveRightAscans) as RemoveRightAscans;
             if (removeRightAscans != null)
-                removeRightAscans.MaximumNumberOfAscans = cmpScan.RawData.Count;
+            {
+                removeRightAscans.NumberOfAscans = RemoveRightAscans.DefaultValue;
+                removeRightAscans.MaximumNumberOfAscans = cmpScan.RawData.Count - 1;
+            }
+
+            var addOffsetAscans = OperationsAvailable.FirstOrDefault(x => x is AddOffsetAscans) as AddOffsetAscans;
+            addOffsetAscans.NumberOfAscans = AddOffsetAscans.DefaultValue;
+
+            var clearOffsetAscans = OperationsAvailable.FirstOrDefault(x => x is ClearOffsetAscans) as ClearOffsetAscans;
+            clearOffsetAscans.NumberOfAscans = ClearOffsetAscans.DefaultValue;
+
+            var straightenSynchronizationLine = OperationsAvailable.FirstOrDefault(x => x is StraightenSynchronizationLine) as StraightenSynchronizationLine;
+            straightenSynchronizationLine.MinNegativeAmplitudeToBegin = StraightenSynchronizationLine.DefaultValueNeg;
+            straightenSynchronizationLine.MinPositiveAmplitudeToStop = StraightenSynchronizationLine.DefaultValuePos;
         }
     }
 }

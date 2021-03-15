@@ -54,6 +54,8 @@ namespace SummedScanModule.ViewModels
         }
 
         private OxyColor _linesColor = OxyColor.FromRgb(0, 0, 0);
+        private byte _alpha;
+
         public OxyColor LinesColor
         {
             get => _linesColor;
@@ -132,6 +134,7 @@ namespace SummedScanModule.ViewModels
 
         private void OnRefreshLayers(object o, RefreshLayersEventArgs e)
         {
+            AddAlpha(_alpha);
             _layersLoader.LoadLayers(AvgLinesColor, _summedScan, _cmpScan);
         }
 
@@ -267,7 +270,33 @@ namespace SummedScanModule.ViewModels
                 return;
             (heatmap as HeatMapSeries).Interpolate = e.Interpolation;
 
+            _alpha = e.Alpha;
+            AddAlpha(_alpha);
+
             Plot.InvalidatePlot(true);
+        }
+
+        private void AddAlpha(byte alpha)
+        {
+            var c = OxyColor.FromArgb(alpha, 255, 255, 255);
+            var alphaRect = Plot.Annotations.FirstOrDefault(x => x.GetType() == typeof(RectangleAnnotation));
+
+            if (alphaRect == null)
+            {
+                var rect = new RectangleAnnotation
+                {
+                    MaximumX = _summedScan.MaxVelocity * 100,
+                    MinimumX = _summedScan.MinVelocity * 100,
+                    MinimumY = _summedScan.MinTime,
+                    MaximumY = _summedScan.MaxTime,
+                    Fill = c
+                };
+                Plot.Annotations.Add(rect);
+            }
+            else
+            {
+                (alphaRect as RectangleAnnotation).Fill = c;
+            }
         }
 
         private void OnFileLoaded(object sender, FileLoadedEventArgs e)
@@ -287,7 +316,7 @@ namespace SummedScanModule.ViewModels
         private void OnSumScanOptionsChanged(object o, SumScanOptionsChangedEventArgs e)
         {
             _autoCorrection = e.AutoCorrection;
-            _layersLoader.LoadLayers(AvgLinesColor, _summedScan, _cmpScan, e.Alpha);
+//            _layersLoader.LoadLayers(AvgLinesColor, _summedScan, _cmpScan, e.Alpha);
             _halfWaveSize = e.HalfWaveLength;
             if (_summedScan != null)
                 _summedScan.CheckRadius = _halfWaveSize;

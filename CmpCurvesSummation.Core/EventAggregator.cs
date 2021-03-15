@@ -199,14 +199,14 @@ namespace CmpCurvesSummation.Core
     {
         public PaletteType Palette { get; }
         public bool Interpolation { get; }
-        public int Alpha { get; }
+        public byte Alpha { get; }
         public bool ShowHodographs { get; }
         public bool ShowLayersProperties { get; }
         public bool ShowAverageProperties { get; }
         public Color ColorHodograph { get; }
         public Color ColorLayerLine { get; }
 
-        public PlotVisualOptionsChangedEventArgs(PaletteType palette, bool interpolation, int alpha,
+        public PlotVisualOptionsChangedEventArgs(PaletteType palette, bool interpolation, byte alpha,
             bool showHodographs, bool showLayersProperties, bool showAverageProperties, Color colorHodograph, Color colorLayerLine)
         {
             Palette = palette;
@@ -224,13 +224,11 @@ namespace CmpCurvesSummation.Core
     public class SumScanOptionsChangedEventArgs : EventArgs
     {
         public bool AutoCorrection { get; }
-        public byte Alpha { get; }
         public int HalfWaveLength { get; }
 
-        public SumScanOptionsChangedEventArgs(bool autoCorrection, byte alpha, int halfWaveLength)
+        public SumScanOptionsChangedEventArgs(bool autoCorrection, int halfWaveLength)
         {
             AutoCorrection = autoCorrection;
-            Alpha = alpha;
             HalfWaveLength = halfWaveLength;
         }
     }

@@ -94,6 +94,14 @@ namespace ProcessingModule.ViewModels
         private void OnSummationFinished(object o, SummationFinishedEventArgs e)
         {
             _sumScan = e.SummedScan;
+            SetDefaultValues();
+        }
+
+        private void SetDefaultValues()
+        {
+            ChangeMaxVelocityEnabled = true;
+            RaiseToPowerEnabled = true;
+            HideWeakValuesEnabled = true;
         }
 
         private void OnProcessingValuesChanged(object obj, SumProcessingValuesChangedEventArgs e)

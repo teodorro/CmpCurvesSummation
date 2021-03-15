@@ -15,30 +15,17 @@ namespace ProcessingModule.Processing.SummedScan
             set => _weakValue = value;
         }
 
-        public double _maxValue = 0;
-        public double MaxValue
-        {
-            get => _maxValue;
-            set => _maxValue = value;
-        }
-
-        public void InitMaxValue(ISummedScanVT summedScan)
-        {
-            var max = 0d;
-            foreach (var ascan in summedScan.Data)
-                for (int i = 0; i < ascan.Length; i++)
-                    if (Math.Abs(ascan[i]) > max)
-                        max = Math.Abs(ascan[i]);
-            MaxValue = max;
-        }
-
         public void Process(ISummedScanVT summedScan)
         {
-            InitMaxValue(summedScan);
-
             foreach (var ascan in summedScan.Data)
                 for (int i = 0; i < ascan.Length; i++)
-                    ascan[i] = Math.Abs(ascan[i]) <= WeakValue ? 0 : ascan[i];
+                    ascan[i] = Math.Abs(ascan[i]) <= WeakValue 
+                        ? 0 
+                        : (ascan[i] > 0 
+                            ? ascan[i] - WeakValue
+                            : ascan[i] + WeakValue);
+
+            summedScan.NormalizeVals();
         }
 
         public int OrderIndex { get; } = 2;

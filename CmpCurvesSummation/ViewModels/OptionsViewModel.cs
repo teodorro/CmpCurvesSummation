@@ -33,6 +33,7 @@ namespace CmpCurvesSummation.ViewModels
         public OptionsViewModel()
         {
             EventAggregator.Instance.CmpDataProcessed += OnCmpDataProcessed;
+            EventAggregator.Instance.FileLoaded += OnFileLoaded;
 
             InitPalettes();
 
@@ -43,9 +44,13 @@ namespace CmpCurvesSummation.ViewModels
             SelectedItemHodographColor = ItemsHodographColor.First(x => x.Value == Colors.Black);
         }
 
+        private void OnFileLoaded(object obj, FileLoadedEventArgs e)
+        {
+            Alpha = 0;
+        }
+
 
         private bool _cmpScanLoaded;
-
         
         
         public ObservableCollection<string> Palettes { get; set; } = new ObservableCollection<string>();

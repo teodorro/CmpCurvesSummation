@@ -22,6 +22,7 @@ namespace CmpScanModule.ViewModels
         public PlotModel Plot { get; private set; }
 
         private OxyColor _hodographColor = OxyColor.FromRgb(0, 0, 0);
+        private byte _alpha = 0;
 
         public OxyColor HodographColor
         {
@@ -138,6 +139,7 @@ namespace CmpScanModule.ViewModels
         private void OnRefreshLayers(object o, RefreshLayersEventArgs e)
         {
             Plot.Annotations.Clear();
+            AddAlpha(_alpha);
             RefreshHodographCurves(e.Layers);
             Plot.InvalidatePlot(true);
         }
@@ -184,8 +186,48 @@ namespace CmpScanModule.ViewModels
             if (HeatMap != null)
                 HeatMap.Interpolate = e.Interpolation;
 
+            _alpha = e.Alpha;
+            AddAlpha(_alpha);
+
             Plot.InvalidatePlot(true);
         }
+
+        private void AddAlpha(byte alpha)
+        {
+            var c = OxyColor.FromArgb(alpha, 255, 255, 255);
+            var alphaRect = Plot.Annotations.FirstOrDefault(x => x.GetType() == typeof(RectangleAnnotation));
+
+            if (alphaRect == null)
+            {
+                var rect = new RectangleAnnotation
+                {
+                    MaximumX = _cmpScan.Length,
+                    MinimumX = 0,
+                    MinimumY = _cmpScan.MinTime,
+                    MaximumY = _cmpScan.MaxTime,
+                    Fill = c
+                };
+                Plot.Annotations.Add(rect);
+            }
+            else
+            {
+                (alphaRect as RectangleAnnotation).Fill = c;
+            }
+        }
+
+        //        private void AddAlpha()
+        //        {
+        //            var c = OxyColor.FromArgb(_alpha, 255, 255, 255);
+        //            var rect = new RectangleAnnotation
+        //            {
+        //                MaximumX = _summedScan.MaxVelocity * 100,
+        //                MinimumX = _summedScan.MinVelocity * 100,
+        //                MinimumY = _summedScan.MinTime,
+        //                MaximumY = _summedScan.MaxTime,
+        //                Fill = c
+        //            };
+        //            _plot.Annotations.Add(rect);
+        //        }
 
         private void PlotOnMouseDown(object sender, OxyMouseDownEventArgs e)
         {
