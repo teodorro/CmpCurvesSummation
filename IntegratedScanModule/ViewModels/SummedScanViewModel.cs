@@ -98,7 +98,7 @@ namespace SummedScanModule.ViewModels
 
         private void OnCmpDataProcessed(object obj, CmpDataProcessedEventArgs args)
         {
-            Clear();
+            Clear(false);
             _cmpScan = args.CmpScan;
         }
 
@@ -301,16 +301,17 @@ namespace SummedScanModule.ViewModels
 
         private void OnFileLoaded(object sender, FileLoadedEventArgs e)
         {
-            Clear();
+            Clear(true);
         }
 
-        private void Clear()
+        private void Clear(bool withTimeOffset)
         {
             Plot.Series.Clear();
             Plot.Axes.Clear();
             Plot.Annotations.Clear();
             Plot.InvalidatePlot(true);
-            _timeOffset = 0;
+            if (withTimeOffset)
+                _timeOffset = 0;
         }
 
         private void OnSumScanOptionsChanged(object o, SumScanOptionsChangedEventArgs e)
@@ -324,7 +325,7 @@ namespace SummedScanModule.ViewModels
 
         private void OnCmpScanParametersChanged(object o, CmpScanParametersChangedEventArgs e)
         {
-            Clear();
+            Clear(true);
             _timeOffset = e.TimeOffset;
         }
         
